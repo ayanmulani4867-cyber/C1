@@ -165,8 +165,7 @@ const STORAGE_PREFIX = 'CAMPUS_CONNECT_ERP_';
 function getStoredToken(): string | null {
   try {
     return (
-      localStorage.getItem(STORAGE_PREFIX + 'token') ||
-      localStorage.getItem('token') ||
+      sessionStorage.getItem(STORAGE_PREFIX + 'token') ||
       sessionStorage.getItem('token') ||
       null
     );
@@ -177,9 +176,14 @@ function getStoredToken(): string | null {
 
 function setStoredToken(token: string) {
   try {
-    localStorage.setItem(STORAGE_PREFIX + 'token', token);
-    localStorage.setItem('token', token);
+    sessionStorage.setItem(STORAGE_PREFIX + 'token', token);
     sessionStorage.setItem('token', token);
+    // Remove from localStorage to prevent cross-tab session contamination
+    localStorage.removeItem(STORAGE_PREFIX + 'token');
+    localStorage.removeItem('token');
+    localStorage.removeItem(STORAGE_PREFIX + 'isAuthenticated');
+    localStorage.removeItem(STORAGE_PREFIX + 'currentUserId');
+    localStorage.removeItem(STORAGE_PREFIX + 'currentView');
   } catch (e) {
     console.error('Failed to store auth token', e);
   }
@@ -187,13 +191,25 @@ function setStoredToken(token: string) {
 
 function clearStoredToken() {
   try {
+    sessionStorage.removeItem(STORAGE_PREFIX + 'token');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem(STORAGE_PREFIX + 'currentView');
     localStorage.removeItem(STORAGE_PREFIX + 'token');
     localStorage.removeItem('token');
-    sessionStorage.removeItem('token');
     localStorage.removeItem(STORAGE_PREFIX + 'isAuthenticated');
     localStorage.removeItem(STORAGE_PREFIX + 'currentUserId');
+    localStorage.removeItem(STORAGE_PREFIX + 'currentView');
   } catch (e) {
     console.error('Failed to clear auth token', e);
+  }
+}
+
+function loadSessionStored<T>(key: string, fallback: T): T {
+  try {
+    const item = sessionStorage.getItem(STORAGE_PREFIX + key);
+    return item ? JSON.parse(item) : fallback;
+  } catch (e) {
+    return fallback;
   }
 }
 
@@ -213,7 +229,7 @@ export const ErpProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
   const [verifiedUser, setVerifiedUser] = useState<User | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string>('u-admin-1');
-  const [currentView, setCurrentView] = useState<string>('dashboard');
+  const [currentView, setCurrentView] = useState<string>(() => loadSessionStored('currentView', 'dashboard'));
   
   const [departments, setDepartments] = useState<Department[]>(() => loadStored('departments', INITIAL_DEPARTMENTS));
   const [courses, setCourses] = useState<Course[]>(() => loadStored('courses', INITIAL_COURSES));
@@ -372,7 +388,9 @@ export const ErpProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [availableUsers]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_PREFIX + 'currentView', JSON.stringify(currentView));
+    try {
+      sessionStorage.setItem(STORAGE_PREFIX + 'currentView', JSON.stringify(currentView));
+    } catch {}
   }, [currentView]);
 
   useEffect(() => {
