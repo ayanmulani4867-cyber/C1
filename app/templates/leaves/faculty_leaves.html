@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Faculty Leaves - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
+    <div>
+        <h2 class="h3 fw-bold text-dark mb-1">Faculty Leave Management</h2>
+        <p class="text-muted small mb-0">Apply for duty/casual leave and manage departmental student leave requests.</p>
+    </div>
+    <a href="{{ url_for('leave.apply') }}" class="btn btn-primary shadow-sm rounded-pill px-4">
+        <i class="fa-solid fa-plus me-1"></i> Apply for Leave
+    </a>
+</div>
+
+{% if is_hod and dept_student_leaves %}
+<!-- Department Student Leaves Queue (HOD View) -->
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+        <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-user-graduate text-primary me-2"></i> Department Student Leaves to Review</h5>
+        <span class="badge bg-warning text-dark">{{ dept_student_leaves|length }} Pending</span>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Student Name</th>
+                    <th>Type</th>
+                    <th>Dates</th>
+                    <th>Reason</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sl in dept_student_leaves %}
+                    <tr>
+                        <td class="fw-semibold">{{ sl.student.full_name if sl.student else 'N/A' }}</td>
+                        <td><span class="badge bg-light text-dark border">{{ sl.leave_type }}</span></td>
+                        <td>{{ sl.start_date.strftime('%b %d') }} - {{ sl.end_date.strftime('%b %d') }}</td>
+                        <td class="small text-muted">{{ sl.reason }}</td>
+                        <td>
+                            <a href="{{ url_for('leave.review', leave_id=sl.id) }}" class="btn btn-sm btn-primary rounded-pill px-3">
+                                Review
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+<!-- My Leave History -->
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3 border-bottom">
+        <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-calendar-days text-success me-2"></i> My Leave Applications</h5>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Type</th>
+                    <th>Duration</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Applied On</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for l in my_leaves %}
+                    <tr>
+                        <td><span class="badge bg-light text-dark border">{{ l.leave_type }}</span></td>
+                        <td>{{ l.start_date.strftime('%b %d') }} - {{ l.end_date.strftime('%b %d, %Y') }}</td>
+                        <td class="small">{{ l.reason }}</td>
+                        <td>
+                            {% if l.status == 'Approved' %}
+                                <span class="badge bg-success">Approved</span>
+                            {% elif l.status == 'Rejected' %}
+                                <span class="badge bg-danger">Rejected</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-muted small">{{ l.created_at.strftime('%b %d, %Y') if l.created_at else '' }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">No leave applications found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

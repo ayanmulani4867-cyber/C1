@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Heads of Department (HODs){% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+    <div>
+        <h2 class="fw-bold mb-1"><i class="fa-solid fa-user-tie text-primary me-2"></i>Heads of Department</h2>
+        <p class="text-muted mb-0">Departmental academic leadership, coordinators, and oversight.</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    {% for dept in departments %}
+    <div class="col-md-6 col-xl-4">
+        <div class="erp-card p-4 h-100 d-flex flex-column justify-content-between">
+            <div>
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <span class="badge bg-primary font-monospace">{{ dept.code }}</span>
+                    <span class="badge {% if dept.is_active %}bg-success{% else %}bg-secondary{% endif %} bg-opacity-10 {% if dept.is_active %}text-success{% else %}text-secondary{% endif %}">
+                        {{ 'Active' if dept.is_active else 'Inactive' }}
+                    </span>
+                </div>
+                <h5 class="fw-bold mb-2">{{ dept.name }}</h5>
+                <p class="text-muted small mb-4">{{ dept.description or 'No description provided.' }}</p>
+
+                <div class="border-top pt-3">
+                    <div class="text-muted small fw-semibold text-uppercase mb-2">Assigned HOD</div>
+                    {% if dept.hod %}
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="{{ dept.hod.profile_image_url }}" alt="HOD" class="rounded-circle object-fit-cover shadow-xs" width="44" height="44">
+                            <div class="overflow-hidden">
+                                <div class="fw-bold text-dark text-truncate">{{ dept.hod.full_name }}</div>
+                                <div class="text-muted small text-truncate">{{ dept.hod.designation }}</div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="text-muted small fst-italic">No HOD assigned yet.</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="border-top pt-3 mt-4 d-flex align-items-center justify-content-between">
+                <a href="{{ url_for('academic.department_detail', dept_id=dept.id) }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                    Department Hub <i class="fa-solid fa-arrow-right ms-1"></i>
+                </a>
+                {% if current_user.is_admin %}
+                <a href="{{ url_for('academic.department_edit', dept_id=dept.id) }}" class="btn btn-sm btn-light border rounded-pill px-3 text-secondary">
+                    Change HOD
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

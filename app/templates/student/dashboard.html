@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard - {{ student.full_name }} | {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+    <!-- Student Header Banner -->
+    <div class="card border-0 shadow-sm rounded-3 mb-4 bg-primary text-white overflow-hidden position-relative">
+        <div class="card-body p-4 position-relative z-1">
+            <div class="row align-items-center g-3">
+                <div class="col-auto">
+                    <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center shadow-sm" style="width: 72px; height: 72px; font-size: 1.75rem; font-weight: 700;">
+                        {{ student.first_name[0] if student.first_name else 'S' }}
+                    </div>
+                </div>
+                <div class="col">
+                    <h3 class="fw-bold brand-font mb-1">{{ student.full_name }}</h3>
+                    <p class="mb-0 text-white-50 small">
+                        Roll: <strong>{{ student.roll_no or student.roll_number }}</strong> &bull; ID: <code>{{ student.student_id }}</code> &bull; 
+                        {{ student.course.name if student.course else 'Course' }} &bull; {{ student.semester.name if student.semester else 'Semester' }} (Div {{ student.division.name if student.division else 'A' }})
+                    </p>
+                </div>
+                <div class="col-auto">
+                    <a href="{{ url_for('student.download_id_card', student_id=student.id) }}" class="btn btn-light btn-sm text-primary fw-semibold shadow-sm" target="_blank">
+                        <i class="fa-solid fa-id-card me-1"></i> Download ID Card
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stat Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small fw-semibold text-uppercase">Overall Attendance</span>
+                        <h3 class="fw-bold mb-0 {% if attendance_pct >= 75 %}text-success{% else %}text-danger{% endif %} mt-1">{{ attendance_pct }}%</h3>
+                        <small class="text-muted">{{ attended_classes }} / {{ total_classes }} Sessions</small>
+                    </div>
+                    <div class="p-3 {% if attendance_pct >= 75 %}bg-success{% else %}bg-danger{% endif %} bg-opacity-10 text-success rounded-3">
+                        <i class="fa-solid fa-clipboard-check fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small fw-semibold text-uppercase">Fee Due Balance</span>
+                        <h3 class="fw-bold mb-0 {% if total_due > 0 %}text-danger{% else %}text-success{% endif %} mt-1">{{ total_due|currency }}</h3>
+                        <small class="text-success">Paid: {{ total_paid|currency }}</small>
+                    </div>
+                    <div class="p-3 bg-warning bg-opacity-10 text-warning rounded-3">
+                        <i class="fa-solid fa-wallet fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small fw-semibold text-uppercase">Active Assignments</span>
+                        <h3 class="fw-bold mb-0 text-primary mt-1">{{ assignments|length }}</h3>
+                        <small class="text-muted">In this semester</small>
+                    </div>
+                    <div class="p-3 bg-primary bg-opacity-10 text-primary rounded-3">
+                        <i class="fa-solid fa-book-open fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small fw-semibold text-uppercase">Upcoming Exams</span>
+                        <h3 class="fw-bold mb-0 text-info mt-1">{{ upcoming_exams|length }}</h3>
+                        <small class="text-muted">Term Scheduled</small>
+                    </div>
+                    <div class="p-3 bg-info bg-opacity-10 text-info rounded-3">
+                        <i class="fa-solid fa-file-pen fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subject-wise Attendance & Timetable/Assignments -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm rounded-3 h-100">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
+                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-chart-simple text-primary me-2"></i>Subject-wise Attendance Breakdown</h6>
+                    <a href="{{ url_for('attendance.index') }}" class="small text-decoration-none">Full Log</a>
+                </div>
+                <div class="card-body p-4">
+                    {% for subj, att in subject_attendance.items() %}
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="fw-semibold small">{{ subj }}</span>
+                                <span class="small {% if att.pct >= 75 %}text-success fw-bold{% else %}text-danger fw-bold{% endif %}">
+                                    {{ att.pct }}% ({{ att.present }}/{{ att.total }})
+                                </span>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar {% if att.pct >= 75 %}bg-success{% else %}bg-danger{% endif %}" role="progressbar" style="width: {{ att.pct }}%"></div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4 text-muted">No attendance data recorded yet.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm rounded-3 h-100">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
+                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-tasks text-success me-2"></i>Upcoming Assignments</h6>
+                    <a href="{{ url_for('assignment.index') }}" class="small text-decoration-none">View All</a>
+                </div>
+                <div class="list-group list-group-flush small">
+                    {% for a in assignments %}
+                        <a href="{{ url_for('assignment.detail', assignment_id=a.id) }}" class="list-group-item list-group-item-action p-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h6 class="mb-1 fw-semibold text-dark">{{ a.title }}</h6>
+                                <span class="badge bg-light text-primary border">Max: {{ a.max_marks }}</span>
+                            </div>
+                            <small class="text-muted d-block">{{ a.subject.name if a.subject else 'Subject' }} &bull; Due: <strong>{{ a.due_date|date_format }}</strong></small>
+                        </a>
+                    {% else %}
+                        <div class="p-4 text-center text-muted">No pending assignments.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upcoming Exams & Notices -->
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-3 h-100">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
+                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-calendar-check text-info me-2"></i>Scheduled Examination Schedule</h6>
+                    <a href="{{ url_for('exam.index') }}" class="small text-decoration-none">Admit Card</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0 small">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Exam</th>
+                                    <th>Subject</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for ex in upcoming_exams %}
+                                    <tr>
+                                        <td class="fw-semibold">{{ ex.name }}</td>
+                                        <td>{{ ex.subject.name if ex.subject else '-' }}</td>
+                                        <td><span class="badge bg-light text-dark border">{{ ex.exam_date|date_format }}</span></td>
+                                        <td class="text-muted">{{ ex.start_time|time_format }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="4" class="text-center py-3 text-muted">No upcoming exams scheduled.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-3 h-100">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
+                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-bullhorn text-warning me-2"></i>Campus Notice Bulletin</h6>
+                    <a href="{{ url_for('notice.index') }}" class="small text-decoration-none">All Notices</a>
+                </div>
+                <div class="list-group list-group-flush small">
+                    {% for n in notices %}
+                        <div class="list-group-item p-3">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="mb-1 fw-bold text-dark">{{ n.title }}</h6>
+                                <span class="badge bg-secondary-subtle text-secondary">{{ n.priority }}</span>
+                            </div>
+                            <p class="text-muted mb-1 text-truncate">{{ n.content }}</p>
+                            <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{ n.publish_date|date_format }}</small>
+                        </div>
+                    {% else %}
+                        <div class="p-4 text-center text-muted">No announcements posted.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

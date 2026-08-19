@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Edit Student Record' if student else 'New Student Enrollment' }} - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold mb-0 text-primary">
+                <i class="fa-solid fa-user-graduate me-2"></i>{{ 'Edit Student: ' + student.full_name if student else 'Enroll New Student' }}
+            </h5>
+            <a href="{{ url_for('student.index') }}" class="btn btn-outline-secondary btn-sm">Back to Student List</a>
+        </div>
+        <div class="card-body p-4">
+            {% if not student %}
+            <div class="alert alert-info border-0 shadow-sm d-flex align-items-center mb-4 rounded-3 p-3">
+                <i class="fa-solid fa-wand-magic-sparkles fa-2x text-primary me-3"></i>
+                <div>
+                    <strong class="d-block text-primary">Automated Credential & ID Generation Active</strong>
+                    <span class="small text-muted">
+                        Student ID, Admission No, Enrollment No, and Roll No are generated automatically by the system.
+                        The student's initial login password will be set to their registered mobile number with mandatory password change prompted upon first login.
+                    </span>
+                </div>
+            </div>
+            {% endif %}
+
+            <form method="POST" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+
+                <h6 class="fw-bold text-muted text-uppercase small mb-3 border-bottom pb-2">
+                    1. Academic & Enrollment Details 
+                    {% if not student %}<span class="badge bg-light text-primary fw-normal ms-2"><i class="fa-solid fa-bolt me-1"></i>Auto-Generated Identifiers</span>{% endif %}
+                </h6>
+                <div class="row g-3 mb-4">
+                    {% if form.student_id is defined %}
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold d-flex justify-content-between">
+                            <span>Student ID</span>
+                            {% if not student %}<span class="badge bg-light text-muted fw-normal">Auto (STU{YEAR}xxxx)</span>{% endif %}
+                        </label>
+                        {{ form.student_id(class="form-control" + (" is-invalid" if form.student_id.errors else ""), placeholder="Auto-generated if left blank") }}
+                        {% for err in form.student_id.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+                    {% endif %}
+                    {% if form.admission_no is defined %}
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold d-flex justify-content-between">
+                            <span>Admission Number</span>
+                            {% if not student %}<span class="badge bg-light text-muted fw-normal">Auto (ADM{YEAR}xxxx)</span>{% endif %}
+                        </label>
+                        {{ form.admission_no(class="form-control" + (" is-invalid" if form.admission_no.errors else ""), placeholder="Auto-generated if left blank") }}
+                        {% for err in form.admission_no.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+                    {% endif %}
+                    {% if form.enrollment_no is defined %}
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold d-flex justify-content-between">
+                            <span>Enrollment Number</span>
+                            {% if not student %}<span class="badge bg-light text-muted fw-normal">Auto (ENR{YEAR}xxxx)</span>{% endif %}
+                        </label>
+                        {{ form.enrollment_no(class="form-control" + (" is-invalid" if form.enrollment_no.errors else ""), placeholder="Auto-generated if left blank") }}
+                        {% for err in form.enrollment_no.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+                    {% endif %}
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold d-flex justify-content-between">
+                            <span>Roll Number</span>
+                            {% if not student %}<span class="badge bg-light text-muted fw-normal">Auto ({DEPT}-{DIV}-xxx)</span>{% endif %}
+                        </label>
+                        {{ form.roll_no(class="form-control" + (" is-invalid" if form.roll_no.errors else ""), placeholder="Auto-generated if left blank") }}
+                        {% for err in form.roll_no.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Department <span class="text-danger">*</span></label>
+                        {{ form.department_id(class="form-select") }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Course <span class="text-danger">*</span></label>
+                        {{ form.course_id(class="form-select") }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Semester <span class="text-danger">*</span></label>
+                        {{ form.semester_id(class="form-select") }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Academic Session <span class="text-danger">*</span></label>
+                        {{ form.session_id(class="form-select") }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Class Division</label>
+                        {{ form.division_id(class="form-select") }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Batch / Year</label>
+                        {{ form.batch(class="form-control", placeholder="e.g. 2026-2030") }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Admission Date</label>
+                        {{ form.admission_date(class="form-control", type="date") }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Enrollment Status</label>
+                        {{ form.status(class="form-select") }}
+                    </div>
+                </div>
+
+                <h6 class="fw-bold text-muted text-uppercase small mb-3 border-bottom pb-2">2. Personal Information</h6>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">First Name</label>
+                        {{ form.first_name(class="form-control" + (" is-invalid" if form.first_name.errors else "")) }}
+                        {% for err in form.first_name.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Middle Name</label>
+                        {{ form.middle_name(class="form-control") }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Last Name</label>
+                        {{ form.last_name(class="form-control" + (" is-invalid" if form.last_name.errors else "")) }}
+                        {% for err in form.last_name.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Date of Birth</label>
+                        {{ form.dob(class="form-control", type="date") }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Gender</label>
+                        {{ form.gender(class="form-select") }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Blood Group</label>
+                        {{ form.blood_group(class="form-select") }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Student Photo</label>
+                        {{ form.profile_photo(class="form-control") }}
+                    </div>
+                </div>
+
+                <h6 class="fw-bold text-muted text-uppercase small mb-3 border-bottom pb-2">3. Contact & Portal Account</h6>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Institutional / College Email</label>
+                        {% if form.college_email is defined %}
+                            {{ form.college_email(class="form-control" + (" is-invalid" if form.college_email.errors else "")) }}
+                            {% for err in form.college_email.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        {% else %}
+                            <input type="email" class="form-control" value="{{ student.college_email if student else '' }}" readonly disabled>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Mobile Number</label>
+                        {{ form.mobile(class="form-control" + (" is-invalid" if form.mobile.errors else "")) }}
+                        {% for err in form.mobile.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+                    {% if not student %}
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Login Username (Optional)</label>
+                            {% if form.username is defined %}
+                                {{ form.username(class="form-control", placeholder="Defaults to official college email") }}
+                            {% endif %}
+                            <small class="text-muted">Defaults to official email (students can also sign in using their Student ID, Admission No, or Enrollment No).</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Initial Password (Optional)</label>
+                            {% if form.temporary_password is defined %}
+                                {{ form.temporary_password(class="form-control", placeholder="Defaults to student mobile number") }}
+                            {% endif %}
+                            <small class="text-muted">Defaults to student's mobile number. Student is required to change password on first login.</small>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 border-top pt-3">
+                    <a href="{{ url_for('student.index') }}" class="btn btn-light">Cancel</a>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="fa-solid fa-floppy-disk me-1"></i> Save Student Record
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

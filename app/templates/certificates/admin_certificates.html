@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Certificate Request Management - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2 class="h3 fw-bold text-dark mb-1">Student Certificate Approvals & Registry</h2>
+    <p class="text-muted small mb-0">Review pending certificate applications, approve with unique verification hash, or reject with feedback.</p>
+</div>
+
+<!-- Pending Approvals -->
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+        <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-hourglass-half text-warning me-2"></i> Pending Applications</h5>
+        <span class="badge bg-warning-subtle text-dark">{{ pending_requests|length }} Pending</span>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Student Name</th>
+                    <th>Roll #</th>
+                    <th>Certificate Type</th>
+                    <th>Purpose</th>
+                    <th>Requested Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in pending_requests %}
+                    <tr>
+                        <td class="fw-semibold text-dark">{{ req.student.full_name if req.student else 'N/A' }}</td>
+                        <td><code>{{ req.student.roll_number if req.student else 'N/A' }}</code></td>
+                        <td><span class="badge bg-light text-dark border">{{ req.certificate_type }}</span></td>
+                        <td class="text-muted small">{{ req.purpose }}</td>
+                        <td>{{ req.created_at.strftime('%b %d, %Y') if req.created_at else '' }}</td>
+                        <td>
+                            <a href="{{ url_for('certificate.review', request_id=req.id) }}" class="btn btn-sm btn-primary rounded-pill px-3">
+                                Review Request
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">No pending certificate requests in queue.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- All History -->
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3 border-bottom">
+        <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-file-signature text-primary me-2"></i> Processed Certificate Archive</h5>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Student</th>
+                    <th>Type</th>
+                    <th>Code / Number</th>
+                    <th>Status</th>
+                    <th>Issued Date</th>
+                    <th>Download</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in all_requests %}
+                    <tr>
+                        <td>{{ req.student.full_name if req.student else 'N/A' }} ({{ req.student.roll_number if req.student else '' }})</td>
+                        <td>{{ req.certificate_type }}</td>
+                        <td><code>{{ req.certificate_number or '-' }}</code></td>
+                        <td>
+                            {% if req.status == 'Approved' %}
+                                <span class="badge bg-success">Approved</span>
+                            {% elif req.status == 'Rejected' %}
+                                <span class="badge bg-danger">Rejected</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ req.issued_date.strftime('%b %d, %Y') if req.issued_date else '-' }}</td>
+                        <td>
+                            {% if req.status == 'Approved' %}
+                                <a href="{{ url_for('certificate.download', request_id=req.id) }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                    <i class="fa-solid fa-file-pdf me-1"></i> PDF
+                                </a>
+                            {% else %}
+                                <span class="text-muted small">-</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">No records found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

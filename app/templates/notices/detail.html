@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}{{ notice.title }} - Notice Board - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{{ url_for('notice.index') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+        <i class="fa-solid fa-arrow-left me-1"></i> Back to Notices
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4 p-md-5">
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+            {% if notice.is_important %}
+                <span class="badge bg-danger"><i class="fa-solid fa-thumbtack me-1"></i> Important Notice</span>
+            {% endif %}
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle">{{ notice.target_audience }}</span>
+            {% if notice.department %}
+                <span class="badge bg-info-subtle text-info border">{{ notice.department.name }}</span>
+            {% endif %}
+            <span class="text-muted small ms-auto">
+                <i class="fa-regular fa-calendar me-1"></i> Published: {{ notice.publish_date.strftime('%B %d, %Y') if notice.publish_date else notice.created_at.strftime('%B %d, %Y') }}
+            </span>
+        </div>
+
+        <h1 class="h2 fw-bold text-dark mb-4">{{ notice.title }}</h1>
+
+        <div class="p-4 bg-light rounded-3 mb-4 fs-6 leading-relaxed" style="white-space: pre-line;">
+            {{ notice.content }}
+        </div>
+
+        {% if notice.attachment_file %}
+            <div class="p-3 border rounded-3 d-flex align-items-center justify-content-between mb-4">
+                <div class="d-flex align-items-center gap-3">
+                    <i class="fa-solid fa-file-pdf fa-2x text-danger"></i>
+                    <div>
+                        <div class="fw-bold text-dark">Official Attachment</div>
+                        <div class="text-muted small">Download circular or attached document</div>
+                    </div>
+                </div>
+                <a href="{{ url_for('static', filename='uploads/documents/' + notice.attachment_file) }}" target="_blank" class="btn btn-sm btn-primary rounded-pill px-4">
+                    <i class="fa-solid fa-download me-1"></i> Download
+                </a>
+            </div>
+        {% endif %}
+
+        <div class="pt-3 border-top d-flex justify-content-between align-items-center text-muted small">
+            <div>
+                <i class="fa-solid fa-signature me-1"></i> Issued by: <strong>{{ notice.author.username if notice.author else 'Office of the Registrar' }}</strong>
+            </div>
+            <div>
+                Ref: #NC-{{ notice.id }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

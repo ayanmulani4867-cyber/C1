@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Examination Marks Roster - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2 class="h3 fw-bold text-dark mb-1">Marks Entry & Evaluation Roster</h2>
+    <p class="text-muted small mb-0">Record exam scores, generate automatic letter grades, and publish semester results.</p>
+</div>
+
+<!-- Selection Form -->
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body p-4">
+        <form method="GET" action="{{ url_for('exam.results') }}" class="row g-3 align-items-end">
+            <div class="col-md-5">
+                <label class="form-label fw-semibold">Select Examination</label>
+                {{ form.exam_id(class="form-select", value=selected_exam_id) }}
+            </div>
+            <div class="col-md-5">
+                <label class="form-label fw-semibold">Class Division</label>
+                {{ form.class_division_id(class="form-select", value=selected_div_id) }}
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Load Roster</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if exam and students %}
+<form method="POST" action="{{ url_for('exam.save_results') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="exam_id" value="{{ exam.id }}">
+    <input type="hidden" name="class_division_id" value="{{ selected_div_id }}">
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="fw-bold text-dark mb-0">{{ exam.name }} - {{ exam.subject.name if exam.subject else '' }}</h5>
+                <small class="text-muted">Max Marks: <strong>{{ exam.max_marks }}</strong> | Passing Marks: <strong>{{ exam.passing_marks }}</strong></small>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Roll #</th>
+                        <th>Student Name</th>
+                        <th style="width: 150px;">Marks (Max: {{ exam.max_marks }})</th>
+                        <th style="width: 100px;">Grade</th>
+                        <th style="width: 100px;">Status</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for std in students %}
+                        {% set res = existing_results.get(std.id) %}
+                        <tr>
+                            <td><code>{{ std.roll_number }}</code></td>
+                            <td class="fw-semibold text-dark">{{ std.full_name }}</td>
+                            <td>
+                                <input type="number" step="0.5" min="0" max="{{ exam.max_marks }}" name="marks_{{ std.id }}" class="form-control form-control-sm" value="{{ res.marks_obtained if res else '' }}">
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary-subtle text-secondary">{{ res.grade if res else '-' }}</span>
+                            </td>
+                            <td>
+                                {% if res %}
+                                    <span class="badge {{ 'bg-success' if res.status == 'Pass' else 'bg-danger' }}">{{ res.status }}</span>
+                                {% else %}
+                                    <span class="text-muted small">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <input type="text" name="remarks_{{ std.id }}" class="form-control form-control-sm" placeholder="Optional" value="{{ res.remarks if res else '' }}">
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer bg-white py-3 border-top d-flex justify-content-between align-items-center">
+            <div class="form-check">
+                <input type="checkbox" name="publish_now" id="publish_now" class="form-check-input" value="1">
+                <label for="publish_now" class="form-check-label fw-semibold text-dark">Publish Results to Student Portal</label>
+            </div>
+            <button type="submit" class="btn btn-success px-4">Save Evaluation</button>
+        </div>
+    </div>
+</form>
+{% elif selected_exam_id and selected_div_id %}
+<div class="card shadow-sm border-0 p-5 text-center text-muted">
+    <i class="fa-solid fa-users-slash fa-3x mb-3 text-muted opacity-50"></i>
+    <h5>No students enrolled in this division.</h5>
+</div>
+{% endif %}
+{% endblock %}

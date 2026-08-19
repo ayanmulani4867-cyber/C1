@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}{{ event.title }} - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center gap-2 mb-4">
+    <a href="{{ url_for('event.index') }}" class="btn btn-sm btn-outline-secondary rounded-circle p-2">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+    <div>
+        <h2 class="h4 fw-bold text-dark mb-0">{{ event.title }}</h2>
+        <span class="badge bg-primary-subtle text-primary">{{ event.event_type }}</span>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Main Details -->
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0 mb-4 overflow-hidden">
+            {% if event.banner_image %}
+                <img src="{{ url_for('static', filename='uploads/photos/' + event.banner_image) }}" class="w-100 object-fit-cover" style="max-height: 350px;" alt="{{ event.title }}">
+            {% endif %}
+            <div class="card-body p-4">
+                <h5 class="fw-bold text-dark mb-3">Event Overview</h5>
+                <div class="text-dark mb-4" style="white-space: pre-line; line-height: 1.7;">
+                    {{ event.description }}
+                </div>
+
+                <div class="row g-3 p-3 bg-light rounded border">
+                    <div class="col-sm-6">
+                        <div class="text-muted small fw-semibold">Start Date & Time</div>
+                        <div class="fw-bold text-dark"><i class="fa-regular fa-calendar text-primary me-1"></i> {{ event.start_datetime|datetime_format }}</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-muted small fw-semibold">End Date & Time</div>
+                        <div class="fw-bold text-dark"><i class="fa-regular fa-calendar-check text-primary me-1"></i> {{ event.end_datetime|datetime_format }}</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-muted small fw-semibold">Venue / Location</div>
+                        <div class="fw-bold text-dark"><i class="fa-solid fa-location-dot text-danger me-1"></i> {{ event.venue }}</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-muted small fw-semibold">Capacity</div>
+                        <div class="fw-bold text-dark"><i class="fa-solid fa-users text-secondary me-1"></i> {{ event.max_participants if event.max_participants > 0 else 'Unlimited Seats' }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendees list for Admin/Faculty -->
+        {% if current_user.is_authenticated and current_user.role in ('admin', 'hod', 'faculty') %}
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-clipboard-list text-primary me-2"></i> Registered Students ({{ registrations|length }})</h6>
+                </div>
+                <div class="card-body p-0">
+                    {% if registrations %}
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr class="text-secondary small">
+                                        <th class="ps-4">Student</th>
+                                        <th>Roll Number</th>
+                                        <th>Department</th>
+                                        <th>Registration Date</th>
+                                        <th class="pe-4 text-end">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for r in registrations %}
+                                        <tr>
+                                            <td class="ps-4 fw-semibold text-dark">{{ r.student.full_name if r.student else 'Unknown' }}</td>
+                                            <td>{{ r.student.roll_number if r.student else '-' }}</td>
+                                            <td class="small">{{ r.student.department.code if r.student and r.student.department else '-' }}</td>
+                                            <td class="small text-muted">{{ r.registration_date|datetime_format }}</td>
+                                            <td class="pe-4 text-end">
+                                                <span class="badge bg-success-subtle text-success border border-success-subtle">{{ r.status }}</span>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4 text-muted small">No students have registered for this event yet.</div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Registration Sidebar Card -->
+    <div class="col-lg-4">
+        <div class="card shadow-sm border-0 sticky-top" style="top: 80px;">
+            <div class="card-header bg-white py-3">
+                <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-ticket text-warning me-2"></i> Registration Status</h6>
+            </div>
+            <div class="card-body p-4 text-center">
+                {% if current_user.is_authenticated and current_user.role == 'student' %}
+                    {% if is_registered %}
+                        <div class="rounded-circle bg-success-subtle text-success d-inline-flex p-3 mb-3">
+                            <i class="fa-solid fa-circle-check fa-2x"></i>
+                        </div>
+                        <h5 class="fw-bold text-success mb-1">You Are Registered!</h5>
+                        <p class="text-muted small mb-4">Your seat has been reserved. Please bring your student ID card to the venue.</p>
+                        
+                        <form method="POST" action="{{ url_for('event.cancel_registration', event_id=event.id) }}" onsubmit="return confirm('Are you sure you want to cancel your registration?');">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-4">
+                                Cancel Registration
+                            </button>
+                        </form>
+                    {% else %}
+                        {% if event.is_open_for_registration %}
+                            <div class="rounded-circle bg-primary-subtle text-primary d-inline-flex p-3 mb-3">
+                                <i class="fa-solid fa-calendar-plus fa-2x"></i>
+                            </div>
+                            <h5 class="fw-bold text-dark mb-1">Open for Registration</h5>
+                            <p class="text-muted small mb-4">Click below to instantly register for this event.</p>
+                            
+                            <form method="POST" action="{{ url_for('event.register', event_id=event.id) }}">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill shadow-sm fw-semibold">
+                                    <i class="fa-solid fa-check me-1"></i> Register for Event Now
+                                </button>
+                            </form>
+                        {% else %}
+                            <div class="text-muted py-3">
+                                <i class="fa-solid fa-lock fa-2x mb-2 text-secondary"></i>
+                                <h6>Registration Closed</h6>
+                                <p class="small mb-0">Online registrations for this event are currently unavailable.</p>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% elif not current_user.is_authenticated %}
+                    <p class="text-muted small mb-3">Please sign in as a student to register for this campus event.</p>
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-primary w-100 rounded-pill py-2 fw-semibold">
+                        Sign In to Register
+                    </a>
+                {% else %}
+                    <div class="py-2 text-muted small">
+                        <i class="fa-solid fa-user-shield fa-2x mb-2 text-primary"></i>
+                        <p class="mb-0">You are viewing this event with staff privileges.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

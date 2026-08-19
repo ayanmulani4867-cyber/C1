@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Notice Board - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
+    <div>
+        <h2 class="h3 fw-bold text-dark mb-1">Campus Notices & Announcements</h2>
+        <p class="text-muted small mb-0">Official notices, circulars, exam notifications, and campus updates.</p>
+    </div>
+    {% if current_user.is_authenticated and current_user.role in ('admin', 'hod', 'faculty') %}
+        <a href="{{ url_for('notice.create') }}" class="btn btn-primary shadow-sm rounded-pill px-4">
+            <i class="fa-solid fa-plus me-1"></i> Post New Notice
+        </a>
+    {% endif %}
+</div>
+
+<!-- Filters -->
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body p-3">
+        <form method="GET" action="{{ url_for('notice.index') }}" class="row g-3 align-items-center">
+            <div class="col-md-5">
+                <label class="form-label small text-muted mb-1">Audience</label>
+                <select name="audience" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="ALL" {% if selected_audience == 'ALL' %}selected{% endif %}>All Audiences</option>
+                    <option value="ALL_STUDENTS" {% if selected_audience == 'ALL_STUDENTS' %}selected{% endif %}>All Students</option>
+                    <option value="ALL_FACULTY" {% if selected_audience == 'ALL_FACULTY' %}selected{% endif %}>All Faculty</option>
+                    <option value="DEPARTMENT_ONLY" {% if selected_audience == 'DEPARTMENT_ONLY' %}selected{% endif %}>Department Specific</option>
+                </select>
+            </div>
+            <div class="col-md-5">
+                <label class="form-label small text-muted mb-1">Department</label>
+                <select name="dept_id" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">All Departments</option>
+                    {% for d in departments %}
+                        <option value="{{ d.id }}" {% if selected_dept == d.id %}selected{% endif %}>{{ d.name }} ({{ d.code }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <a href="{{ url_for('notice.index') }}" class="btn btn-sm btn-outline-secondary w-100">Reset</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Notices List -->
+{% if notices %}
+    <div class="row g-3">
+        {% for notice in notices %}
+            <div class="col-12">
+                <div class="card shadow-sm border-0 p-3 hover-shadow transition">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 mb-2">
+                        <div class="d-flex align-items-center gap-2">
+                            {% if notice.is_important %}
+                                <span class="badge bg-danger"><i class="fa-solid fa-thumbtack me-1"></i> Important</span>
+                            {% endif %}
+                            <span class="badge bg-light text-dark border">{{ notice.target_audience }}</span>
+                            {% if notice.department %}
+                                <span class="badge bg-info-subtle text-info border">{{ notice.department.code }}</span>
+                            {% endif %}
+                        </div>
+                        <span class="text-muted small">
+                            <i class="fa-regular fa-clock me-1"></i> {{ notice.publish_date.strftime('%b %d, %Y') if notice.publish_date else notice.created_at.strftime('%b %d, %Y') }}
+                        </span>
+                    </div>
+                    <h5 class="fw-bold mb-2">
+                        <a href="{{ url_for('notice.detail', notice_id=notice.id) }}" class="text-dark text-decoration-none hover-primary">
+                            {{ notice.title }}
+                        </a>
+                    </h5>
+                    <p class="text-muted small mb-3 text-truncate" style="max-height: 48px;">
+                        {{ notice.content }}
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                        <div class="small text-muted">
+                            <i class="fa-solid fa-user-pen me-1"></i> Posted by: {{ notice.author.username if notice.author else 'Administration' }}
+                            {% if notice.attachment_file %}
+                                <span class="ms-3 text-primary"><i class="fa-solid fa-paperclip me-1"></i> Attachment Available</span>
+                            {% endif %}
+                        </div>
+                        <a href="{{ url_for('notice.detail', notice_id=notice.id) }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                            Read Notice <i class="fa-solid fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="card shadow-sm border-0 text-center py-5">
+        <div class="card-body">
+            <i class="fa-solid fa-bullhorn fa-3x text-muted opacity-50 mb-3"></i>
+            <h5 class="fw-bold text-dark">No Notices Found</h5>
+            <p class="text-muted small mb-0">There are no published notices matching your selected filters.</p>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

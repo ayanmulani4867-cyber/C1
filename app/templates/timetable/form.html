@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-4">
+    <div class="col-md-8 col-lg-7">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                <h6 class="fw-bold mb-0 text-primary"><i class="fa-solid fa-clock me-2"></i>{{ title }}</h6>
+                <a href="{{ url_for('timetable.index') }}" class="btn btn-outline-secondary btn-sm">Back</a>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Day of Week</label>
+                            {{ form.day_of_week(class="form-select") }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Classroom / Room Number</label>
+                            {{ form.room_number(class="form-control" + (" is-invalid" if form.room_number.errors else ""), placeholder="e.g. Hall 204") }}
+                            {% for err in form.room_number.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Start Time</label>
+                            {{ form.start_time(class="form-control", type="time") }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">End Time</label>
+                            {{ form.end_time(class="form-control", type="time") }}
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Class Division</label>
+                            {{ form.class_division_id(class="form-select") }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Subject</label>
+                            {{ form.subject_id(class="form-select") }}
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Assigned Faculty</label>
+                            {{ form.faculty_id(class="form-select") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Semester</label>
+                            {{ form.semester_id(class="form-select") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Session</label>
+                            {{ form.session_id(class="form-select") }}
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 border-top pt-3">
+                        <a href="{{ url_for('timetable.index') }}" class="btn btn-light">Cancel</a>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="fa-solid fa-floppy-disk me-1"></i> Save Timetable Slot
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

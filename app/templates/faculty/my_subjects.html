@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}My Assigned Subjects - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2 class="h3 fw-bold text-dark mb-1">My Teaching Subjects & Workload</h2>
+    <p class="text-muted small mb-0">Current semester teaching allocations, courses, and syllabus details.</p>
+</div>
+
+<div class="row g-4">
+    {% for s in subjects %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm border-0 h-100 p-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle">{{ s.code }}</span>
+                    <span class="badge bg-light text-dark border">{{ s.subject_type }}</span>
+                </div>
+                <h5 class="fw-bold text-dark mb-2">{{ s.name }}</h5>
+                <p class="text-muted small mb-3">{{ s.department.name if s.department else 'General Department' }}</p>
+                <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center small text-muted">
+                    <span>Credits: <strong>{{ s.credits }}</strong></span>
+                    <span>Sem: <strong>{{ s.semester.number if s.semester else 'N/A' }}</strong></span>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="col-12 text-center py-5">
+            <p class="text-muted">No subject allocations found for the active semester.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

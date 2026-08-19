@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Mark Classroom Attendance - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+    <div class="card shadow-sm border-0 rounded-3 mb-4">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="fw-bold mb-0 text-primary"><i class="fa-solid fa-clipboard-user me-2"></i>Mark Classroom Attendance</h5>
+        </div>
+        <div class="card-body p-4">
+            <!-- Filter Bar -->
+            <form method="GET" action="{{ url_for('attendance.mark') }}" class="row g-3 align-items-end mb-4 border-bottom pb-4">
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold small">Class Division</label>
+                    <select name="class_division_id" class="form-select form-select-sm" required>
+                        <option value="">-- Choose Division --</option>
+                        {% for val, label in form.class_division_id.choices %}
+                            <option value="{{ val }}" {% if selected_div_id == val %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold small">Subject</label>
+                    <select name="subject_id" class="form-select form-select-sm" required>
+                        <option value="">-- Choose Subject --</option>
+                        {% for val, label in form.subject_id.choices %}
+                            <option value="{{ val }}" {% if selected_subj_id == val %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold small">Date</label>
+                    <input type="date" name="date" class="form-control form-control-sm" value="{{ att_date }}">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold small">Time Slot</label>
+                    <select name="time_slot" class="form-select form-select-sm">
+                        <option value="09:00 - 10:00 AM" {% if time_slot == '09:00 - 10:00 AM' %}selected{% endif %}>09:00 - 10:00 AM</option>
+                        <option value="10:00 - 11:00 AM" {% if time_slot == '10:00 - 11:00 AM' %}selected{% endif %}>10:00 - 11:00 AM</option>
+                        <option value="11:15 - 12:15 PM" {% if time_slot == '11:15 - 12:15 PM' %}selected{% endif %}>11:15 - 12:15 PM</option>
+                        <option value="01:00 - 02:00 PM" {% if time_slot == '01:00 - 02:00 PM' %}selected{% endif %}>01:00 - 02:00 PM</option>
+                        <option value="02:00 - 03:00 PM" {% if time_slot == '02:00 - 03:00 PM' %}selected{% endif %}>02:00 - 03:00 PM</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-primary btn-sm w-100">Load</button>
+                </div>
+            </form>
+
+            {% if students %}
+                <!-- Roll Call Form -->
+                <form method="POST" action="{{ url_for('attendance.mark') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <input type="hidden" name="class_division_id" value="{{ selected_div_id }}">
+                    <input type="hidden" name="subject_id" value="{{ selected_subj_id }}">
+                    <input type="hidden" name="date" value="{{ att_date }}">
+                    <input type="hidden" name="time_slot" value="{{ time_slot }}">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">Topic Covered Today (Optional)</label>
+                        <input type="text" name="topic_covered" class="form-control form-control-sm" placeholder="e.g. Unit 3 - Dynamic Programming Intro">
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="fw-bold mb-0">Student Roll Register ({{ students|length }} Students)</h6>
+                        <div class="btn-group btn-group-sm">
+                            <button type="button" class="btn btn-outline-success" onclick="markAll('Present')">All Present</button>
+                            <button type="button" class="btn btn-outline-danger" onclick="markAll('Absent')">All Absent</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive mb-4">
+                        <table class="table table-bordered table-hover align-middle small">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 120px;">Roll No</th>
+                                    <th>Student Name</th>
+                                    <th>Status</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for s in students %}
+                                    <tr>
+                                        <td><code>{{ s.roll_no or s.roll_number }}</code></td>
+                                        <td class="fw-semibold">{{ s.full_name }}</td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <input type="radio" class="btn-check att-status" name="status_{{ s.id }}" id="pres_{{ s.id }}" value="Present" checked>
+                                                <label class="btn btn-outline-success" for="pres_{{ s.id }}">Present</label>
+
+                                                <input type="radio" class="btn-check att-status" name="status_{{ s.id }}" id="late_{{ s.id }}" value="Late">
+                                                <label class="btn btn-outline-warning" for="late_{{ s.id }}">Late</label>
+
+                                                <input type="radio" class="btn-check att-status" name="status_{{ s.id }}" id="abs_{{ s.id }}" value="Absent">
+                                                <label class="btn btn-outline-danger" for="abs_{{ s.id }}">Absent</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="remarks_{{ s.id }}" class="form-control form-control-sm" placeholder="Optional remark">
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" name="save_attendance" value="1" class="btn btn-primary px-4 py-2 fw-semibold">
+                            <i class="fa-solid fa-check-double me-2"></i> Submit & Save Attendance Register
+                        </button>
+                    </div>
+                </form>
+            {% elif selected_div_id %}
+                <div class="alert alert-info text-center">No enrolled students found in this division.</div>
+            {% else %}
+                <div class="text-center py-5 text-muted">
+                    <i class="fa-solid fa-arrow-up fa-2x mb-2 text-primary opacity-50"></i>
+                    <p>Select class division and subject above to load student roll register.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+function markAll(status) {
+    document.querySelectorAll('.att-status').forEach(radio => {
+        if (radio.value === status) {
+            radio.checked = true;
+        }
+    });
+}
+</script>
+{% endblock %}

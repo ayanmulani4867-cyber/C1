@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}My Classes & Sections{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+    <div>
+        <h2 class="fw-bold mb-1"><i class="fa-solid fa-users-rectangle text-primary me-2"></i>My Classes & Sections</h2>
+        <p class="text-muted mb-0">Active student cohorts, class divisions, and assigned batches for teaching.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{{ url_for('attendance.mark') }}" class="btn btn-primary btn-sm px-3 rounded-pill">
+            <i class="fa-solid fa-check-to-slot me-1"></i> Mark Attendance
+        </a>
+    </div>
+</div>
+
+{% if divisions %}
+<div class="row g-4">
+    {% for div in divisions %}
+    <div class="col-md-6 col-xl-4">
+        <div class="erp-card p-4 h-100 d-flex flex-column justify-content-between">
+            <div>
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <span class="badge bg-primary fs-7 font-monospace">Section {{ div.name }}</span>
+                    <span class="badge bg-light text-secondary border">{{ div.course.code if div.course else 'Course' }}</span>
+                </div>
+                <h5 class="fw-bold text-dark mb-1">{{ div.course.name if div.course else 'Academic Course' }}</h5>
+                <div class="text-muted small mb-3">
+                    <span class="me-2"><i class="fa-solid fa-layer-group text-primary me-1"></i> Semester {{ div.semester.number if div.semester else 'N/A' }}</span>
+                    {% if div.room_number %}<span><i class="fa-solid fa-door-open text-secondary me-1"></i> Room {{ div.room_number }}</span>{% endif %}
+                </div>
+
+                <div class="p-3 bg-light rounded-3 mb-3 d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-muted small">Enrolled Students</div>
+                        <div class="fs-4 fw-bold text-dark">{{ div.students|length }}</div>
+                    </div>
+                    <i class="fa-solid fa-user-graduate text-slate-400 fs-3"></i>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 pt-2">
+                <a href="{{ url_for('attendance.mark', division_id=div.id) }}" class="btn btn-sm btn-primary rounded-pill flex-grow-1">
+                    <i class="fa-solid fa-clipboard-user me-1"></i> Attendance
+                </a>
+                <a href="{{ url_for('student.index', division_id=div.id) }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                    Roster
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="erp-card p-5 text-center">
+    <div class="empty-state">
+        <div class="empty-state-icon"><i class="fa-solid fa-chalkboard"></i></div>
+        <h5 class="fw-bold text-dark">No Scheduled Classes Found</h5>
+        <p class="text-muted small mb-3">You do not have any timetable entries or assigned class divisions yet.</p>
+        <a href="{{ url_for('timetable.index') }}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+            View Schedule
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

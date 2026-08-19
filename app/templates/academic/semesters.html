@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Academic Semesters{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+    <div>
+        <h2 class="fw-bold mb-1"><i class="fa-solid fa-layer-group text-primary me-2"></i>Academic Semesters</h2>
+        <p class="text-muted mb-0">Configured course terms, semester order, and curriculum structures.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="erp-card shadow-sm overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Semester Name</th>
+                            <th>Term Number</th>
+                            <th>Code</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sem in semesters %}
+                        <tr>
+                            <td class="fw-bold text-dark">{{ sem.name }}</td>
+                            <td><span class="badge bg-primary bg-opacity-10 text-primary fs-7">Term {{ sem.number }}</span></td>
+                            <td><span class="badge bg-light text-secondary border font-monospace">SEM-{{ sem.number }}</span></td>
+                            <td>
+                                <span class="badge {% if sem.is_active %}bg-success{% else %}bg-secondary{% endif %} bg-opacity-10 {% if sem.is_active %}text-success{% else %}text-secondary{% endif %}">
+                                    {{ 'Active' if sem.is_active else 'Inactive' }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

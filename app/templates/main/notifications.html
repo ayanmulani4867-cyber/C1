@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Notifications Hub{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+    <div>
+        <h2 class="fw-bold mb-1"><i class="fa-solid fa-bell text-primary me-2"></i>Notifications Center</h2>
+        <p class="text-muted mb-0">Stay updated on institutional circulars, academic events, approvals, and fee receipts.</p>
+    </div>
+    {% if notifications %}
+    <div>
+        <a href="{{ url_for('main.mark_all_notifications_read') }}" class="btn btn-outline-primary btn-sm px-3 rounded-pill">
+            <i class="fa-solid fa-check-double me-1"></i> Mark All as Read
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="row">
+    <div class="col-lg-9 mx-auto">
+        <div class="erp-card shadow-sm overflow-hidden">
+            {% if notifications %}
+                <div class="list-group list-group-flush">
+                    {% for n in notifications %}
+                    <div class="list-group-item p-3 d-flex align-items-start gap-3 {% if not n.is_read %}bg-primary bg-opacity-10{% endif %}">
+                        <div class="stat-icon-wrapper {% if not n.is_read %}bg-primary text-white{% else %}bg-light text-secondary border{% endif %} flex-shrink-0">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center justify-content-between gap-2">
+                                <h6 class="fw-bold mb-1 {% if not n.is_read %}text-primary{% else %}text-dark{% endif %}">{{ n.title }}</h6>
+                                <span class="badge {% if not n.is_read %}bg-primary{% else %}bg-light text-secondary border{% endif %} rounded-pill font-monospace" style="font-size: 0.7rem;">
+                                    {{ n.created_at.strftime('%b %d, %Y • %I:%M %p') }}
+                                </span>
+                            </div>
+                            <p class="text-muted mb-2 small">{{ n.message }}</p>
+                            <div class="d-flex align-items-center gap-2">
+                                {% if n.link %}
+                                    <a href="{{ n.link }}" class="btn btn-sm btn-primary py-1 px-3 fs-7 rounded-pill">
+                                        View Details <i class="fa-solid fa-arrow-right ms-1"></i>
+                                    </a>
+                                {% endif %}
+                                {% if not n.is_read %}
+                                    <a href="{{ url_for('main.mark_notification_read', notification_id=n.id) }}" class="btn btn-sm btn-light border py-1 px-3 fs-7 rounded-pill text-secondary">
+                                        <i class="fa-solid fa-check me-1"></i> Mark Read
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state py-5">
+                    <div class="empty-state-icon">
+                        <i class="fa-solid fa-bell-slash"></i>
+                    </div>
+                    <h5 class="fw-bold text-dark">No Notifications</h5>
+                    <p class="text-muted small mb-0">You have no unread or archived alerts at this time.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

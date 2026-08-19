@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Reports & Institutional Analytics - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2 class="h3 fw-bold text-dark mb-1">Institutional Reports & Excel Exports</h2>
+    <p class="text-muted small mb-0">Generate and download official data spreadsheets for regulatory reporting and campus analytics.</p>
+</div>
+
+<!-- Export Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 h-100 p-4">
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="p-3 bg-primary-subtle text-primary rounded-3">
+                    <i class="fa-solid fa-user-graduate fa-2x"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold text-dark mb-0">Student Register</h5>
+                    <small class="text-muted">Enrollment & Profile Data</small>
+                </div>
+            </div>
+            <p class="text-muted small mb-4">Export comprehensive master student records including roll numbers, emails, addresses, and status.</p>
+            <a href="{{ url_for('report.export_students') }}" class="btn btn-outline-primary rounded-pill w-100 mt-auto">
+                <i class="fa-solid fa-file-excel me-1"></i> Export Students (.xlsx)
+            </a>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 h-100 p-4">
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="p-3 bg-success-subtle text-success rounded-3">
+                    <i class="fa-solid fa-chalkboard-user fa-2x"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold text-dark mb-0">Faculty Directory</h5>
+                    <small class="text-muted">Academic Staff Roster</small>
+                </div>
+            </div>
+            <p class="text-muted small mb-4">Export list of teaching staff with designations, departments, contact details, and qualifications.</p>
+            <a href="{{ url_for('report.export_faculty') }}" class="btn btn-outline-success rounded-pill w-100 mt-auto">
+                <i class="fa-solid fa-file-excel me-1"></i> Export Faculty (.xlsx)
+            </a>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 h-100 p-4">
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="p-3 bg-warning-subtle text-warning rounded-3">
+                    <i class="fa-solid fa-file-invoice-dollar fa-2x"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold text-dark mb-0">Fee Collection</h5>
+                    <small class="text-muted">Accounts & Receipts</small>
+                </div>
+            </div>
+            <p class="text-muted small mb-4">Export financial transaction ledger with receipt numbers, payment modes, amounts, and student mapping.</p>
+            <a href="{{ url_for('report.export_fees') }}" class="btn btn-outline-warning rounded-pill w-100 mt-auto text-dark">
+                <i class="fa-solid fa-file-excel me-1"></i> Export Fee Ledger (.xlsx)
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Department Overview Table -->
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3 border-bottom">
+        <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-building-columns text-primary me-2"></i> Departmental Distribution</h5>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Department</th>
+                    <th>Code</th>
+                    <th>Enrolled Students</th>
+                    <th>Active Faculty</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in dept_stats %}
+                    <tr>
+                        <td class="fw-semibold text-dark">{{ d.name }}</td>
+                        <td><span class="badge bg-secondary-subtle text-secondary">{{ d.code }}</span></td>
+                        <td class="fw-bold text-primary">{{ d.students }}</td>
+                        <td class="fw-bold text-success">{{ d.faculty }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-4">No departments found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

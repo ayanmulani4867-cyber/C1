@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Class Divisions - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h4 class="fw-bold brand-font mb-1">Class Divisions & Sections</h4>
+            <p class="text-muted small mb-0">Manage classroom sections, cohorts, and rooms.</p>
+        </div>
+        {% if current_user.role == 'ADMIN' %}
+            <a href="{{ url_for('academic.division_create') }}" class="btn btn-primary btn-sm px-3">
+                <i class="fa-solid fa-plus me-1"></i> Add Division
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-3">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 small">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Section Name</th>
+                            <th>Department & Course</th>
+                            <th>Semester</th>
+                            <th>Assigned Room</th>
+                            <th>Session</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for div in divisions %}
+                            <tr>
+                                <td><span class="badge bg-primary px-3 py-2 fs-6">Division {{ div.name }}</span></td>
+                                <td>
+                                    <strong>{{ div.course.name if div.course else '-' }}</strong>
+                                    <div class="text-muted">{{ div.department.name if div.department else '' }}</div>
+                                </td>
+                                <td>{{ div.semester.name if div.semester else '-' }}</td>
+                                <td><span class="badge bg-light text-dark border">{{ div.room_number or 'Room 201' }}</span></td>
+                                <td><span class="text-muted">{{ div.session.name if div.session else '-' }}</span></td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">No class divisions configured.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

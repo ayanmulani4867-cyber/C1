@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Student Documents & Verification - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="h3 fw-bold text-dark mb-1">Student Document Archive</h2>
+        <p class="text-muted small mb-0">Uploaded identity documents, admission certificates, and marksheets.</p>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Document Type</th>
+                    <th>Document Title</th>
+                    <th>Uploaded Date</th>
+                    <th>Verification Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doc in documents %}
+                    <tr>
+                        <td class="fw-semibold text-dark"><i class="fa-solid fa-file-lines text-primary me-2"></i> {{ doc.doc_type or 'General Document' }}</td>
+                        <td>{{ doc.title or 'Uploaded File' }}</td>
+                        <td>{{ doc.uploaded_at.strftime('%b %d, %Y') if doc.uploaded_at else 'N/A' }}</td>
+                        <td>
+                            {% if doc.is_verified %}
+                                <span class="badge bg-success"><i class="fa-solid fa-check me-1"></i> Verified</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark"><i class="fa-solid fa-hourglass me-1"></i> Pending Verification</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if doc.file_path %}
+                                <a href="{{ url_for('static', filename='uploads/documents/' + doc.file_path) }}" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                    <i class="fa-solid fa-download me-1"></i> View
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-5">
+                            <i class="fa-solid fa-folder-open fa-2x mb-2 text-muted opacity-50"></i>
+                            <div>No documents found in repository.</div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

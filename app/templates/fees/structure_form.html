@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Create Fee Structure - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h4 class="card-title fw-bold text-dark mb-0"><i class="fa-solid fa-money-check-dollar text-primary me-2"></i> Configure New Fee Structure</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        {{ form.title.label(class="form-label fw-semibold") }}
+                        {{ form.title(class="form-control" + (" is-invalid" if form.title.errors else ""), placeholder="e.g., B.Tech CSE Semester 1 Regular Fee") }}
+                        {% for err in form.title.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            {{ form.course_id.label(class="form-label fw-semibold") }}
+                            {{ form.course_id(class="form-select" + (" is-invalid" if form.course_id.errors else "")) }}
+                            {% for err in form.course_id.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.semester_id.label(class="form-label fw-semibold") }}
+                            {{ form.semester_id(class="form-select" + (" is-invalid" if form.semester_id.errors else "")) }}
+                            {% for err in form.semester_id.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.session_id.label(class="form-label fw-semibold") }}
+                            {{ form.session_id(class="form-select" + (" is-invalid" if form.session_id.errors else "")) }}
+                            {% for err in form.session_id.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            {{ form.tuition_fee.label(class="form-label fw-semibold") }}
+                            {{ form.tuition_fee(class="form-control" + (" is-invalid" if form.tuition_fee.errors else ""), type="number", step="0.01") }}
+                            {% for err in form.tuition_fee.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.exam_fee.label(class="form-label fw-semibold") }}
+                            {{ form.exam_fee(class="form-control" + (" is-invalid" if form.exam_fee.errors else ""), type="number", step="0.01") }}
+                            {% for err in form.exam_fee.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.library_fee.label(class="form-label fw-semibold") }}
+                            {{ form.library_fee(class="form-control" + (" is-invalid" if form.library_fee.errors else ""), type="number", step="0.01") }}
+                            {% for err in form.library_fee.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            {{ form.lab_fee.label(class="form-label fw-semibold") }}
+                            {{ form.lab_fee(class="form-control" + (" is-invalid" if form.lab_fee.errors else ""), type="number", step="0.01") }}
+                            {% for err in form.lab_fee.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form.other_fee.label(class="form-label fw-semibold") }}
+                            {{ form.other_fee(class="form-control" + (" is-invalid" if form.other_fee.errors else ""), type="number", step="0.01") }}
+                            {% for err in form.other_fee.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form.due_date.label(class="form-label fw-semibold") }}
+                        {{ form.due_date(class="form-control" + (" is-invalid" if form.due_date.errors else ""), type="date") }}
+                        {% for err in form.due_date.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ url_for('fee.index') }}" class="btn btn-light px-4">Cancel</a>
+                        <button type="submit" class="btn btn-primary px-4">Save Fee Structure</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}{{ dept.name }} - Department Overview{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+    <div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-1 small">
+                <li class="breadcrumb-item"><a href="{{ url_for('academic.departments') }}" class="text-decoration-none">Departments</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ dept.code }}</li>
+            </ol>
+        </nav>
+        <h2 class="fw-bold mb-1">{{ dept.name }} <span class="badge bg-primary fs-6 align-middle">{{ dept.code }}</span></h2>
+        <p class="text-muted mb-0">Departmental management hub, affiliated courses, active faculty, and enrolled students.</p>
+    </div>
+    <div class="d-flex gap-2">
+        {% if current_user.is_admin %}
+        <a href="{{ url_for('academic.department_edit', dept_id=dept.id) }}" class="btn btn-outline-primary btn-sm px-3 rounded-pill">
+            <i class="fa-solid fa-pen-to-square me-1"></i> Edit Department
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Department Stats Grid -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card shadow-sm d-flex align-items-center justify-content-between">
+            <div>
+                <div class="text-muted small fw-semibold text-uppercase">Faculty Members</div>
+                <div class="fs-3 fw-bold text-dark mt-1">{{ faculty_members|length }}</div>
+                <div class="small text-muted mt-1">Teaching & Research</div>
+            </div>
+            <div class="stat-icon-wrapper bg-primary bg-opacity-10 text-primary">
+                <i class="fa-solid fa-chalkboard-user"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card shadow-sm d-flex align-items-center justify-content-between">
+            <div>
+                <div class="text-muted small fw-semibold text-uppercase">Enrolled Students</div>
+                <div class="fs-3 fw-bold text-dark mt-1">{{ students|length }}</div>
+                <div class="small text-muted mt-1">Active Scholars</div>
+            </div>
+            <div class="stat-icon-wrapper bg-success bg-opacity-10 text-success">
+                <i class="fa-solid fa-user-graduate"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card shadow-sm d-flex align-items-center justify-content-between">
+            <div>
+                <div class="text-muted small fw-semibold text-uppercase">Courses & Degrees</div>
+                <div class="fs-3 fw-bold text-dark mt-1">{{ courses|length }}</div>
+                <div class="small text-muted mt-1">Undergrad & Postgrad</div>
+            </div>
+            <div class="stat-icon-wrapper bg-warning bg-opacity-10 text-warning">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card shadow-sm d-flex align-items-center justify-content-between">
+            <div>
+                <div class="text-muted small fw-semibold text-uppercase">Curriculum Subjects</div>
+                <div class="fs-3 fw-bold text-dark mt-1">{{ subjects|length }}</div>
+                <div class="small text-muted mt-1">Theory & Lab Modules</div>
+            </div>
+            <div class="stat-icon-wrapper bg-info bg-opacity-10 text-info">
+                <i class="fa-solid fa-book-open"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Department Head Info -->
+<div class="row g-4 mb-4">
+    <div class="col-lg-4">
+        <div class="erp-card p-4 h-100">
+            <h5 class="fw-bold mb-3"><i class="fa-solid fa-user-tie text-primary me-2"></i>Head of Department</h5>
+            {% if dept.hod %}
+                <div class="text-center py-3">
+                    <img src="{{ dept.hod.profile_image_url }}" alt="HOD" class="rounded-circle object-fit-cover shadow-sm mb-3" width="96" height="96">
+                    <h5 class="fw-bold mb-1">{{ dept.hod.full_name }}</h5>
+                    <div class="badge bg-primary bg-opacity-10 text-primary mb-2">{{ dept.hod.designation }}</div>
+                    <div class="text-muted small mb-1"><i class="fa-solid fa-envelope me-1"></i> {{ dept.hod.official_email }}</div>
+                    <div class="text-muted small mb-3"><i class="fa-solid fa-phone me-1"></i> {{ dept.hod.mobile }}</div>
+                    <a href="{{ url_for('faculty.profile_view', faculty_id=dept.hod.id) }}" class="btn btn-outline-primary btn-sm px-3 rounded-pill">
+                        View Full Profile
+                    </a>
+                </div>
+            {% else %}
+                <div class="empty-state py-4">
+                    <div class="empty-state-icon"><i class="fa-solid fa-user-slash"></i></div>
+                    <p class="text-muted small mb-3">No HOD assigned to this department yet.</p>
+                    {% if current_user.is_admin %}
+                    <a href="{{ url_for('academic.department_edit', dept_id=dept.id) }}" class="btn btn-sm btn-primary rounded-pill">
+                        Assign HOD
+                    </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="erp-card p-4 h-100">
+            <h5 class="fw-bold mb-3"><i class="fa-solid fa-graduation-cap text-primary me-2"></i>Affiliated Courses</h5>
+            {% if courses %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Course Name</th>
+                                <th>Code</th>
+                                <th>Duration</th>
+                                <th>Semesters</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for c in courses %}
+                            <tr>
+                                <td class="fw-semibold text-dark">{{ c.name }}</td>
+                                <td><span class="badge bg-light text-dark border font-monospace">{{ c.code }}</span></td>
+                                <td>{{ c.duration_years }} Years</td>
+                                <td>{{ c.total_semesters }} Semesters</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-state py-4">
+                    <p class="text-muted small mb-0">No courses affiliated with this department.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Faculty Members List -->
+<div class="erp-card p-4 mb-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h5 class="fw-bold mb-0"><i class="fa-solid fa-chalkboard-user text-primary me-2"></i>Department Faculty</h5>
+        <span class="badge bg-secondary">{{ faculty_members|length }} Members</span>
+    </div>
+    {% if faculty_members %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Faculty Name</th>
+                        <th>Designation</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for f in faculty_members %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="{{ f.profile_image_url }}" alt="Profile" class="rounded-circle object-fit-cover" width="32" height="32">
+                                <span class="fw-semibold">{{ f.full_name }}</span>
+                            </div>
+                        </td>
+                        <td><span class="badge bg-light text-dark border">{{ f.designation }}</span></td>
+                        <td class="small">{{ f.official_email }}</td>
+                        <td class="small">{{ f.mobile }}</td>
+                        <td>
+                            <a href="{{ url_for('faculty.profile_view', faculty_id=f.id) }}" class="btn btn-sm btn-light border rounded-pill px-2">
+                                View
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state py-3">
+            <p class="text-muted small mb-0">No faculty members currently assigned to this department.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

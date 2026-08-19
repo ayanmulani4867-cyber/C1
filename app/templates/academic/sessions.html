@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Academic Sessions - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h4 class="fw-bold brand-font mb-1">Academic Sessions & Years</h4>
+            <p class="text-muted small mb-0">Configure active institutional academic cycles.</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0 small">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Session Name</th>
+                                    <th>Period</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for s in sessions %}
+                                    <tr>
+                                        <td><h6 class="mb-0 fw-bold text-dark">{{ s.name }}</h6></td>
+                                        <td class="text-muted">{{ s.start_year }} &ndash; {{ s.end_year }}</td>
+                                        <td>
+                                            {% if s.is_current %}
+                                                <span class="badge bg-success"><i class="fa-solid fa-check me-1"></i>Active Session</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Archived</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-end">
+                                            {% if not s.is_current and current_user.role == 'ADMIN' %}
+                                                <form method="POST" action="{{ url_for('academic.set_current_session', session_id=s.id) }}" style="display:inline;">
+                                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                                    <button type="submit" class="btn btn-outline-primary btn-sm">Set Active</button>
+                                                </form>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="4" class="text-center py-4 text-muted">No sessions defined.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if current_user.role == 'ADMIN' %}
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-header bg-white py-3 border-bottom">
+                    <h6 class="fw-bold mb-0 text-primary"><i class="fa-solid fa-plus me-2"></i>Add New Session</h6>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" action="{{ url_for('academic.sessions') }}">
+                        {{ form.hidden_tag() }}
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small">Session Name</label>
+                            {{ form.name(class="form-control form-control-sm" + (" is-invalid" if form.name.errors else ""), placeholder="e.g. 2026-2027") }}
+                            {% for err in form.name.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label fw-semibold small">Start Year</label>
+                                {{ form.start_year(class="form-control form-control-sm", type="number") }}
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-semibold small">End Year</label>
+                                {{ form.end_year(class="form-control form-control-sm", type="number") }}
+                            </div>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            {{ form.is_current(class="form-check-input") }}
+                            <label class="form-check-label small fw-semibold" for="{{ form.is_current.id }}">Set as active session immediately</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-sm w-100 py-2">
+                            <i class="fa-solid fa-floppy-disk me-1"></i> Save Session
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Record Payment - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h4 class="card-title fw-bold text-dark mb-0"><i class="fa-solid fa-credit-card text-success me-2"></i> Record Fee Payment</h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="p-3 bg-light rounded-3 mb-4">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted">Student:</span>
+                        <strong>{{ fee_record.student.full_name }} ({{ fee_record.student.roll_number }})</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted">Fee Head:</span>
+                        <span>{{ fee_record.fee_structure.title if fee_record.fee_structure else 'Term Fee' }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">Current Due:</span>
+                        <strong class="text-danger">₹{{ "{:,.2f}".format(fee_record.due_amount) }}</strong>
+                    </div>
+                </div>
+
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        {{ form.amount.label(class="form-label fw-semibold") }}
+                        {{ form.amount(class="form-control" + (" is-invalid" if form.amount.errors else ""), type="number", step="0.01") }}
+                        {% for err in form.amount.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.payment_mode.label(class="form-label fw-semibold") }}
+                        {{ form.payment_mode(class="form-select" + (" is-invalid" if form.payment_mode.errors else "")) }}
+                        {% for err in form.payment_mode.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.transaction_id.label(class="form-label fw-semibold") }}
+                        {{ form.transaction_id(class="form-control" + (" is-invalid" if form.transaction_id.errors else ""), placeholder="Optional (UPI Ref/Bank Tx ID)") }}
+                        {% for err in form.transaction_id.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form.notes.label(class="form-label fw-semibold") }}
+                        {{ form.notes(class="form-control" + (" is-invalid" if form.notes.errors else ""), rows="2", placeholder="Optional remarks...") }}
+                        {% for err in form.notes.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ url_for('fee.index') }}" class="btn btn-light px-4">Cancel</a>
+                        <button type="submit" class="btn btn-success px-4">Confirm Payment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

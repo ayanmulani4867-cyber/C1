@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Assignments & Study Materials - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h4 class="fw-bold brand-font mb-1">Coursework & Study Resource Hub</h4>
+            <p class="text-muted small mb-0">Assignments, student homework submissions, lecture notes, and study materials.</p>
+        </div>
+        {% if current_user.role in ['ADMIN', 'FACULTY'] %}
+            <div class="d-flex gap-2">
+                <a href="{{ url_for('assignment.create') }}" class="btn btn-primary btn-sm px-3">
+                    <i class="fa-solid fa-plus me-1"></i> New Assignment
+                </a>
+                <a href="{{ url_for('assignment.material_upload') }}" class="btn btn-outline-primary btn-sm px-3">
+                    <i class="fa-solid fa-upload me-1"></i> Upload Material
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Active Assignments -->
+    <div class="card border-0 shadow-sm rounded-3 mb-4">
+        <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+            <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-file-pen text-primary me-2"></i>Curriculum Course Assignments</h6>
+            <span class="badge bg-light text-muted border">{{ assignments|length }} Listed</span>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 small">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Assignment Title</th>
+                            <th>Subject</th>
+                            <th>Target Division</th>
+                            <th>Due Date</th>
+                            <th>Max Marks</th>
+                            {% if current_user.role == 'STUDENT' %}<th>My Status</th>{% endif %}
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in assignments %}
+                            <tr>
+                                <td>
+                                    <h6 class="mb-0 fw-bold text-dark">{{ a.title }}</h6>
+                                    <small class="text-muted">{{ a.description|truncate(80) if a.description else '' }}</small>
+                                </td>
+                                <td><span class="badge bg-light text-dark border">{{ a.subject.name if a.subject else '-' }}</span></td>
+                                <td>Div {{ a.class_division.name if a.class_division else 'All' }}</td>
+                                <td>
+                                    <span class="text-danger fw-semibold"><i class="fa-regular fa-clock me-1"></i>{{ a.due_date|date_format }}</span>
+                                </td>
+                                <td><span class="badge bg-secondary">{{ a.max_marks }} Pts</span></td>
+                                {% if current_user.role == 'STUDENT' %}
+                                    <td>
+                                        {% set sub = student_submissions.get(a.id) %}
+                                        {% if sub %}
+                                            {% if sub.status == 'Graded' %}
+                                                <span class="badge bg-success">Graded: {{ sub.marks_obtained }}/{{ a.max_marks }}</span>
+                                            {% else %}
+                                                <span class="badge bg-info-subtle text-info border border-info-subtle">Submitted</span>
+                                            {% endif %}
+                                        {% else %}
+                                            <span class="badge bg-warning-subtle text-warning border border-warning-subtle">Pending</span>
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
+                                <td class="text-end">
+                                    <a href="{{ url_for('assignment.detail', assignment_id=a.id) }}" class="btn btn-outline-primary btn-sm">
+                                        {{ 'Submit / View' if current_user.role == 'STUDENT' else 'Manage & Grade' }}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">No assignments listed.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Study Materials & Lecture Notes -->
+    <div class="card border-0 shadow-sm rounded-3">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-folder-tree text-success me-2"></i>Lecture Notes & Reference Materials</h6>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 small">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Resource Title</th>
+                            <th>Subject</th>
+                            <th>Division</th>
+                            <th>Uploaded On</th>
+                            <th class="text-end">Download</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for m in materials %}
+                            <tr>
+                                <td>
+                                    <h6 class="mb-0 fw-bold text-dark">{{ m.title }}</h6>
+                                    <small class="text-muted">{{ m.description or '' }}</small>
+                                </td>
+                                <td>{{ m.subject.name if m.subject else '-' }}</td>
+                                <td>Div {{ m.class_division.name if m.class_division else 'All' }}</td>
+                                <td class="text-muted">{{ m.created_at|date_format }}</td>
+                                <td class="text-end">
+                                    {% if m.file_path %}
+                                        <a href="{{ url_for('static', filename='uploads/materials/' + m.file_path) }}" class="btn btn-outline-success btn-sm" target="_blank">
+                                            <i class="fa-solid fa-download me-1"></i> File
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">No study materials uploaded yet.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

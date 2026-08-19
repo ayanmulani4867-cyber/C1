@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Attendance Session Details - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+    <div class="card shadow-sm border-0 rounded-3 mb-4">
+        <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="fw-bold mb-1 text-primary">Attendance Register for {{ session.subject.name if session.subject else 'Subject' }}</h5>
+                <small class="text-muted">{{ session.date|date_format }} &bull; {{ session.time_slot }} &bull; Division {{ session.class_division.name if session.class_division else '-' }}</small>
+            </div>
+            <a href="{{ url_for('attendance.index') }}" class="btn btn-outline-secondary btn-sm">Back</a>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 small">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Roll Number</th>
+                            <th>Student Name</th>
+                            <th>Status</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in records %}
+                            <tr>
+                                <td><code>{{ r.student.roll_no or r.student.roll_number if r.student else '-' }}</code></td>
+                                <td class="fw-semibold">{{ r.student.full_name if r.student else '-' }}</td>
+                                <td>
+                                    {% if r.status == 'Present' %}
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle">Present</span>
+                                    {% elif r.status == 'Late' %}
+                                        <span class="badge bg-warning-subtle text-warning border border-warning-subtle">Late</span>
+                                    {% else %}
+                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Absent</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-muted">{{ r.remarks or '-' }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center py-4 text-muted">No attendance records in this session.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Schedule Examination - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-4">
+    <div class="col-md-9 col-lg-8">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                <h6 class="fw-bold mb-0 text-primary"><i class="fa-solid fa-calendar-plus me-2"></i>Schedule Institutional Examination</h6>
+                <a href="{{ url_for('exam.index') }}" class="btn btn-outline-secondary btn-sm">Back</a>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-8">
+                            <label class="form-label fw-semibold">Examination Title</label>
+                            {{ form.name(class="form-control" + (" is-invalid" if form.name.errors else ""), placeholder="e.g. Mid-Term Theory Examination") }}
+                            {% for err in form.name.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Exam Type</label>
+                            {{ form.exam_type(class="form-select") }}
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Department</label>
+                            {{ form.department_id(class="form-select") }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Course Program</label>
+                            {{ form.course_id(class="form-select") }}
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Semester</label>
+                            {{ form.semester_id(class="form-select") }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Academic Session</label>
+                            {{ form.session_id(class="form-select") }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Subject</label>
+                            {{ form.subject_id(class="form-select") }}
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Exam Date</label>
+                            {{ form.exam_date(class="form-control", type="date") }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Start Time</label>
+                            {{ form.start_time(class="form-control", type="time") }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">End Time</label>
+                            {{ form.end_time(class="form-control", type="time") }}
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Class Division</label>
+                            {{ form.class_division_id(class="form-select") }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Passing Marks</label>
+                            {{ form.passing_marks(class="form-control", type="number", min="0") }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Maximum Marks</label>
+                            {{ form.max_marks(class="form-control", type="number", min="1") }}
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 border-top pt-3">
+                        <a href="{{ url_for('exam.index') }}" class="btn btn-light">Cancel</a>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="fa-solid fa-calendar-check me-1"></i> Save & Schedule Exam
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

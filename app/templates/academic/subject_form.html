@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-4">
+    <div class="col-md-8 col-lg-7">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                <h6 class="fw-bold mb-0 text-primary"><i class="fa-solid fa-book-bookmark me-2"></i>{{ title }}</h6>
+                <a href="{{ url_for('academic.subjects') }}" class="btn btn-outline-secondary btn-sm">Back</a>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Subject Title</label>
+                        {{ form.name(class="form-control" + (" is-invalid" if form.name.errors else ""), placeholder="e.g. Data Structures and Algorithms") }}
+                        {% for err in form.name.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Subject Code</label>
+                            {{ form.code(class="form-control" + (" is-invalid" if form.code.errors else ""), placeholder="e.g. CS301") }}
+                            {% for err in form.code.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Department</label>
+                            {{ form.department_id(class="form-select") }}
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Course</label>
+                            {{ form.course_id(class="form-select") }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Semester</label>
+                            {{ form.semester_id(class="form-select") }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Credits</label>
+                            {{ form.credits(class="form-control", type="number", min="1", max="10") }}
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Subject Type</label>
+                            {{ form.subject_type(class="form-select") }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Assigned Faculty Members</label>
+                            {{ form.assigned_faculty_ids(class="form-select", multiple=true, size="3") }}
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 border-top pt-3">
+                        <a href="{{ url_for('academic.subjects') }}" class="btn btn-light">Cancel</a>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="fa-solid fa-floppy-disk me-1"></i> Save Subject
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

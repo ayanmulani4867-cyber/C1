@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}My Attendance Record - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h4 class="fw-bold brand-font mb-1">My Attendance & Class Participation</h4>
+            <p class="text-muted small mb-0">Track your attendance compliance across all registered curriculum courses.</p>
+        </div>
+    </div>
+
+    <!-- Subject Summary Cards -->
+    <div class="row g-3 mb-4">
+        {% for subj, stats in subject_stats.items() %}
+            <div class="col-md-6 col-xl-4">
+                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h6 class="fw-bold text-dark mb-0">{{ subj }}</h6>
+                        <span class="badge {% if stats.pct >= 75 %}bg-success{% else %}bg-danger{% endif %} fs-6">{{ stats.pct }}%</span>
+                    </div>
+                    <div class="progress mb-2" style="height: 6px;">
+                        <div class="progress-bar {% if stats.pct >= 75 %}bg-success{% else %}bg-danger{% endif %}" style="width: {{ stats.pct }}%"></div>
+                    </div>
+                    <div class="d-flex justify-content-between text-muted small">
+                        <span>Attended: <strong>{{ stats.present + stats.late }}</strong></span>
+                        <span>Absent: <strong>{{ stats.absent }}</strong></span>
+                        <span>Total: <strong>{{ stats.total }}</strong></span>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="card border-0 shadow-sm p-4 text-center text-muted">No attendance entries recorded yet.</div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Detailed Attendance Log -->
+    <div class="card border-0 shadow-sm rounded-3">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-list-check text-primary me-2"></i>Recent Attendance Log</h6>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 small">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Date</th>
+                            <th>Subject</th>
+                            <th>Time Slot</th>
+                            <th>Topic Covered</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in records %}
+                            <tr>
+                                <td><strong>{{ r.session.date|date_format if r.session else '-' }}</strong></td>
+                                <td>{{ r.session.subject.name if r.session and r.session.subject else '-' }}</td>
+                                <td>{{ r.session.time_slot if r.session else '-' }}</td>
+                                <td class="text-muted">{{ r.session.topic_covered or 'Regular Class' if r.session else '-' }}</td>
+                                <td>
+                                    {% if r.status == 'Present' %}
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle"><i class="fa-solid fa-check me-1"></i>Present</span>
+                                    {% elif r.status == 'Late' %}
+                                        <span class="badge bg-warning-subtle text-warning border border-warning-subtle"><i class="fa-solid fa-clock me-1"></i>Late</span>
+                                    {% else %}
+                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle"><i class="fa-solid fa-xmark me-1"></i>Absent</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">No attendance logs available.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

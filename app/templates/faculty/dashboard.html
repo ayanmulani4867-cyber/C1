@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}Faculty Dashboard - {{ faculty.full_name }} | {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+    <!-- Header banner -->
+    <div class="card border-0 shadow-sm rounded-3 mb-4 bg-dark text-white p-4">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 64px; height: 64px; font-size: 1.5rem;">
+                    {{ faculty.first_name[0] if faculty.first_name else 'F' }}
+                </div>
+                <div>
+                    <h3 class="fw-bold brand-font mb-1">{{ faculty.full_name }}</h3>
+                    <p class="text-white-50 small mb-0">
+                        {{ faculty.designation }} &bull; {{ faculty.department.name if faculty.department else 'Academic Dept' }} &bull; ID: <code>{{ faculty.faculty_id or faculty.employee_id }}</code>
+                    </p>
+                </div>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{{ url_for('attendance.mark') }}" class="btn btn-primary btn-sm px-3">
+                    <i class="fa-solid fa-clipboard-user me-1"></i> Mark Attendance
+                </a>
+                <a href="{{ url_for('assignment.create') }}" class="btn btn-outline-light btn-sm px-3">
+                    <i class="fa-solid fa-plus me-1"></i> New Assignment
+                </a>
+                <a href="{{ url_for('faculty.download_id_card', faculty_id=faculty.id) }}" class="btn btn-outline-light btn-sm" target="_blank">
+                    <i class="fa-solid fa-id-card me-1"></i> ID Card
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick stats -->
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small fw-semibold text-uppercase">Assigned Subjects</span>
+                        <h3 class="fw-bold mb-0 text-primary mt-1">{{ assigned_subjects|length }}</h3>
+                        <small class="text-muted">Active Teaching Load</small>
+                    </div>
+                    <div class="p-3 bg-primary bg-opacity-10 text-primary rounded-3">
+                        <i class="fa-solid fa-book-bookmark fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small fw-semibold text-uppercase">Today's Lectures</span>
+                        <h3 class="fw-bold mb-0 text-success mt-1">{{ today_schedule|length }}</h3>
+                        <small class="text-muted">Periods Scheduled</small>
+                    </div>
+                    <div class="p-3 bg-success bg-opacity-10 text-success rounded-3">
+                        <i class="fa-solid fa-clock fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small fw-semibold text-uppercase">Assignments Created</span>
+                        <h3 class="fw-bold mb-0 text-dark mt-1">{{ my_assignments|length }}</h3>
+                        <small class="text-muted">Active coursework</small>
+                    </div>
+                    <div class="p-3 bg-warning bg-opacity-10 text-warning rounded-3">
+                        <i class="fa-solid fa-file-lines fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small fw-semibold text-uppercase">Student Rating</span>
+                        <h3 class="fw-bold mb-0 text-warning mt-1">{{ avg_rating }} <i class="fa-solid fa-star text-warning" style="font-size: 1rem;"></i></h3>
+                        <small class="text-muted">{{ total_feedbacks }} Evaluations</small>
+                    </div>
+                    <div class="p-3 bg-info bg-opacity-10 text-info rounded-3">
+                        <i class="fa-solid fa-award fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Today's Schedule & Assigned Subjects -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm rounded-3 h-100">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
+                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-calendar-day text-primary me-2"></i>Today's Class Schedule</h6>
+                    <a href="{{ url_for('timetable.index') }}" class="small text-decoration-none">Full Timetable</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0 small">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Timing</th>
+                                    <th>Subject</th>
+                                    <th>Division / Room</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for slot in today_schedule %}
+                                    <tr>
+                                        <td><strong>{{ slot.start_time|time_format }} - {{ slot.end_time|time_format }}</strong></td>
+                                        <td class="fw-semibold">{{ slot.subject.name if slot.subject else '-' }}</td>
+                                        <td>
+                                            <span class="badge bg-light text-dark border">{{ slot.class_division.name if slot.class_division else 'Div' }}</span>
+                                            <span class="text-muted ms-1">{{ slot.room_number or 'Room 101' }}</span>
+                                        </td>
+                                        <td class="text-end">
+                                            <a href="{{ url_for('attendance.mark') }}" class="btn btn-outline-primary btn-sm">Mark Roll</a>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="4" class="text-center py-4 text-muted">No classes scheduled for today.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm rounded-3 h-100">
+                <div class="card-header bg-white py-3 border-bottom">
+                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-book text-success me-2"></i>My Teaching Subjects</h6>
+                </div>
+                <div class="list-group list-group-flush small">
+                    {% for subj in assigned_subjects %}
+                        <div class="list-group-item p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1 fw-bold text-dark">{{ subj.name }}</h6>
+                                    <small class="text-muted">Code: <code>{{ subj.code }}</code> &bull; Credits: {{ subj.credits }}</small>
+                                </div>
+                                <span class="badge bg-primary-subtle text-primary">{{ subj.subject_type }}</span>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="p-4 text-center text-muted">No subjects assigned yet.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center my-4">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+            <div class="bg-primary text-white p-4 text-center">
+                <div class="d-inline-flex p-3 rounded-circle bg-white bg-opacity-10 mb-3">
+                    <i class="fa-solid fa-graduation-cap fa-2x"></i>
+                </div>
+                <h4 class="brand-font mb-1">Campus Connect Portal</h4>
+                <p class="small text-white-50 mb-0">Sign in to access your institutional dashboard</p>
+            </div>
+
+            <div class="card-body p-4 p-md-5">
+                <form method="POST" action="{{ url_for('auth.login') }}" novalidate>
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-secondary">Username or Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="fa-solid fa-user text-muted"></i></span>
+                            {{ form.identifier(class="form-control" + (" is-invalid" if form.identifier.errors else ""), placeholder="e.g. admin, student@campusconnect.edu") }}
+                        </div>
+                        {% for err in form.identifier.errors %}
+                            <div class="text-danger small mt-1">{{ err }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <label class="form-label fw-semibold text-secondary mb-0">Password</label>
+                            <a href="{{ url_for('auth.forgot_password') }}" class="small text-decoration-none">Forgot password?</a>
+                        </div>
+                        <div class="input-group mt-1">
+                            <span class="input-group-text bg-light"><i class="fa-solid fa-lock text-muted"></i></span>
+                            {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else ""), placeholder="Enter your password") }}
+                        </div>
+                        {% for err in form.password.errors %}
+                            <div class="text-danger small mt-1">{{ err }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-check mb-4">
+                        {{ form.remember_me(class="form-check-input") }}
+                        <label class="form-check-label text-muted small" for="{{ form.remember_me.id }}">Keep me signed in</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold shadow-sm">
+                        <i class="fa-solid fa-right-to-bracket me-2"></i> Sign In to Portal
+                    </button>
+                </form>
+
+                <div class="mt-4 pt-3 border-top text-center">
+                    <p class="small text-muted mb-1">Need help accessing your institutional account?</p>
+                    <span class="text-secondary small">Contact the IT Helpdesk at <strong class="text-dark">{{ COLLEGE_EMAIL }}</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

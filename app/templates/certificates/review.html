@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Review Certificate Request - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h4 class="card-title fw-bold text-dark mb-0"><i class="fa-solid fa-stamp text-primary me-2"></i> Review Certificate Application</h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="p-3 bg-light rounded-3 mb-4">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted">Student:</span>
+                        <strong>{{ cert_req.student.full_name }} ({{ cert_req.student.roll_number }})</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted">Requested Certificate:</span>
+                        <span class="badge bg-primary-subtle text-primary">{{ cert_req.certificate_type }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">Stated Purpose:</span>
+                        <span>{{ cert_req.purpose }}</span>
+                    </div>
+                </div>
+
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        {{ form.status.label(class="form-label fw-semibold") }}
+                        {{ form.status(class="form-select" + (" is-invalid" if form.status.errors else "")) }}
+                        {% for err in form.status.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form.rejection_reason.label(class="form-label fw-semibold") }}
+                        {{ form.rejection_reason(class="form-control" + (" is-invalid" if form.rejection_reason.errors else ""), rows="3", placeholder="Required if status is Rejected...") }}
+                        {% for err in form.rejection_reason.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ url_for('certificate.index') }}" class="btn btn-light px-4">Cancel</a>
+                        <button type="submit" class="btn btn-primary px-4">Save Decision</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

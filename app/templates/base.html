@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ APP_NAME }}{% endblock %} - {{ COLLEGE_NAME }}</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6 Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom ERP Core Stylesheet -->
+    <style>
+        :root {
+            --cc-primary: #1e3a8a;
+            --cc-primary-dark: #172554;
+            --cc-primary-light: #2563eb;
+            --cc-accent: #0f766e;
+            --cc-accent-light: #14b8a6;
+            --cc-surface: #f8fafc;
+            --cc-sidebar-bg: #0f172a;
+            --cc-sidebar-hover: #1e293b;
+            --cc-sidebar-active: #2563eb;
+            --cc-text-main: #0f172a;
+            --cc-text-muted: #64748b;
+            --cc-border: #e2e8f0;
+            --cc-card-bg: #ffffff;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --font-heading: 'Space Grotesk', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--cc-surface);
+            color: var(--cc-text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6, .brand-font {
+            font-family: var(--font-heading);
+            letter-spacing: -0.02em;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 270px;
+            background-color: var(--cc-sidebar-bg);
+            color: #cbd5e1;
+            min-height: 100vh;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1040;
+            box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .sidebar .nav-link {
+            color: #94a3b8;
+            padding: 0.65rem 1rem;
+            margin: 0.15rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.15s ease-in-out;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .sidebar .nav-link i {
+            width: 20px;
+            font-size: 1rem;
+            text-align: center;
+            opacity: 0.85;
+            transition: transform 0.15s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            color: #ffffff;
+            background-color: var(--cc-sidebar-hover);
+        }
+
+        .sidebar .nav-link:hover i {
+            transform: scale(1.1);
+        }
+
+        .sidebar .nav-link.active {
+            color: #ffffff;
+            background-color: var(--cc-sidebar-active);
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+        }
+
+        .sidebar .nav-link.active i {
+            opacity: 1;
+        }
+
+        .sidebar-heading {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #64748b;
+            padding: 1.25rem 1.25rem 0.4rem;
+        }
+
+        /* Top Navbar */
+        .top-navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid var(--cc-border);
+            height: 68px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+        }
+
+        /* Card enhancements */
+        .erp-card {
+            background: var(--cc-card-bg);
+            border: 1px solid var(--cc-border);
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .erp-card:hover {
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        }
+
+        .stat-card {
+            border-radius: 0.75rem;
+            border: 1px solid var(--cc-border);
+            background: #ffffff;
+            padding: 1.25rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 0.625rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .btn-primary {
+            background-color: var(--cc-primary);
+            border-color: var(--cc-primary);
+            font-weight: 500;
+        }
+
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: var(--cc-primary-dark);
+            border-color: var(--cc-primary-dark);
+        }
+
+        .badge-soft-primary { background-color: #eff6ff; color: #1e40af; border: 1px solid #dbeafe; }
+        .badge-soft-success { background-color: #f0fdf4; color: #15803d; border: 1px solid #dcfce7; }
+        .badge-soft-warning { background-color: #fffbeb; color: #b45309; border: 1px solid #fef3c7; }
+        .badge-soft-danger { background-color: #fef2f2; color: #b91c1c; border: 1px solid #fee2e2; }
+        .badge-soft-info { background-color: #f0f9ff; color: #0369a1; border: 1px solid #e0f2fe; }
+
+        .table-responsive {
+            border-radius: 0.75rem;
+            border: 1px solid var(--cc-border);
+            background: #ffffff;
+        }
+
+        .table > :not(caption) > * > * {
+            padding: 0.85rem 1rem;
+            vertical-align: middle;
+            border-bottom-color: var(--cc-border);
+        }
+
+        .table thead th {
+            background-color: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.8125rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .empty-state {
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        .empty-state-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background-color: #f1f5f9;
+            color: #94a3b8;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Mobile Drawer */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: -270px;
+                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .sidebar.show {
+                left: 0;
+            }
+            .sidebar-backdrop {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(15, 23, 42, 0.6);
+                z-index: 1030;
+                backdrop-filter: blur(2px);
+            }
+            .sidebar-backdrop.show {
+                display: block;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .sidebar, .top-navbar, .no-print, .sidebar-backdrop {
+                display: none !important;
+            }
+            .content-wrapper {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebar()"></div>
+
+    <div class="d-flex flex-grow-1">
+        {% if current_user.is_authenticated %}
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar d-flex flex-column flex-shrink-0 no-print" id="appSidebar">
+            <!-- Brand -->
+            <div class="p-3 border-bottom border-secondary border-opacity-25 d-flex align-items-center justify-content-between">
+                <a href="{{ url_for('main.index') }}" class="d-flex align-items-center gap-2 text-white text-decoration-none">
+                    <div class="bg-primary rounded p-2 text-white"><i class="fa-solid fa-building-columns"></i></div>
+                    <div>
+                        <div class="fw-bold fs-6 brand-font">{{ APP_NAME }}</div>
+                        <div class="text-secondary small text-truncate" style="max-width: 155px;">{{ COLLEGE_NAME }}</div>
+                    </div>
+                </a>
+                <button class="btn btn-sm btn-link text-white-50 d-lg-none p-0" onclick="toggleSidebar()">
+                    <i class="fa-solid fa-xmark fs-5"></i>
+                </button>
+            </div>
+
+            <!-- Current Session Tag -->
+            <div class="px-3 py-2 bg-black bg-opacity-25 border-bottom border-secondary border-opacity-10 d-flex align-items-center justify-content-between text-white-50 small">
+                <span><i class="fa-solid fa-calendar-check text-info me-1"></i> Session</span>
+                <span class="badge bg-secondary bg-opacity-50 text-white font-monospace">{{ current_academic_session }}</span>
+            </div>
+
+            <!-- Nav links according to Role -->
+            {% set ep = request.endpoint or '' %}
+            <div class="overflow-y-auto flex-grow-1 py-2">
+                
+                {# ==================== 1. ADMIN SIDEBAR ==================== #}
+                {% if current_user.role == 'ADMIN' %}
+                    <a href="{{ url_for('admin.dashboard') }}" class="nav-link {% if ep == 'admin.dashboard' %}active{% endif %}">
+                        <i class="fa-solid fa-chart-pie"></i> Dashboard
+                    </a>
+
+                    <div class="sidebar-heading">Academic Management</div>
+                    <a href="{{ url_for('academic.departments') }}" class="nav-link {% if 'academic.department' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-network-wired"></i> Departments
+                    </a>
+                    <a href="{{ url_for('academic.courses') }}" class="nav-link {% if 'academic.course' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-graduation-cap"></i> Courses
+                    </a>
+                    <a href="{{ url_for('academic.subjects') }}" class="nav-link {% if 'academic.subject' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-book-open"></i> Subjects
+                    </a>
+                    <a href="{{ url_for('academic.semesters') }}" class="nav-link {% if 'academic.semester' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-layer-group"></i> Semesters
+                    </a>
+                    <a href="{{ url_for('academic.sessions') }}" class="nav-link {% if 'academic.session' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-calendar-week"></i> Academic Sessions
+                    </a>
+                    <a href="{{ url_for('academic.divisions') }}" class="nav-link {% if 'academic.division' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-users-rectangle"></i> Classes / Divisions
+                    </a>
+                    <a href="{{ url_for('timetable.index') }}" class="nav-link {% if 'timetable.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-calendar-days"></i> Timetable
+                    </a>
+
+                    <div class="sidebar-heading">People</div>
+                    <a href="{{ url_for('student.index') }}" class="nav-link {% if 'student.index' in ep or 'student.create' in ep or 'student.profile_view' in ep or 'student.edit' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-user-graduate"></i> Students
+                    </a>
+                    <a href="{{ url_for('faculty.index') }}" class="nav-link {% if 'faculty.index' in ep or 'faculty.create' in ep or 'faculty.profile_view' in ep or 'faculty.edit' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-chalkboard-user"></i> Faculty
+                    </a>
+                    <a href="{{ url_for('academic.hod_list') }}" class="nav-link {% if ep == 'academic.hod_list' %}active{% endif %}">
+                        <i class="fa-solid fa-user-tie"></i> Head of Departments
+                    </a>
+                    <a href="{{ url_for('student.documents') }}" class="nav-link {% if ep == 'student.documents' %}active{% endif %}">
+                        <i class="fa-solid fa-folder-open"></i> Student Documents
+                    </a>
+                    <a href="{{ url_for('faculty.documents') }}" class="nav-link {% if ep == 'faculty.documents' %}active{% endif %}">
+                        <i class="fa-solid fa-folder-closed"></i> Faculty Documents
+                    </a>
+
+                    <div class="sidebar-heading">Academics</div>
+                    <a href="{{ url_for('attendance.index') }}" class="nav-link {% if 'attendance.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-clipboard-user"></i> Attendance
+                    </a>
+                    <a href="{{ url_for('exam.index') }}" class="nav-link {% if ep == 'exam.index' or ep == 'exam.create' %}active{% endif %}">
+                        <i class="fa-solid fa-file-signature"></i> Exams
+                    </a>
+                    <a href="{{ url_for('exam.results') }}" class="nav-link {% if ep == 'exam.results' %}active{% endif %}">
+                        <i class="fa-solid fa-square-poll-vertical"></i> Results
+                    </a>
+                    <a href="{{ url_for('assignment.index') }}" class="nav-link {% if 'assignment.index' in ep or 'assignment.view' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-file-pen"></i> Assignments
+                    </a>
+                    <a href="{{ url_for('assignment.materials') }}" class="nav-link {% if 'assignment.materials' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-book-bookmark"></i> Study Materials
+                    </a>
+
+                    <div class="sidebar-heading">Finance</div>
+                    <a href="{{ url_for('fee.structures') }}" class="nav-link {% if ep == 'fee.structures' %}active{% endif %}">
+                        <i class="fa-solid fa-money-check-dollar"></i> Fee Structure
+                    </a>
+                    <a href="{{ url_for('fee.index') }}" class="nav-link {% if ep == 'fee.index' %}active{% endif %}">
+                        <i class="fa-solid fa-receipt"></i> Student Fees
+                    </a>
+                    <a href="{{ url_for('fee.payments') }}" class="nav-link {% if ep == 'fee.payments' %}active{% endif %}">
+                        <i class="fa-solid fa-credit-card"></i> Payments
+                    </a>
+
+                    <div class="sidebar-heading">Requests</div>
+                    <a href="{{ url_for('leave.index') }}" class="nav-link {% if 'leave.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-plane-departure"></i> Leave Requests
+                    </a>
+                    <a href="{{ url_for('certificate.index') }}" class="nav-link {% if 'certificate.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-stamp"></i> Certificate Requests
+                    </a>
+                    <a href="{{ url_for('complaint.index') }}" class="nav-link {% if 'complaint.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-shield-halved"></i> Complaints / Grievances
+                    </a>
+
+                    <div class="sidebar-heading">Communication</div>
+                    <a href="{{ url_for('notice.index') }}" class="nav-link {% if 'notice.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-bullhorn"></i> Notices
+                    </a>
+                    <a href="{{ url_for('feedback.index') }}" class="nav-link {% if 'feedback.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-star-half-stroke"></i> Feedback
+                    </a>
+                    <a href="{{ url_for('event.index') }}" class="nav-link {% if 'event.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-calendar-star"></i> Events
+                    </a>
+                    <a href="{{ url_for('main.notifications') }}" class="nav-link {% if ep == 'main.notifications' %}active{% endif %}">
+                        <i class="fa-solid fa-bell"></i> Notifications
+                    </a>
+
+                    <div class="sidebar-heading">Reports & Analytics</div>
+                    <a href="{{ url_for('report.attendance_report') }}" class="nav-link {% if ep == 'report.attendance_report' %}active{% endif %}">
+                        <i class="fa-solid fa-chart-line"></i> Attendance Reports
+                    </a>
+                    <a href="{{ url_for('report.result_report') }}" class="nav-link {% if ep == 'report.result_report' %}active{% endif %}">
+                        <i class="fa-solid fa-chart-bar"></i> Result Reports
+                    </a>
+                    <a href="{{ url_for('report.fee_report') }}" class="nav-link {% if ep == 'report.fee_report' %}active{% endif %}">
+                        <i class="fa-solid fa-chart-pie"></i> Fee Reports
+                    </a>
+                    <a href="{{ url_for('report.student_report') }}" class="nav-link {% if ep == 'report.student_report' %}active{% endif %}">
+                        <i class="fa-solid fa-file-export"></i> Student Reports
+                    </a>
+                    <a href="{{ url_for('report.faculty_report') }}" class="nav-link {% if ep == 'report.faculty_report' %}active{% endif %}">
+                        <i class="fa-solid fa-file-lines"></i> Faculty Reports
+                    </a>
+
+                    <div class="sidebar-heading">System & Accounts</div>
+                    <a href="{{ url_for('admin.users') }}" class="nav-link {% if 'admin.user' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-users-gear"></i> System Accounts
+                    </a>
+                    <a href="{{ url_for('admin.audit_logs') }}" class="nav-link {% if ep == 'admin.audit_logs' %}active{% endif %}">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Audit Logs
+                    </a>
+                    <a href="{{ url_for('admin.settings') }}" class="nav-link {% if ep == 'admin.settings' %}active{% endif %}">
+                        <i class="fa-solid fa-sliders"></i> System Settings
+                    </a>
+
+                {# ==================== 2. HOD SIDEBAR ==================== #}
+                {% elif current_user.role == 'HOD' %}
+                    <a href="{{ url_for('faculty.dashboard') }}" class="nav-link {% if ep == 'faculty.dashboard' %}active{% endif %}">
+                        <i class="fa-solid fa-gauge-high"></i> Dashboard
+                    </a>
+
+                    <div class="sidebar-heading">Department</div>
+                    {% if current_user.faculty_profile and current_user.faculty_profile.department_id %}
+                    <a href="{{ url_for('academic.department_detail', dept_id=current_user.faculty_profile.department_id) }}" class="nav-link {% if ep == 'academic.department_detail' %}active{% endif %}">
+                        <i class="fa-solid fa-network-wired"></i> Department Overview
+                    </a>
+                    {% endif %}
+                    <a href="{{ url_for('student.index') }}" class="nav-link {% if 'student.' in ep and ep != 'student.dashboard' %}active{% endif %}">
+                        <i class="fa-solid fa-user-graduate"></i> Students
+                    </a>
+                    <a href="{{ url_for('faculty.index') }}" class="nav-link {% if 'faculty.index' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-chalkboard-user"></i> Faculty
+                    </a>
+                    <a href="{{ url_for('academic.subjects') }}" class="nav-link {% if 'academic.subject' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-book-open"></i> Subjects
+                    </a>
+                    <a href="{{ url_for('academic.divisions') }}" class="nav-link {% if 'academic.division' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-users-rectangle"></i> Classes
+                    </a>
+
+                    <div class="sidebar-heading">Academics</div>
+                    <a href="{{ url_for('attendance.index') }}" class="nav-link {% if 'attendance.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-clipboard-user"></i> Attendance
+                    </a>
+                    <a href="{{ url_for('exam.results') }}" class="nav-link {% if 'exam.result' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-square-poll-vertical"></i> Results
+                    </a>
+                    <a href="{{ url_for('faculty.student_performance') }}" class="nav-link {% if ep == 'faculty.student_performance' %}active{% endif %}">
+                        <i class="fa-solid fa-chart-simple"></i> Student Performance
+                    </a>
+                    <a href="{{ url_for('timetable.index') }}" class="nav-link {% if 'timetable.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-calendar-week"></i> Timetable
+                    </a>
+
+                    <div class="sidebar-heading">Approvals & Requests</div>
+                    <a href="{{ url_for('leave.index') }}" class="nav-link {% if 'leave.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-plane-departure"></i> Leave Requests
+                    </a>
+                    <a href="{{ url_for('certificate.index') }}" class="nav-link {% if 'certificate.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-stamp"></i> Certificate Requests
+                    </a>
+
+                    <div class="sidebar-heading">Communication</div>
+                    <a href="{{ url_for('notice.index') }}" class="nav-link {% if 'notice.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-bullhorn"></i> Notices
+                    </a>
+                    <a href="{{ url_for('feedback.index') }}" class="nav-link {% if 'feedback.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-star-half-stroke"></i> Feedback
+                    </a>
+                    <a href="{{ url_for('complaint.index') }}" class="nav-link {% if 'complaint.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-shield-halved"></i> Complaints
+                    </a>
+
+                    <div class="sidebar-heading">Analytics</div>
+                    <a href="{{ url_for('report.attendance_report') }}" class="nav-link {% if ep == 'report.attendance_report' %}active{% endif %}">
+                        <i class="fa-solid fa-chart-line"></i> Attendance Analytics
+                    </a>
+                    <a href="{{ url_for('report.result_report') }}" class="nav-link {% if ep == 'report.result_report' %}active{% endif %}">
+                        <i class="fa-solid fa-chart-bar"></i> Result Analytics
+                    </a>
+                    <a href="{{ url_for('report.index') }}" class="nav-link {% if ep == 'report.index' %}active{% endif %}">
+                        <i class="fa-solid fa-file-excel"></i> Department Reports
+                    </a>
+
+                {# ==================== 3. FACULTY SIDEBAR ==================== #}
+                {% elif current_user.role == 'FACULTY' %}
+                    <a href="{{ url_for('faculty.dashboard') }}" class="nav-link {% if ep == 'faculty.dashboard' %}active{% endif %}">
+                        <i class="fa-solid fa-gauge-high"></i> Dashboard
+                    </a>
+
+                    <div class="sidebar-heading">Academic</div>
+                    <a href="{{ url_for('faculty.my_classes') }}" class="nav-link {% if ep == 'faculty.my_classes' %}active{% endif %}">
+                        <i class="fa-solid fa-users-rectangle"></i> My Classes
+                    </a>
+                    <a href="{{ url_for('faculty.my_subjects') }}" class="nav-link {% if ep == 'faculty.my_subjects' %}active{% endif %}">
+                        <i class="fa-solid fa-book-open"></i> My Subjects
+                    </a>
+                    <a href="{{ url_for('timetable.index') }}" class="nav-link {% if 'timetable.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-calendar-week"></i> My Timetable
+                    </a>
+                    <a href="{{ url_for('attendance.mark') }}" class="nav-link {% if ep == 'attendance.mark' %}active{% endif %}">
+                        <i class="fa-solid fa-check-to-slot"></i> Mark Attendance
+                    </a>
+                    <a href="{{ url_for('exam.results') }}" class="nav-link {% if 'exam.result' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-square-poll-vertical"></i> Marks / Results
+                    </a>
+                    <a href="{{ url_for('assignment.index') }}" class="nav-link {% if 'assignment.index' in ep or 'assignment.view' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-file-pen"></i> Assignments
+                    </a>
+                    <a href="{{ url_for('assignment.materials') }}" class="nav-link {% if 'assignment.materials' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-book-bookmark"></i> Study Materials
+                    </a>
+                    <a href="{{ url_for('faculty.student_performance') }}" class="nav-link {% if ep == 'faculty.student_performance' %}active{% endif %}">
+                        <i class="fa-solid fa-chart-simple"></i> Student Performance
+                    </a>
+
+                    <div class="sidebar-heading">Requests</div>
+                    <a href="{{ url_for('leave.index') }}" class="nav-link {% if 'leave.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-plane-departure"></i> Apply / View Leave
+                    </a>
+
+                    <div class="sidebar-heading">Communication</div>
+                    <a href="{{ url_for('notice.index') }}" class="nav-link {% if 'notice.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-bullhorn"></i> Notices
+                    </a>
+                    <a href="{{ url_for('feedback.index') }}" class="nav-link {% if 'feedback.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-star-half-stroke"></i> Student Feedback
+                    </a>
+
+                {# ==================== 4. STUDENT SIDEBAR ==================== #}
+                {% elif current_user.role == 'STUDENT' %}
+                    <a href="{{ url_for('student.dashboard') }}" class="nav-link {% if ep == 'student.dashboard' %}active{% endif %}">
+                        <i class="fa-solid fa-house"></i> Dashboard
+                    </a>
+
+                    <div class="sidebar-heading">My Academics</div>
+                    <a href="{{ url_for('student.attendance_view') }}" class="nav-link {% if 'attendance.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-calendar-check"></i> Attendance Record
+                    </a>
+                    <a href="{{ url_for('student.results_view') }}" class="nav-link {% if 'exam.result' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-award"></i> Exam Results
+                    </a>
+                    <a href="{{ url_for('student.timetable_view') }}" class="nav-link {% if 'timetable.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-clock"></i> Class Timetable
+                    </a>
+                    <a href="{{ url_for('student.assignments_view') }}" class="nav-link {% if 'assignment.index' in ep or 'assignment.view' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-file-pen"></i> Assignments
+                    </a>
+                    <a href="{{ url_for('student.materials_view') }}" class="nav-link {% if 'assignment.materials' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-book-bookmark"></i> Study Materials
+                    </a>
+                    <a href="{{ url_for('student.exams_view') }}" class="nav-link {% if ep == 'exam.index' %}active{% endif %}">
+                        <i class="fa-solid fa-file-signature"></i> Upcoming Exams
+                    </a>
+
+                    <div class="sidebar-heading">Services</div>
+                    <a href="{{ url_for('student.fees_view') }}" class="nav-link {% if 'fee.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-wallet"></i> Fees & Dues
+                    </a>
+                    <a href="{{ url_for('leave.index') }}" class="nav-link {% if 'leave.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-paper-plane"></i> Apply Leave
+                    </a>
+                    <a href="{{ url_for('certificate.index') }}" class="nav-link {% if 'certificate.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-certificate"></i> Request Certificates
+                    </a>
+                    <a href="{{ url_for('complaint.index') }}" class="nav-link {% if 'complaint.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-shield-halved"></i> Grievances & Tickets
+                    </a>
+                    <a href="{{ url_for('feedback.index') }}" class="nav-link {% if 'feedback.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-comments"></i> Give Feedback
+                    </a>
+
+                    <div class="sidebar-heading">Campus</div>
+                    <a href="{{ url_for('notice.index') }}" class="nav-link {% if 'notice.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-bullhorn"></i> Notice Board
+                    </a>
+                    <a href="{{ url_for('event.index') }}" class="nav-link {% if 'event.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-calendar-star"></i> Campus Events
+                    </a>
+                {% endif %}
+
+                <div class="sidebar-heading">Account</div>
+                <a href="{{ url_for('auth.profile') }}" class="nav-link {% if ep == 'auth.profile' %}active{% endif %}">
+                    <i class="fa-solid fa-user-gear"></i> My Profile
+                </a>
+                {% if current_user.is_student %}
+                <a href="{{ url_for('student.id_card_view') }}" class="nav-link">
+                    <i class="fa-solid fa-id-card"></i> Student ID Card
+                </a>
+                {% elif current_user.is_faculty %}
+                <a href="{{ url_for('faculty.id_card_view') }}" class="nav-link">
+                    <i class="fa-solid fa-id-card"></i> Faculty ID Card
+                </a>
+                {% endif %}
+                <a href="{{ url_for('main.notifications') }}" class="nav-link {% if ep == 'main.notifications' %}active{% endif %}">
+                    <i class="fa-solid fa-bell"></i> Notifications
+                    {% if unread_notifications_count > 0 %}
+                        <span class="badge bg-danger rounded-pill ms-auto">{{ unread_notifications_count }}</span>
+                    {% endif %}
+                </a>
+                <a href="{{ url_for('auth.change_password') }}" class="nav-link {% if ep == 'auth.change_password' %}active{% endif %}">
+                    <i class="fa-solid fa-key"></i> Change Password
+                </a>
+                <a href="{{ url_for('auth.logout') }}" class="nav-link text-danger">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </a>
+            </div>
+
+            <!-- User Info footer -->
+            <div class="p-3 border-top border-secondary border-opacity-25 bg-black bg-opacity-25">
+                <div class="d-flex align-items-center gap-2">
+                    <img src="{{ current_user.profile_image_url }}" alt="Profile" class="rounded-circle object-fit-cover shadow-sm" width="38" height="38">
+                    <div class="overflow-hidden flex-grow-1">
+                        <div class="text-white text-truncate fw-semibold small">{{ current_user.full_name }}</div>
+                        <div class="text-white-50 text-truncate" style="font-size: 0.75rem;">
+                            <span class="badge bg-primary bg-opacity-50 text-white" style="font-size: 0.65rem;">{{ current_user.role }}</span>
+                            @{{ current_user.username }}
+                        </div>
+                    </div>
+                    <a href="{{ url_for('auth.profile') }}" class="text-white-50 hover-text-white" title="Profile Settings"><i class="fa-solid fa-gear"></i></a>
+                </div>
+            </div>
+        </nav>
+        {% endif %}
+
+        <!-- Main Content Area -->
+        <div class="flex-grow-1 d-flex flex-column content-wrapper" style="min-width: 0;">
+            <!-- Top Navbar Header -->
+            <header class="top-navbar px-3 px-md-4 d-flex align-items-center justify-content-between no-print">
+                <div class="d-flex align-items-center gap-3">
+                    {% if current_user.is_authenticated %}
+                        <button class="btn btn-light btn-sm border d-lg-none" type="button" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+                            <i class="fa-solid fa-bars"></i>
+                        </button>
+                    {% else %}
+                        <a href="{{ url_for('main.index') }}" class="d-flex align-items-center gap-2 text-decoration-none text-dark">
+                            <div class="bg-primary rounded p-2 text-white"><i class="fa-solid fa-building-columns"></i></div>
+                            <span class="fw-bold fs-5 brand-font">{{ APP_NAME }}</span>
+                        </a>
+                    {% endif %}
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="text-secondary fw-semibold fs-7 d-none d-md-inline"><i class="fa-solid fa-landmark text-primary me-1"></i> {{ COLLEGE_NAME }}</span>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-2 gap-md-3">
+                    {% if current_user.is_authenticated %}
+                        <!-- Notification Bell Center -->
+                        <div class="dropdown">
+                            <button class="btn btn-light btn-sm position-relative rounded-pill px-3 border dropdown-toggle" type="button" id="notifDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-bell text-secondary"></i>
+                                <span class="d-none d-sm-inline ms-1 text-secondary">Alerts</span>
+                                {% if unread_notifications_count > 0 %}
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">
+                                        {{ unread_notifications_count }}
+                                    </span>
+                                {% endif %}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-0" style="width: 320px; max-width: 90vw;" aria-labelledby="notifDropdown">
+                                <div class="p-3 border-bottom d-flex align-items-center justify-content-between bg-light rounded-top">
+                                    <span class="fw-bold small text-dark"><i class="fa-solid fa-bell text-primary me-1"></i> Notifications</span>
+                                    {% if unread_notifications_count > 0 %}
+                                        <a href="{{ url_for('main.mark_all_notifications_read') }}" class="text-primary text-decoration-none small" style="font-size: 0.75rem;">Mark all as read</a>
+                                    {% endif %}
+                                </div>
+                                <div class="overflow-y-auto" style="max-height: 280px;">
+                                    {% if recent_notifications %}
+                                        {% for n in recent_notifications %}
+                                            <a href="{{ n.link or url_for('main.notifications') }}" class="d-block p-2 px-3 border-bottom text-decoration-none text-dark {% if not n.is_read %}bg-primary bg-opacity-10{% endif %} hover-bg-light">
+                                                <div class="d-flex align-items-start gap-2">
+                                                    <div class="p-1 rounded bg-white text-primary mt-1 shadow-sm"><i class="fa-solid fa-circle-info" style="font-size: 0.8rem;"></i></div>
+                                                    <div class="flex-grow-1 overflow-hidden">
+                                                        <div class="fw-semibold small text-truncate">{{ n.title }}</div>
+                                                        <div class="text-muted small text-truncate" style="font-size: 0.75rem;">{{ n.message }}</div>
+                                                        <div class="text-muted text-end" style="font-size: 0.65rem;">{{ n.created_at.strftime('%b %d, %H:%M') }}</div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="p-3 text-center text-muted small">
+                                            <i class="fa-solid fa-bell-slash text-slate-300 d-block mb-1 fs-5"></i>
+                                            No notifications right now.
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="p-2 text-center bg-light rounded-bottom border-top">
+                                    <a href="{{ url_for('main.notifications') }}" class="text-primary text-decoration-none small fw-semibold">View All Notifications →</a>
+                                </div>
+                            </ul>
+                        </div>
+
+                        <!-- User Profile Dropdown -->
+                        <div class="dropdown">
+                            <button class="btn btn-light btn-sm d-flex align-items-center gap-2 rounded-pill px-3 border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="{{ current_user.profile_image_url }}" alt="Avatar" class="rounded-circle object-fit-cover shadow-xs" width="26" height="26">
+                                <span class="fw-semibold small text-dark d-none d-sm-inline">{{ current_user.first_name }}</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 py-2">
+                                <li class="px-3 py-2 border-bottom mb-1">
+                                    <div class="fw-bold small text-dark">{{ current_user.full_name }}</div>
+                                    <div class="text-muted small">@{{ current_user.username }} • <span class="badge bg-primary bg-opacity-25 text-primary">{{ current_user.role }}</span></div>
+                                </li>
+                                <li><a class="dropdown-item py-2 small" href="{{ url_for('auth.profile') }}"><i class="fa-solid fa-user me-2 text-primary"></i> My Profile</a></li>
+                                <li><a class="dropdown-item py-2 small" href="{{ url_for('auth.change_password') }}"><i class="fa-solid fa-key me-2 text-warning"></i> Change Password</a></li>
+                                <li><hr class="dropdown-divider my-1"></li>
+                                <li><a class="dropdown-item py-2 small text-danger fw-semibold" href="{{ url_for('auth.logout') }}"><i class="fa-solid fa-right-from-bracket me-2"></i> Sign Out</a></li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-sm px-4 rounded-pill fw-semibold shadow-sm">
+                            <i class="fa-solid fa-right-to-bracket me-1"></i> Sign In
+                        </a>
+                    {% endif %}
+                </div>
+            </header>
+
+            <!-- Flash messages -->
+            <main class="flex-grow-1 p-3 p-md-4">
+                <div class="container-fluid max-w-7xl mx-auto px-0">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            <div class="no-print mb-4">
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show d-flex align-items-center gap-2 shadow-sm rounded-3" role="alert">
+                                        <i class="fa-solid fa-circle-info"></i>
+                                        <div class="small">{{ message }}</div>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+
+                    <!-- Main page content -->
+                    {% block content %}{% endblock %}
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <footer class="mt-auto py-3 bg-white border-top text-center text-muted small no-print">
+                <div class="container-fluid max-w-7xl mx-auto d-flex flex-column flex-sm-row align-items-center justify-content-between gap-2 px-3">
+                    <div>© 2026 <strong>{{ COLLEGE_NAME }}</strong>. Enterprise Campus ERP.</div>
+                    <div class="d-flex gap-3">
+                        <a href="{{ url_for('main.about') }}" class="text-muted text-decoration-none hover-text-primary">About</a>
+                        <a href="{{ url_for('main.contact') }}" class="text-muted text-decoration-none hover-text-primary">Helpdesk</a>
+                        <a href="{{ url_for('notice.index') }}" class="text-muted text-decoration-none hover-text-primary">Circulars</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('appSidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            if (sidebar) sidebar.classList.toggle('show');
+            if (backdrop) backdrop.classList.toggle('show');
+        }
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

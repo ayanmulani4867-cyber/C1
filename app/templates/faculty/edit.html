@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Faculty - {{ faculty.full_name }} - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="fw-bold mb-0 text-primary">
+                    <i class="fa-solid fa-user-pen me-2"></i>Edit Faculty Profile: {{ faculty.full_name }}
+                </h5>
+                <p class="text-muted small mb-0">ID: <code>{{ faculty.faculty_id }}</code> | Employee: <code>{{ faculty.employee_id }}</code></p>
+            </div>
+            <a href="{{ url_for('faculty.profile_view', faculty_id=faculty.id) }}" class="btn btn-outline-secondary btn-sm">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back to Profile
+            </a>
+        </div>
+        <div class="card-body p-4">
+            <form method="POST" action="{{ url_for('faculty.edit', faculty_id=faculty.id) }}" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+
+                <!-- 1. Professional & Departmental Information -->
+                <h6 class="fw-bold text-primary text-uppercase small mb-3 border-bottom pb-2">
+                    <i class="fa-solid fa-briefcase me-1"></i> 1. Professional Details
+                </h6>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3">
+                        <label class="form-label small fw-semibold">{{ form.department_id.label }}</label>
+                        {{ form.department_id(class="form-select form-select-sm") }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-semibold">{{ form.designation.label }}</label>
+                        {{ form.designation(class="form-select form-select-sm") }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-semibold">{{ form.employment_type.label }}</label>
+                        {{ form.employment_type(class="form-select form-select-sm") }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-semibold">{{ form.status.label }}</label>
+                        {{ form.status(class="form-select form-select-sm") }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold">{{ form.qualification.label }}</label>
+                        {{ form.qualification(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold">{{ form.specialization.label }}</label>
+                        {{ form.specialization(class="form-control form-control-sm") }}
+                    </div>
+                </div>
+
+                <!-- 2. Personal Information -->
+                <h6 class="fw-bold text-primary text-uppercase small mb-3 border-bottom pb-2">
+                    <i class="fa-solid fa-id-card me-1"></i> 2. Personal & Contact Information
+                </h6>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label small fw-semibold">{{ form.first_name.label }}</label>
+                        {{ form.first_name(class="form-control form-control-sm" + (" is-invalid" if form.first_name.errors else "")) }}
+                        {% for err in form.first_name.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small fw-semibold">{{ form.middle_name.label }}</label>
+                        {{ form.middle_name(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small fw-semibold">{{ form.last_name.label }}</label>
+                        {{ form.last_name(class="form-control form-control-sm" + (" is-invalid" if form.last_name.errors else "")) }}
+                        {% for err in form.last_name.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label small fw-semibold">{{ form.dob.label }}</label>
+                        {{ form.dob(class="form-control form-control-sm", type="date") }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-semibold">{{ form.gender.label }}</label>
+                        {{ form.gender(class="form-select form-select-sm") }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-semibold">{{ form.blood_group.label }}</label>
+                        {{ form.blood_group(class="form-select form-select-sm") }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-semibold">{{ form.profile_photo.label }}</label>
+                        {{ form.profile_photo(class="form-control form-control-sm") }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold">{{ form.mobile.label }}</label>
+                        {{ form.mobile(class="form-control form-control-sm" + (" is-invalid" if form.mobile.errors else "")) }}
+                        {% for err in form.mobile.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold">{{ form.personal_email.label }}</label>
+                        {{ form.personal_email(class="form-control form-control-sm") }}
+                    </div>
+                </div>
+
+                <!-- 3. Address & Emergency -->
+                <h6 class="fw-bold text-primary text-uppercase small mb-3 border-bottom pb-2">
+                    <i class="fa-solid fa-location-dot me-1"></i> 3. Address & Emergency Contact
+                </h6>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold">{{ form.curr_address_line1.label }}</label>
+                        {{ form.curr_address_line1(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold">{{ form.curr_city.label }}</label>
+                        {{ form.curr_city(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small fw-semibold">{{ form.curr_state.label }}</label>
+                        {{ form.curr_state(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small fw-semibold">{{ form.curr_pincode.label }}</label>
+                        {{ form.curr_pincode(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small fw-semibold">{{ form.emergency_phone.label }}</label>
+                        {{ form.emergency_phone(class="form-control form-control-sm") }}
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 border-top pt-3">
+                    <a href="{{ url_for('faculty.profile_view', faculty_id=faculty.id) }}" class="btn btn-light btn-sm px-3">Cancel</a>
+                    {{ form.submit(class="btn btn-primary btn-sm px-4 fw-semibold") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

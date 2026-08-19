@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Examinations Schedule - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h4 class="fw-bold brand-font mb-1">Examinations & Assessment Schedules</h4>
+            <p class="text-muted small mb-0">Midterms, final semester exams, lab assessments, and admit cards.</p>
+        </div>
+        <div class="d-flex gap-2">
+            {% if current_user.role in ['ADMIN', 'FACULTY'] %}
+                <a href="{{ url_for('exam.create') }}" class="btn btn-primary btn-sm px-3">
+                    <i class="fa-solid fa-plus me-1"></i> Schedule Exam
+                </a>
+            {% endif %}
+            <a href="{{ url_for('exam.results') }}" class="btn btn-outline-primary btn-sm px-3">
+                <i class="fa-solid fa-square-poll-vertical me-1"></i> Examination Results
+            </a>
+        </div>
+    </div>
+
+    <!-- Exam Table -->
+    <div class="card border-0 shadow-sm rounded-3">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 small">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Exam Name</th>
+                            <th>Subject</th>
+                            <th>Type</th>
+                            <th>Date & Time</th>
+                            <th>Room / Hall</th>
+                            <th>Marks (Pass / Max)</th>
+                            <th class="text-end">Admit Card</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for e in exams %}
+                            <tr>
+                                <td>
+                                    <h6 class="mb-0 fw-bold text-dark">{{ e.name }}</h6>
+                                    <small class="text-muted">{{ e.course.code if e.course else '' }} - Sem {{ e.semester.number if e.semester else '' }}</small>
+                                </td>
+                                <td><strong>{{ e.subject.name if e.subject else '-' }}</strong></td>
+                                <td><span class="badge bg-light text-dark border">{{ e.exam_type }}</span></td>
+                                <td>
+                                    <div><strong>{{ e.exam_date|date_format }}</strong></div>
+                                    <div class="text-muted">{{ e.start_time|time_format }} &ndash; {{ e.end_time|time_format }}</div>
+                                </td>
+                                <td><span class="badge bg-secondary-subtle text-secondary">{{ e.room_number or 'Exam Hall A' }}</span></td>
+                                <td>
+                                    <span class="text-success fw-bold">{{ e.passing_marks }}</span> / <span class="text-dark fw-bold">{{ e.max_marks }}</span>
+                                </td>
+                                <td class="text-end">
+                                    <a href="{{ url_for('exam.download_admit_card', exam_id=e.id) }}" class="btn btn-outline-primary btn-sm" target="_blank">
+                                        <i class="fa-solid fa-id-card-clip me-1"></i> Admit Card PDF
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">No scheduled examinations found.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

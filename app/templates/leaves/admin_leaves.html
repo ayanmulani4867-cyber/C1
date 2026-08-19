@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Leave Administration - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2 class="h3 fw-bold text-dark mb-1">Campus Leave Applications & Approvals</h2>
+    <p class="text-muted small mb-0">Review student and faculty leave requests, grant approvals, or issue notes.</p>
+</div>
+
+<!-- Pending Approvals -->
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+        <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-clock text-warning me-2"></i> Pending Leave Applications</h5>
+        <span class="badge bg-warning text-dark">{{ pending_leaves|length }} Requests</span>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Applicant</th>
+                    <th>Role</th>
+                    <th>Leave Type</th>
+                    <th>Duration</th>
+                    <th>Reason</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for l in pending_leaves %}
+                    <tr>
+                        <td class="fw-semibold text-dark">
+                            {% if l.student %}{{ l.student.full_name }}{% elif l.faculty %}{{ l.faculty.full_name }}{% else %}{{ l.user.username if l.user else 'User' }}{% endif %}
+                        </td>
+                        <td><span class="badge bg-secondary-subtle text-secondary">{{ l.user.role.name if l.user and l.user.role else 'Applicant' }}</span></td>
+                        <td><span class="badge bg-light text-dark border">{{ l.leave_type }}</span></td>
+                        <td>{{ l.start_date.strftime('%b %d') }} to {{ l.end_date.strftime('%b %d, %Y') }}</td>
+                        <td class="small text-muted">{{ l.reason }}</td>
+                        <td>
+                            <a href="{{ url_for('leave.review', leave_id=l.id) }}" class="btn btn-sm btn-primary rounded-pill px-3">
+                                Review
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">No pending leave requests to process.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- All Processed Leaves -->
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3 border-bottom">
+        <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-list-check text-primary me-2"></i> Processed History</h5>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Applicant</th>
+                    <th>Type</th>
+                    <th>Duration</th>
+                    <th>Status</th>
+                    <th>Reviewed By</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for l in all_leaves %}
+                    <tr>
+                        <td>{{ l.student.full_name if l.student else (l.faculty.full_name if l.faculty else (l.user.username if l.user else 'User')) }}</td>
+                        <td>{{ l.leave_type }}</td>
+                        <td>{{ l.start_date.strftime('%b %d') }} - {{ l.end_date.strftime('%b %d, %Y') }}</td>
+                        <td>
+                            {% if l.status == 'Approved' %}
+                                <span class="badge bg-success">Approved</span>
+                            {% elif l.status == 'Rejected' %}
+                                <span class="badge bg-danger">Rejected</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td class="small text-muted">{{ l.reviewed_by.username if l.reviewed_by else '-' }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">No leave records found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

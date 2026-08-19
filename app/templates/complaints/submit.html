@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Submit Grievance Ticket - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 border-bottom">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h4 class="h5 fw-bold mb-0 text-dark"><i class="fa-solid fa-file-shield text-primary me-2"></i> File a Grievance Ticket</h4>
+                        <p class="text-muted small mb-0">Your concern will be securely routed to the relevant department administrator.</p>
+                    </div>
+                    <a href="{{ url_for('complaint.index') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                        <i class="fa-solid fa-arrow-left me-1"></i> Back to Tickets
+                    </a>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            {{ form.category.label(class="form-label fw-semibold small text-secondary") }}
+                            {{ form.category(class="form-select" + (" is-invalid" if form.category.errors else "")) }}
+                            {% for error in form.category.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form.priority.label(class="form-label fw-semibold small text-secondary") }}
+                            {{ form.priority(class="form-select" + (" is-invalid" if form.priority.errors else "")) }}
+                            {% for error in form.priority.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-12">
+                            {{ form.title.label(class="form-label fw-semibold small text-secondary") }}
+                            {{ form.title(class="form-control" + (" is-invalid" if form.title.errors else ""), placeholder="Brief summary of the issue (e.g., Projector not working in Room 302)") }}
+                            {% for error in form.title.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-12">
+                            {{ form.location.label(class="form-label fw-semibold small text-secondary") }}
+                            {{ form.location(class="form-control" + (" is-invalid" if form.location.errors else ""), placeholder="e.g. Block B, 3rd Floor, Lab 4") }}
+                            {% for error in form.location.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-12">
+                            {{ form.description.label(class="form-label fw-semibold small text-secondary") }}
+                            {{ form.description(class="form-control" + (" is-invalid" if form.description.errors else ""), rows=5, placeholder="Provide complete and factual details regarding your concern...") }}
+                            {% for error in form.description.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-12">
+                            {{ form.attachment.label(class="form-label fw-semibold small text-secondary") }}
+                            {{ form.attachment(class="form-control" + (" is-invalid" if form.attachment.errors else "")) }}
+                            <div class="form-text small">Optional supporting evidence (Photo / PDF document, max 10MB).</div>
+                            {% for error in form.attachment.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-12 pt-3">
+                            <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm fw-semibold">
+                                <i class="fa-solid fa-paper-plane me-1"></i> Submit Grievance Ticket
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

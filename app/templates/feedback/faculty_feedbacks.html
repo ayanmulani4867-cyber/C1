@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Faculty Teaching Feedback - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2 class="h3 fw-bold text-dark mb-1">Student Teaching Feedback & Ratings</h2>
+    <p class="text-muted small mb-0">Student evaluations and suggestions on course instruction.</p>
+</div>
+
+<!-- Score Card -->
+<div class="card shadow-sm border-0 p-4 mb-4 bg-primary text-white">
+    <div class="d-flex align-items-center justify-content-between">
+        <div>
+            <h5 class="mb-1 text-white-50">Overall Teaching Rating</h5>
+            <h2 class="display-5 fw-bold mb-0 text-white">{{ avg_rating }} <span class="fs-4">/ 5.0</span></h2>
+        </div>
+        <div>
+            <i class="fa-solid fa-award fa-4x opacity-50"></i>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Date</th>
+                    <th>Rating</th>
+                    <th>Student Feedback</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fb in feedbacks %}
+                    <tr>
+                        <td class="text-muted small">{{ fb.created_at.strftime('%b %d, %Y') if fb.created_at else '' }}</td>
+                        <td>
+                            <span class="text-warning">
+                                {% for i in range(fb.rating|int) %}★{% endfor %}
+                            </span>
+                            <span class="text-muted small">({{ fb.rating }})</span>
+                        </td>
+                        <td class="small">{{ fb.comments }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3" class="text-center text-muted py-5">No feedback records available yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
