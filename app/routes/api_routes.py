@@ -227,19 +227,6 @@ def _set_user_password(user, password):
     raise RuntimeError('User model does not expose a supported password field.')
 
 
-def _admin_api_required():
-    """Optional validation helper for admin endpoints."""
-    user = getattr(g, 'current_user', None)
-    if user and user.role not in [Role.ADMIN, 'ADMIN', 'admin']:
-        if user.role in [Role.STUDENT, 'STUDENT']:
-            return jsonify({
-                'success': False,
-                'error': 'Forbidden',
-                'message': 'Admin privileges required.'
-            }), 403
-    return None
-
-
 def _resolve_department(dept_val):
     """Resolve a Department model instance from an int ID, string 'dept-cse', or code 'CSE'."""
     if dept_val is not None:
@@ -748,6 +735,7 @@ def login():
         }), 403
 
     student = Student.query.filter_by(user_id=user.id).first() if user.role == Role.STUDENT else None
+    faculty = Faculty.query.filter_by(user_id=user.id).first() if user.role in (Role.FACULTY, Role.HOD) or user.faculty_profile else None
     token = generate_api_token(user, student=student)
 
     # Format student payload if student with both snake_case and camelCase support
@@ -805,6 +793,57 @@ def login():
             'profilePhoto': student.profile_photo
         }
 
+    # Format faculty payload if faculty/hod
+    faculty_payload = None
+    if faculty:
+        faculty_payload = {
+            'id': faculty.id,
+            'faculty_id': faculty.faculty_id,
+            'facultyId': faculty.faculty_id,
+            'employee_id': faculty.employee_id,
+            'employeeId': faculty.employee_id,
+            'first_name': faculty.first_name,
+            'firstName': faculty.first_name,
+            'last_name': faculty.last_name,
+            'lastName': faculty.last_name,
+            'full_name': faculty.full_name,
+            'fullName': faculty.full_name,
+            'official_email': faculty.official_email,
+            'officialEmail': faculty.official_email,
+            'personal_email': faculty.personal_email,
+            'personalEmail': faculty.personal_email,
+            'mobile': faculty.mobile,
+            'phone': faculty.mobile,
+            'designation': faculty.designation,
+            'department_id': faculty.department_id,
+            'departmentId': faculty.department_id,
+            'department': faculty.department.name if faculty.department else None,
+            'department_name': faculty.department.name if faculty.department else None,
+            'departmentName': faculty.department.name if faculty.department else None,
+            'department_code': faculty.department.code if faculty.department else None,
+            'departmentCode': faculty.department.code if faculty.department else None,
+            'employment_type': faculty.employment_type,
+            'employmentType': faculty.employment_type,
+            'qualification': faculty.qualification,
+            'specialization': faculty.specialization,
+            'experience_years': faculty.experience_years,
+            'experienceYears': faculty.experience_years,
+            'status': faculty.status,
+            'profile_photo': faculty.profile_photo or user.profile_image,
+            'profilePhoto': faculty.profile_photo or user.profile_image
+        }
+
+    dept_name = None
+    dept_id = None
+    if student and student.department:
+        dept_name = student.department.name
+        dept_id = student.department_id
+    elif faculty and faculty.department:
+        dept_name = faculty.department.name
+        dept_id = faculty.department_id
+    elif user.role == Role.ADMIN:
+        dept_name = 'Administration'
+
     return jsonify({
         'success': True,
         'message': 'Authentication successful.',
@@ -824,12 +863,16 @@ def login():
             'full_name': user.full_name,
             'fullName': user.full_name,
             'phone': user.phone,
-            'profile_image': user.profile_image,
-            'profileImage': user.profile_image,
+            'profile_image': user.profile_image_url if hasattr(user, 'profile_image_url') else user.profile_image,
+            'profileImage': user.profile_image_url if hasattr(user, 'profile_image_url') else user.profile_image,
+            'department': dept_name,
+            'department_id': dept_id,
+            'departmentId': dept_id,
             'must_change_password': getattr(user, 'must_change_password', False),
             'mustChangePassword': getattr(user, 'must_change_password', False)
         },
-        'student': student_payload
+        'student': student_payload,
+        'faculty': faculty_payload
     })
 
 
@@ -838,24 +881,102 @@ def login():
 def auth_me():
     user = g.current_user
     student = g.current_student
+    faculty = Faculty.query.filter_by(user_id=user.id).first() if user.role in (Role.FACULTY, Role.HOD) or getattr(user, 'faculty_profile', None) else None
+
     student_payload = None
     if student:
         student_payload = {
             'id': student.id,
             'student_id': student.student_id,
+            'studentId': student.student_id,
             'roll_no': student.roll_no or student.student_id,
+            'rollNumber': student.roll_no or student.student_id,
             'enrollment_no': student.enrollment_no,
+            'enrollmentNumber': student.enrollment_no,
             'admission_no': student.admission_no,
+            'admissionNumber': student.admission_no,
+            'first_name': student.first_name,
+            'firstName': student.first_name,
+            'last_name': student.last_name,
+            'lastName': student.last_name,
             'full_name': student.full_name,
+            'fullName': student.full_name,
+            'college_email': student.college_email,
+            'collegeEmail': student.college_email,
+            'personal_email': student.personal_email,
+            'personalEmail': student.personal_email,
+            'mobile': student.mobile,
             'department': student.department.name if student.department else None,
+            'department_name': student.department.name if student.department else None,
+            'departmentName': student.department.name if student.department else None,
+            'department_id': student.department_id,
+            'departmentId': student.department_id,
             'department_code': student.department.code if student.department else None,
+            'departmentCode': student.department.code if student.department else None,
             'course': student.course.name if student.course else None,
+            'course_id': student.course_id,
+            'courseId': student.course_id,
             'semester': student.semester.number if student.semester else None,
+            'semester_id': student.semester_id,
+            'semesterId': student.semester_id,
             'division': student.division.name if student.division else None,
+            'division_id': student.division_id,
+            'divisionId': student.division_id,
             'batch': student.batch,
             'status': student.status,
-            'profile_photo': student.profile_photo
+            'profile_photo': student.profile_photo,
+            'profilePhoto': student.profile_photo
         }
+
+    faculty_payload = None
+    if faculty:
+        faculty_payload = {
+            'id': faculty.id,
+            'faculty_id': faculty.faculty_id,
+            'facultyId': faculty.faculty_id,
+            'employee_id': faculty.employee_id,
+            'employeeId': faculty.employee_id,
+            'first_name': faculty.first_name,
+            'firstName': faculty.first_name,
+            'last_name': faculty.last_name,
+            'lastName': faculty.last_name,
+            'full_name': faculty.full_name,
+            'fullName': faculty.full_name,
+            'official_email': faculty.official_email,
+            'officialEmail': faculty.official_email,
+            'personal_email': faculty.personal_email,
+            'personalEmail': faculty.personal_email,
+            'mobile': faculty.mobile,
+            'phone': faculty.mobile,
+            'designation': faculty.designation,
+            'department_id': faculty.department_id,
+            'departmentId': faculty.department_id,
+            'department': faculty.department.name if faculty.department else None,
+            'department_name': faculty.department.name if faculty.department else None,
+            'departmentName': faculty.department.name if faculty.department else None,
+            'department_code': faculty.department.code if faculty.department else None,
+            'departmentCode': faculty.department.code if faculty.department else None,
+            'employment_type': faculty.employment_type,
+            'employmentType': faculty.employment_type,
+            'qualification': faculty.qualification,
+            'specialization': faculty.specialization,
+            'experience_years': faculty.experience_years,
+            'experienceYears': faculty.experience_years,
+            'status': faculty.status,
+            'profile_photo': faculty.profile_photo or user.profile_image,
+            'profilePhoto': faculty.profile_photo or user.profile_image
+        }
+
+    dept_name = None
+    dept_id = None
+    if student and student.department:
+        dept_name = student.department.name
+        dept_id = student.department_id
+    elif faculty and faculty.department:
+        dept_name = faculty.department.name
+        dept_id = faculty.department_id
+    elif user.role == Role.ADMIN:
+        dept_name = 'Administration'
 
     return jsonify({
         'success': True,
@@ -865,12 +986,31 @@ def auth_me():
             'email': user.email,
             'role': user.role,
             'first_name': user.first_name,
+            'firstName': user.first_name,
             'last_name': user.last_name,
+            'lastName': user.last_name,
             'full_name': user.full_name,
-            'profile_image': user.profile_image
+            'fullName': user.full_name,
+            'phone': user.phone,
+            'profile_image': user.profile_image_url if hasattr(user, 'profile_image_url') else user.profile_image,
+            'profileImage': user.profile_image_url if hasattr(user, 'profile_image_url') else user.profile_image,
+            'department': dept_name,
+            'department_id': dept_id,
+            'departmentId': dept_id,
+            'must_change_password': getattr(user, 'must_change_password', False),
+            'mustChangePassword': getattr(user, 'must_change_password', False)
         },
-        'student': student_payload
+        'student': student_payload,
+        'faculty': faculty_payload
     })
+
+
+@api_bp.route('/auth/logout', methods=['POST', 'GET'])
+def api_logout():
+    return jsonify({
+        'success': True,
+        'message': 'Successfully logged out.'
+    }), 200
 
 
 @api_bp.route('/auth/change-password', methods=['POST'])

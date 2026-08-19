@@ -45,12 +45,23 @@ import { LoginView } from './views/auth/LoginView';
 import { Student, CertificateRequest, FeePayment } from './types';
 
 const AppContent: React.FC = () => {
-  const { isAuthenticated, currentView, setCurrentView, currentUser, students } = useErp();
+  const { isAuthenticated, isAuthLoading, currentView, setCurrentView, currentUser, students } = useErp();
 
   // Modal states
   const [selectedStudentForIdCard, setSelectedStudentForIdCard] = useState<Student | null>(null);
   const [selectedCertificate, setSelectedCertificate] = useState<CertificateRequest | null>(null);
   const [selectedFeeReceipt, setSelectedFeeReceipt] = useState<FeePayment | null>(null);
+
+  if (isAuthLoading) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center text-white font-sans">
+        <div className="w-10 h-10 border-3 border-blue-500/20 border-t-blue-500 rounded-full animate-spin mb-4" />
+        <div className="text-xs font-semibold tracking-wider text-slate-300 uppercase">
+          Verifying Verified ERP Session...
+        </div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return <LoginView />;

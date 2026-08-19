@@ -67,7 +67,7 @@ def verify_api_token(token: str, max_age_days: int = 30):
 def api_auth_required(f):
     """
     Decorator for REST API routes to enforce secure token or session authentication.
-    Extracts Bearer token from 'Authorization' header or 'X-Auth-Token' header.
+    Extracts Bearer token from 'Authorization' header, 'X-Auth-Token' header, or query param.
     """
     @functools.wraps(f)
     def decorated_function(*args, **kwargs):
@@ -93,18 +93,10 @@ def api_auth_required(f):
             g.current_student = student
             return f(*args, **kwargs)
 
-        # 2. Fallback to Flask-Login session if available (e.g. web preview testing)
+        # 2. Fallback to Flask-Login session if available
         if current_user.is_authenticated:
             g.current_user = current_user
             g.current_student = Student.query.filter_by(user_id=current_user.id).first() if current_user.role == Role.STUDENT else None
-            return f(*args, **kwargs)
-
-        # 3. Fallback for testing environments
-        if current_app.config.get('TESTING'):
-            admin_user = User.query.filter_by(role=Role.ADMIN).first() or User.query.first()
-            if admin_user:
-                g.current_user = admin_user
-                g.current_student = None
             return f(*args, **kwargs)
 
         return jsonify({
@@ -114,6 +106,85 @@ def api_auth_required(f):
         }), 401
 
     return decorated_function
+
+
+def api_role_required(*allowed_roles):
+    """
+    Decorator requiring authentication AND that the authenticated user's role
+    matches one of the allowed roles.
+    """
+    def decorator(f):
+        @functools.wraps(f)
+        def decorated_function(*args, **kwargs):
+            # 1. First authenticate
+            auth_header = request.headers.get('Authorization', '')
+            token = None
+            if auth_header.startswith('Bearer '):
+                token = auth_header.split(' ', 1)[1].strip()
+            elif request.headers.get('X-Auth-Token'):
+                token = request.headers.get('X-Auth-Token').strip()
+            elif request.args.get('token'):
+                token = request.args.get('token').strip()
+
+            user = None
+            student = None
+
+            if token:
+                user, student, error_msg = verify_api_token(token)
+                if error_msg or not user:
+                    return jsonify({
+                        'success': False,
+                        'error': 'Unauthorized',
+                        'message': error_msg or 'Authentication failed'
+                    }), 401
+            elif current_user.is_authenticated:
+                user = current_user
+                student = Student.query.filter_by(user_id=current_user.id).first() if current_user.role == Role.STUDENT else None
+            else:
+                return jsonify({
+                    'success': False,
+                    'error': 'Unauthorized',
+                    'message': 'Authorization header required. Pass Bearer <token>.'
+                }), 401
+
+            if not user.is_active:
+                return jsonify({
+                    'success': False,
+                    'error': 'Forbidden',
+                    'message': 'User account is inactive. Contact administrator.'
+                }), 403
+
+            # Normalize role strings
+            user_role_str = str(getattr(user, 'role', '')).upper()
+            allowed_role_strs = [str(r).upper() for r in allowed_roles]
+
+            if user_role_str not in allowed_role_strs:
+                return jsonify({
+                    'success': False,
+                    'error': 'Forbidden',
+                    'message': f'Access restricted to authorized roles: {", ".join(allowed_role_strs)}'
+                }), 403
+
+            g.current_user = user
+            g.current_student = student
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
+
+
+def api_admin_required(f):
+    """Decorator requiring ADMIN role."""
+    return api_role_required(Role.ADMIN)(f)
+
+
+def api_hod_required(f):
+    """Decorator requiring ADMIN or HOD role."""
+    return api_role_required(Role.ADMIN, Role.HOD)(f)
+
+
+def api_faculty_required(f):
+    """Decorator requiring ADMIN, HOD, or FACULTY role."""
+    return api_role_required(Role.ADMIN, Role.HOD, Role.FACULTY)(f)
 
 
 def api_student_required(f):
@@ -162,7 +233,6 @@ def api_student_required(f):
             }), 403
 
         if not student:
-            # Check if user is student role but student record is missing
             if user.role != Role.STUDENT:
                 return jsonify({
                     'success': False,

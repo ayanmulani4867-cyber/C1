@@ -35,6 +35,7 @@ from app.utils.id_generator import (
     generate_faculty_employee_id,
     backfill_missing_identifiers
 )
+from app.utils.api_auth import generate_api_token
 from app.utils.db_ops import initialize_database_schema, seed_database_safely
 
 
@@ -202,9 +203,13 @@ class AutoIdAndAuthTestCase(unittest.TestCase):
         """Test the automated admin REST API endpoints and mobile student-only restrictions."""
         dept = Department.query.first()
         course = Course.query.filter_by(department_id=dept.id).first() or Course.query.first()
+        admin_user = User.query.filter_by(role=Role.ADMIN).first()
+        admin_token = generate_api_token(admin_user)
 
         # 1. Enroll student via REST API
-        enroll_res = self.client.post('/api/admin/students', json={
+        enroll_res = self.client.post('/api/admin/students', headers={
+            'Authorization': f'Bearer {admin_token}'
+        }, json={
             'firstName': 'Priya',
             'lastName': 'Patel',
             'gender': 'Female',

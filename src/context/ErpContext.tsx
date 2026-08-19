@@ -59,6 +59,7 @@ import { formatINR } from '../utils/formatters';
 
 interface ErpContextType {
   isAuthenticated: boolean;
+  isAuthLoading: boolean;
   login: (usernameOrEmail: string, password: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   currentUser: User;
@@ -161,6 +162,41 @@ const ErpContext = createContext<ErpContextType | null>(null);
 
 const STORAGE_PREFIX = 'CAMPUS_CONNECT_ERP_';
 
+function getStoredToken(): string | null {
+  try {
+    return (
+      localStorage.getItem(STORAGE_PREFIX + 'token') ||
+      localStorage.getItem('token') ||
+      sessionStorage.getItem('token') ||
+      null
+    );
+  } catch {
+    return null;
+  }
+}
+
+function setStoredToken(token: string) {
+  try {
+    localStorage.setItem(STORAGE_PREFIX + 'token', token);
+    localStorage.setItem('token', token);
+    sessionStorage.setItem('token', token);
+  } catch (e) {
+    console.error('Failed to store auth token', e);
+  }
+}
+
+function clearStoredToken() {
+  try {
+    localStorage.removeItem(STORAGE_PREFIX + 'token');
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
+    localStorage.removeItem(STORAGE_PREFIX + 'isAuthenticated');
+    localStorage.removeItem(STORAGE_PREFIX + 'currentUserId');
+  } catch (e) {
+    console.error('Failed to clear auth token', e);
+  }
+}
+
 function loadStored<T>(key: string, fallback: T): T {
   try {
     const item = localStorage.getItem(STORAGE_PREFIX + key);
@@ -173,16 +209,11 @@ function loadStored<T>(key: string, fallback: T): T {
 
 export const ErpProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [availableUsers, setAvailableUsers] = useState<User[]>(() => loadStored('availableUsers', INITIAL_USERS));
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => loadStored('isAuthenticated', false));
-  const [currentUserId, setCurrentUserId] = useState<string>(() => loadStored('currentUserId', 'u-admin-1'));
-  const [currentView, setCurrentView] = useState<string>(() => {
-    const storedView = loadStored('currentView', '');
-    if (storedView) return storedView;
-    const initialUser = INITIAL_USERS.find((u) => u.id === 'u-admin-1');
-    if (initialUser?.role === 'STUDENT') return 'student-dashboard';
-    if (initialUser?.role === 'FACULTY' || initialUser?.role === 'HOD') return 'faculty-dashboard';
-    return 'dashboard';
-  });
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
+  const [verifiedUser, setVerifiedUser] = useState<User | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<string>('u-admin-1');
+  const [currentView, setCurrentView] = useState<string>('dashboard');
   
   const [departments, setDepartments] = useState<Department[]>(() => loadStored('departments', INITIAL_DEPARTMENTS));
   const [courses, setCourses] = useState<Course[]>(() => loadStored('courses', INITIAL_COURSES));
@@ -209,15 +240,133 @@ export const ErpProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [events, setEvents] = useState<CampusEvent[]>(() => loadStored('events', INITIAL_EVENTS));
   const [notifications, setNotifications] = useState<AppNotification[]>(() => loadStored('notifications', INITIAL_NOTIFICATIONS));
 
-  // Sync to localStorage
-  useEffect(() => {
-    localStorage.setItem(STORAGE_PREFIX + 'isAuthenticated', JSON.stringify(isAuthenticated));
-  }, [isAuthenticated]);
+  const getAuthHeaders = (): Record<string, string> => {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+    const token = getStoredToken();
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    return headers;
+  };
 
-  useEffect(() => {
-    localStorage.setItem(STORAGE_PREFIX + 'currentUserId', JSON.stringify(currentUserId));
-  }, [currentUserId]);
+  // Helper to format backend user into UI User model
+  const formatBackendUser = (u: any, facPayload?: any, stuPayload?: any): User => {
+    const role = (u.role || 'STUDENT').toUpperCase() as Role;
+    const fullName = u.full_name || u.fullName || `${u.first_name || ''} ${u.last_name || ''}`.trim() || u.username;
+    const photo =
+      u.profile_image ||
+      u.profileImage ||
+      facPayload?.profile_photo ||
+      facPayload?.profilePhoto ||
+      stuPayload?.profile_photo ||
+      stuPayload?.profilePhoto ||
+      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200';
+    const dept =
+      u.department ||
+      facPayload?.department ||
+      facPayload?.department_name ||
+      stuPayload?.department ||
+      stuPayload?.department_name ||
+      'Computer Science & Engineering';
+    const deptId =
+      u.department_id ||
+      u.departmentId ||
+      facPayload?.department_id ||
+      facPayload?.departmentId ||
+      stuPayload?.department_id ||
+      stuPayload?.departmentId ||
+      'dept-cse';
 
+    return {
+      id: String(u.id),
+      username: u.username,
+      email: u.email,
+      role: role,
+      firstName: u.first_name || u.firstName || '',
+      lastName: u.last_name || u.lastName || '',
+      fullName: fullName,
+      name: fullName,
+      phone: u.phone || facPayload?.mobile || stuPayload?.mobile || '',
+      profileImage: photo,
+      photo: photo,
+      department: dept,
+      departmentId: deptId,
+    };
+  };
+
+  // 1. Session Restoration on Refresh / Mount: Call GET /api/auth/me
+  useEffect(() => {
+    let isMounted = true;
+
+    const restoreSession = async () => {
+      const token = getStoredToken();
+      if (!token) {
+        if (isMounted) {
+          setIsAuthenticated(false);
+          setVerifiedUser(null);
+          setIsAuthLoading(false);
+        }
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/auth/me', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          throw new Error(`Session verification returned status ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (data.success && data.user) {
+          const userObj = formatBackendUser(data.user, data.faculty, data.student);
+          if (isMounted) {
+            setVerifiedUser(userObj);
+            setCurrentUserId(userObj.id);
+            setIsAuthenticated(true);
+
+            // Set default view for role if currently on root/default
+            if (userObj.role === 'ADMIN') {
+              setCurrentView((prev) => (prev && prev !== 'student-dashboard' && prev !== 'faculty-dashboard' ? prev : 'dashboard'));
+            } else if (userObj.role === 'HOD' || userObj.role === 'FACULTY') {
+              setCurrentView((prev) => (prev && prev !== 'dashboard' && prev !== 'student-dashboard' ? prev : 'faculty-dashboard'));
+            } else if (userObj.role === 'STUDENT') {
+              setCurrentView((prev) => (prev && prev !== 'dashboard' && prev !== 'faculty-dashboard' ? prev : 'student-dashboard'));
+            }
+          }
+        } else {
+          throw new Error(data.message || 'Invalid session payload');
+        }
+      } catch (err) {
+        console.warn('Session restoration failed, clearing token:', err);
+        clearStoredToken();
+        if (isMounted) {
+          setIsAuthenticated(false);
+          setVerifiedUser(null);
+        }
+      } finally {
+        if (isMounted) {
+          setIsAuthLoading(false);
+        }
+      }
+    };
+
+    restoreSession();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // Sync state to localStorage
   useEffect(() => {
     localStorage.setItem(STORAGE_PREFIX + 'availableUsers', JSON.stringify(availableUsers));
   }, [availableUsers]);
@@ -274,135 +423,98 @@ export const ErpProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem(STORAGE_PREFIX + 'materials', JSON.stringify(materials));
   }, [materials]);
 
-  const rawCurrentUser = availableUsers.find((u) => u.id === currentUserId) || availableUsers[0];
+  // Determine current active user
+  const rawCurrentUser = verifiedUser || availableUsers.find((u) => u.id === currentUserId) || availableUsers[0];
   const currentUser: User = {
     ...rawCurrentUser,
     name: rawCurrentUser?.name || rawCurrentUser?.fullName || `${rawCurrentUser?.firstName || ''} ${rawCurrentUser?.lastName || ''}`.trim(),
     photo: rawCurrentUser?.photo || rawCurrentUser?.profileImage || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200',
     department: rawCurrentUser?.department || departments.find((d) => d.id === rawCurrentUser?.departmentId)?.name || 'Computer Science & Engineering',
   };
-  const currentStudent = students.find((s) => s.userId === currentUser.id || s.id === currentUser.id);
-  const currentFaculty = faculty.find((f) => f.userId === currentUser.id || f.id === currentUser.id);
 
+  const currentStudent = students.find((s) => s.userId === currentUser.id || s.id === currentUser.id || s.collegeEmail === currentUser.email);
+  const currentFaculty = faculty.find((f) => f.userId === currentUser.id || f.id === currentUser.id || f.officialEmail === currentUser.email);
+
+  // 2. Real Backend API Login via POST /api/auth/login
   const login = async (usernameOrEmail: string, pass: string): Promise<{ success: boolean; error?: string }> => {
-    const input = usernameOrEmail.toLowerCase().trim();
+    const cleanUsername = usernameOrEmail.trim();
     const cleanPass = pass.trim();
 
-    // Check for standard admin login credentials
-    if (input === 'admin' || input === 'admin@apex.edu') {
-      const adminUser = availableUsers.find((u) => u.role === 'ADMIN') || {
-        id: 'u-admin-1',
-        username: 'admin',
-        email: 'admin@apex.edu',
-        role: 'ADMIN' as const,
-        firstName: 'System',
-        lastName: 'Administrator',
-        fullName: 'Administrator (ERP Director)',
-        phone: '+91 98765 43210',
-        profileImage: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&auto=format&fit=crop&q=80',
-      };
+    if (!cleanUsername) {
+      return { success: false, error: 'Please enter your username, email, or institutional ID.' };
+    }
+    if (!cleanPass) {
+      return { success: false, error: 'Please enter your password.' };
+    }
 
-      if (cleanPass !== 'admin' && cleanPass !== 'admin123' && cleanPass !== 'password') {
-        return { success: false, error: 'Incorrect administrator password. Please use password "admin".' };
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          username: cleanUsername,
+          password: cleanPass,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success || !data.user) {
+        return {
+          success: false,
+          error: data.message || data.error || 'The username/email or password you entered is incorrect.',
+        };
       }
 
-      setCurrentUserId(adminUser.id);
+      // Store cryptographically signed token
+      if (data.token) {
+        setStoredToken(data.token);
+      }
+
+      const userObj = formatBackendUser(data.user, data.faculty, data.student);
+      setVerifiedUser(userObj);
+      setCurrentUserId(userObj.id);
       setIsAuthenticated(true);
-      setCurrentView('dashboard');
+
+      // Route to correct initial view based on role
+      if (userObj.role === 'ADMIN') {
+        setCurrentView('dashboard');
+      } else if (userObj.role === 'HOD' || userObj.role === 'FACULTY') {
+        setCurrentView('faculty-dashboard');
+      } else if (userObj.role === 'STUDENT') {
+        setCurrentView('student-dashboard');
+      }
+
       return { success: true };
+    } catch (err: any) {
+      console.error('Backend authentication request failed:', err);
+      return {
+        success: false,
+        error: 'Unable to reach authentication service. Please check your network connection.',
+      };
     }
-    
-    // Find matching user by email, username, roll number or studentId
-    let matchedUser = availableUsers.find(
-      (u) => u.email.toLowerCase() === input || u.username.toLowerCase() === input
-    );
-
-    if (!matchedUser) {
-      // Check if it matches an existing student
-      const matchedStudent = students.find(
-        (s) =>
-          s.collegeEmail.toLowerCase() === input ||
-          s.personalEmail.toLowerCase() === input ||
-          s.rollNo.toLowerCase() === input ||
-          s.studentId.toLowerCase() === input
-      );
-      if (matchedStudent) {
-        matchedUser = availableUsers.find((u) => u.id === matchedStudent.userId);
-        if (!matchedUser) {
-          // Dynamically construct user if missing
-          matchedUser = {
-            id: matchedStudent.userId || `u-${matchedStudent.id}`,
-            username: matchedStudent.rollNo.toLowerCase(),
-            email: matchedStudent.collegeEmail,
-            role: 'STUDENT',
-            firstName: matchedStudent.firstName,
-            lastName: matchedStudent.lastName,
-            fullName: matchedStudent.fullName,
-            phone: matchedStudent.mobile,
-            profileImage: matchedStudent.photo || 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&auto=format&fit=crop&q=80',
-            departmentId: matchedStudent.departmentId,
-          };
-          setAvailableUsers((prev) => [...prev, matchedUser!]);
-        }
-      }
-    }
-
-    if (!matchedUser) {
-      // Check if it matches faculty
-      const matchedFac = faculty.find(
-        (f) =>
-          f.officialEmail.toLowerCase() === input ||
-          f.personalEmail.toLowerCase() === input ||
-          f.facultyId.toLowerCase() === input ||
-          f.employeeId.toLowerCase() === input
-      );
-      if (matchedFac) {
-        matchedUser = availableUsers.find((u) => u.id === matchedFac.userId);
-        if (!matchedUser) {
-          // Dynamically construct user if missing
-          matchedUser = {
-            id: matchedFac.userId || `u-${matchedFac.id}`,
-            username: matchedFac.facultyId.toLowerCase(),
-            email: matchedFac.officialEmail,
-            role: matchedFac.designation.includes('HOD') || matchedFac.designation.includes('Head') ? 'HOD' : 'FACULTY',
-            firstName: matchedFac.firstName,
-            lastName: matchedFac.lastName,
-            fullName: matchedFac.fullName,
-            phone: matchedFac.mobile,
-            profileImage: matchedFac.photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
-            departmentId: matchedFac.departmentId,
-          };
-          setAvailableUsers((prev) => [...prev, matchedUser!]);
-        }
-      }
-    }
-
-    if (!matchedUser) {
-      return { success: false, error: 'User account not found. Please contact the administrator or verify your ID/email.' };
-    }
-
-    // Role-based password check
-    if (cleanPass.length < 3) {
-      return { success: false, error: 'Password must be at least 3 characters.' };
-    }
-
-    setCurrentUserId(matchedUser.id);
-    setIsAuthenticated(true);
-
-    if (matchedUser.role === 'ADMIN') {
-      setCurrentView('dashboard');
-    } else if (matchedUser.role === 'HOD' || matchedUser.role === 'FACULTY') {
-      setCurrentView('faculty-dashboard');
-    } else if (matchedUser.role === 'STUDENT') {
-      setCurrentView('student-dashboard');
-    }
-
-    return { success: true };
   };
 
+  // 3. Logout
   const logout = () => {
+    try {
+      fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        credentials: 'include',
+      }).catch(() => {});
+    } catch {
+      // Ignore
+    }
+
+    clearStoredToken();
     setIsAuthenticated(false);
+    setVerifiedUser(null);
     setCurrentUserId('');
+    setCurrentView('dashboard');
   };
 
   const switchUser = (userId: string) => {
@@ -417,21 +529,6 @@ export const ErpProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setCurrentView('student-dashboard');
       }
     }
-  };
-
-  const getAuthHeaders = (): Record<string, string> => {
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    };
-    try {
-      const token = localStorage.getItem('token') || localStorage.getItem('CAMPUS_CONNECT_ERP_token') || sessionStorage.getItem('token');
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-    } catch {
-      // Ignore
-    }
-    return headers;
   };
 
   const addStudent = async (studentData: Omit<Student, 'id' | 'userId'>): Promise<Student> => {
