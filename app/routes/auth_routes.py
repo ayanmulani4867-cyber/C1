@@ -11,6 +11,11 @@ auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
+    import os
+    dist_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'dist')
+    if request.method == 'GET' and os.path.exists(os.path.join(dist_dir, 'index.html')):
+        return redirect(url_for('main.index'))
+
     if current_user.is_authenticated:
         if current_user.role == Role.ADMIN:
             return redirect(url_for('admin.dashboard'))
