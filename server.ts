@@ -1,10 +1,23 @@
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
+import { createProxyMiddleware } from "http-proxy-middleware";
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = Number(process.env.PORT) || 3000;
+  const FLASK_PORT = process.env.FLASK_PORT || "5000";
+  const FLASK_URL = process.env.FLASK_URL || `http://127.0.0.1:${FLASK_PORT}`;
+
+  // Proxy /api and /static/uploads requests to the Flask backend without stripping prefixes
+  app.use(
+    createProxyMiddleware({
+      filter: (pathname, req) => pathname.startsWith("/api") || pathname.startsWith("/static/uploads"),
+      target: FLASK_URL,
+      changeOrigin: true,
+      ws: true,
+    })
+  );
 
   app.use(express.json());
 
