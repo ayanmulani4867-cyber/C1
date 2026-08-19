@@ -37,13 +37,6 @@ def faculty_create_alias():
 
 @main_bp.route('/')
 def index():
-    import os
-    dist_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'dist')
-    index_file = os.path.join(dist_dir, 'index.html')
-    if os.path.exists(index_file):
-        from flask import send_from_directory
-        return send_from_directory(dist_dir, 'index.html')
-
     if current_user.is_authenticated:
         if current_user.role == Role.ADMIN:
             return redirect(url_for('admin.dashboard'))

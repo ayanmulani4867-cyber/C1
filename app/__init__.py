@@ -151,20 +151,6 @@ def create_app(config_name=None):
         from flask import jsonify
         return jsonify({"status": "ok"}), 200
 
-    # Serve built React SPA assets in production/Render deployment
-    dist_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'dist')
-    if os.path.exists(dist_dir) and os.path.exists(os.path.join(dist_dir, 'index.html')):
-        from flask import send_from_directory
-
-        @app.route('/assets/<path:filename>')
-        def serve_dist_assets(filename):
-            return send_from_directory(os.path.join(dist_dir, 'assets'), filename)
-
-        @app.route('/app')
-        @app.route('/app/<path:path>')
-        def serve_spa(path=''):
-            return send_from_directory(dist_dir, 'index.html')
-
     # Exempt API routes from CSRF token requirements
     csrf.exempt(api_bp)
     csrf.exempt(root_health)
