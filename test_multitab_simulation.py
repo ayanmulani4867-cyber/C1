@@ -82,7 +82,7 @@ class TestMultiTabAuthSimulation(unittest.TestCase):
         # 5. TAB 1: Access Admin Dashboard & Users
         res_admin = self.client.get('/admin/dashboard', headers={'Authorization': f'Bearer {admin_token}'})
         self.assertEqual(res_admin.status_code, 200)
-        self.assertIn(b'Administrator Dashboard', res_admin.data)
+        self.assertIn(b'Command Center', res_admin.data)
 
         res_admin_users = self.client.get('/admin/users', headers={'Authorization': f'Bearer {admin_token}'})
         self.assertEqual(res_admin_users.status_code, 200)
@@ -99,7 +99,7 @@ class TestMultiTabAuthSimulation(unittest.TestCase):
         # 7. TAB 3: Access Faculty Dashboard & Mark Attendance
         res_faculty = self.client.get('/faculty/dashboard', headers={'Authorization': f'Bearer {faculty_token}'})
         self.assertEqual(res_faculty.status_code, 200)
-        self.assertIn(b'Faculty Dashboard', res_faculty.data)
+        self.assertIn(b'Academic Portal', res_faculty.data)
 
         res_faculty_att = self.client.get('/attendance/mark', headers={'Authorization': f'Bearer {faculty_token}'})
         self.assertEqual(res_faculty_att.status_code, 200)
@@ -107,7 +107,7 @@ class TestMultiTabAuthSimulation(unittest.TestCase):
         # 8. TAB 4: Access HOD Dashboard
         res_hod = self.client.get('/faculty/dashboard', headers={'Authorization': f'Bearer {hod_token}'})
         self.assertEqual(res_hod.status_code, 200)
-        self.assertIn(b'Faculty Dashboard', res_hod.data)
+        self.assertIn(b'Department Portal', res_hod.data)
 
         # 9. Role Isolation: Student cannot access Admin routes
         res_stud_admin = self.client.get('/admin/dashboard', headers={'Authorization': f'Bearer {student_token}'})

@@ -1,85 +1,154 @@
 {% extends "base.html" %}
 
-{% block title %}Administrator Dashboard - {{ APP_NAME }}{% endblock %}
+{% block title %}Administrator Dashboard - Operations Command Center - {{ APP_NAME }}{% endblock %}
 
 {% block content %}
 <div class="container-fluid py-3">
     <!-- Header banner -->
-    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-        <div>
-            <h3 class="fw-bold brand-font mb-1 text-dark">Institutional Operations Command Center</h3>
-            <p class="text-muted small mb-0">Overview of students, faculty, academics, fee revenues, and governance.</p>
-        </div>
-        <div class="d-flex gap-2">
-            <a href="{{ url_for('student.create') }}" class="btn btn-primary btn-sm px-3">
-                <i class="fa-solid fa-user-plus me-1"></i> Enroll Student
-            </a>
-            <a href="{{ url_for('faculty.create') }}" class="btn btn-outline-primary btn-sm px-3">
-                <i class="fa-solid fa-chalkboard-user me-1"></i> Add Faculty
-            </a>
-            <a href="{{ url_for('notice.create') }}" class="btn btn-outline-secondary btn-sm px-3">
-                <i class="fa-solid fa-bullhorn me-1"></i> Post Notice
-            </a>
+    <div class="card border-0 shadow-sm rounded-4 mb-4 bg-gradient text-white p-4" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e3a8a 100%);">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <span class="badge bg-primary bg-opacity-75 text-white px-2 py-1"><i class="fa-solid fa-shield-halved me-1"></i> Admin Command Portal</span>
+                    <span class="text-white-50 small">&bull; Session: {{ current_academic_session }}</span>
+                </div>
+                <h3 class="fw-bold brand-font mb-1 text-white">Institutional Operations Command Center</h3>
+                <p class="text-white-50 small mb-0">Live monitoring of enrollment, academics, fee realization, faculty workflows, and governance.</p>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <a href="{{ url_for('student.create') }}" class="btn btn-primary btn-sm px-3 shadow-sm rounded-pill">
+                    <i class="fa-solid fa-user-plus me-1"></i> Enroll Student
+                </a>
+                <a href="{{ url_for('faculty.create') }}" class="btn btn-outline-light btn-sm px-3 rounded-pill">
+                    <i class="fa-solid fa-chalkboard-user me-1"></i> Add Faculty
+                </a>
+                <a href="{{ url_for('notice.create') }}" class="btn btn-outline-light btn-sm px-3 rounded-pill">
+                    <i class="fa-solid fa-bullhorn me-1"></i> Post Notice
+                </a>
+                <a href="{{ url_for('report.index') }}" class="btn btn-light btn-sm px-3 rounded-pill text-dark fw-semibold shadow-xs">
+                    <i class="fa-solid fa-file-invoice me-1"></i> Reports
+                </a>
+            </div>
         </div>
     </div>
 
-    <!-- 4 Key Stat Cards -->
+    <!-- 8 Metric Cards Grid -->
     <div class="row g-3 mb-4">
         <div class="col-sm-6 col-xl-3">
-            <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100">
+            <div class="card stat-card h-100">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <span class="text-muted small fw-semibold text-uppercase">Total Students</span>
+                        <span class="text-muted small fw-bold text-uppercase">Total Students</span>
                         <h3 class="fw-bold mb-0 text-primary mt-1">{{ total_students }}</h3>
-                        <small class="text-success"><i class="fa-solid fa-circle-check me-1"></i>{{ active_students }} Active</small>
+                        <small class="badge badge-soft-success mt-2"><i class="fa-solid fa-circle-check me-1"></i>{{ active_students }} Active</small>
                     </div>
-                    <div class="p-3 bg-primary bg-opacity-10 text-primary rounded-3">
-                        <i class="fa-solid fa-user-graduate fa-2x"></i>
+                    <div class="stat-icon-wrapper bg-primary bg-opacity-10 text-primary">
+                        <i class="fa-solid fa-user-graduate"></i>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="col-sm-6 col-xl-3">
-            <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100">
+            <div class="card stat-card h-100">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <span class="text-muted small fw-semibold text-uppercase">Faculty & Staff</span>
+                        <span class="text-muted small fw-bold text-uppercase">Faculty & Staff</span>
                         <h3 class="fw-bold mb-0 text-success mt-1">{{ total_faculty }}</h3>
-                        <small class="text-muted">{{ total_depts }} Departments</small>
+                        <small class="badge badge-soft-primary mt-2"><i class="fa-solid fa-building-columns me-1"></i>{{ total_depts }} Departments</small>
                     </div>
-                    <div class="p-3 bg-success bg-opacity-10 text-success rounded-3">
-                        <i class="fa-solid fa-chalkboard-teacher fa-2x"></i>
+                    <div class="stat-icon-wrapper bg-success bg-opacity-10 text-success">
+                        <i class="fa-solid fa-chalkboard-user"></i>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="col-sm-6 col-xl-3">
-            <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100">
+            <div class="card stat-card h-100">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <span class="text-muted small fw-semibold text-uppercase">Fee Collections</span>
+                        <span class="text-muted small fw-bold text-uppercase">Fee Collections</span>
                         <h3 class="fw-bold mb-0 text-dark mt-1">{{ total_fee_collected|currency }}</h3>
-                        <small class="text-danger">Pending: {{ total_fee_pending|currency }}</small>
+                        <small class="badge badge-soft-danger mt-2">Due: {{ total_fee_pending|currency }}</small>
                     </div>
-                    <div class="p-3 bg-warning bg-opacity-10 text-warning rounded-3">
-                        <i class="fa-solid fa-indian-rupee-sign fa-2x"></i>
+                    <div class="stat-icon-wrapper bg-warning bg-opacity-10 text-warning">
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="col-sm-6 col-xl-3">
-            <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100">
+            <div class="card stat-card h-100">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <span class="text-muted small fw-semibold text-uppercase">Pending Actions</span>
-                        <h3 class="fw-bold mb-0 text-danger mt-1">{{ pending_leaves + pending_certificates }}</h3>
-                        <small class="text-muted">{{ pending_leaves }} Leaves | {{ pending_certificates }} Certs</small>
+                        <span class="text-muted small fw-bold text-uppercase">Pending Actions</span>
+                        <h3 class="fw-bold mb-0 text-danger mt-1">{{ pending_leaves + pending_certificates + pending_complaints }}</h3>
+                        <small class="badge badge-soft-warning mt-2">{{ pending_leaves }} Leaves | {{ pending_certificates }} Certs</small>
                     </div>
-                    <div class="p-3 bg-danger bg-opacity-10 text-danger rounded-3">
-                        <i class="fa-solid fa-clock-rotate-left fa-2x"></i>
+                    <div class="stat-icon-wrapper bg-danger bg-opacity-10 text-danger">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card stat-card h-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small fw-bold text-uppercase">Academic Programs</span>
+                        <h4 class="fw-bold mb-0 text-dark mt-1">{{ total_courses }} Courses</h4>
+                        <small class="text-muted">{{ total_subjects }} Subjects &bull; {{ total_divisions }} Divisions</small>
+                    </div>
+                    <div class="stat-icon-wrapper bg-info bg-opacity-10 text-info">
+                        <i class="fa-solid fa-book-bookmark"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card stat-card h-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small fw-bold text-uppercase">Today's Attendance</span>
+                        <h4 class="fw-bold mb-0 {% if attendance_rate >= 75 %}text-success{% else %}text-warning{% endif %} mt-1">{{ attendance_rate }}%</h4>
+                        <small class="text-muted">{{ today_present }} of {{ today_total }} Marked Sessions</small>
+                    </div>
+                    <div class="stat-icon-wrapper bg-teal bg-opacity-10 text-teal" style="background-color: #f0fdfa; color: #0d9488;">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card stat-card h-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small fw-bold text-uppercase">Active Grievances</span>
+                        <h4 class="fw-bold mb-0 text-danger mt-1">{{ pending_complaints }} Active</h4>
+                        <small class="text-muted">Tickets Under Investigation</small>
+                    </div>
+                    <div class="stat-icon-wrapper bg-danger bg-opacity-10 text-danger">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card stat-card h-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small fw-bold text-uppercase">Upcoming Events</span>
+                        <h4 class="fw-bold mb-0 text-primary mt-1">{{ upcoming_events|length }} Events</h4>
+                        <small class="text-muted">Scheduled on Calendar</small>
+                    </div>
+                    <div class="stat-icon-wrapper bg-purple bg-opacity-10" style="background-color: #faf5ff; color: #9333ea;">
+                        <i class="fa-solid fa-calendar-star"></i>
                     </div>
                 </div>
             </div>
@@ -89,26 +158,26 @@
     <!-- Charts & Analytics Section -->
     <div class="row g-4 mb-4">
         <div class="col-lg-8">
-            <div class="card border-0 shadow-sm rounded-3 h-100">
-                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
-                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-chart-column text-primary me-2"></i>Department-wise Student Enrollment</h6>
-                    <span class="badge bg-light text-muted border">Active Batches</span>
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-header bg-transparent py-3 d-flex justify-content-between align-items-center border-bottom">
+                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-chart-column text-primary me-2"></i>Department-wise Student Enrollment Distribution</h6>
+                    <span class="badge badge-soft-primary border">Active Batches</span>
                 </div>
                 <div class="card-body p-4">
-                    <canvas id="deptStudentsChart" height="120"></canvas>
+                    <canvas id="deptStudentsChart" height="110"></canvas>
                 </div>
             </div>
         </div>
 
         <div class="col-lg-4">
-            <div class="card border-0 shadow-sm rounded-3 h-100">
-                <div class="card-header bg-white py-3 border-bottom">
-                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-chart-pie text-success me-2"></i>Fee Realization Rate</h6>
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-header bg-transparent py-3 border-bottom">
+                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-chart-pie text-success me-2"></i>Fee Realization Overview</h6>
                 </div>
-                <div class="card-body p-4 text-center">
-                    <canvas id="feePieChart" height="180"></canvas>
+                <div class="card-body p-4 text-center d-flex flex-column justify-content-center">
+                    <canvas id="feePieChart" height="160"></canvas>
                     <div class="mt-3 small text-muted">
-                        Total Demanded: <strong>{{ total_fee_demanded|currency }}</strong>
+                        Total Demanded: <strong class="text-dark">{{ total_fee_demanded|currency }}</strong>
                     </div>
                 </div>
             </div>
@@ -118,17 +187,17 @@
     <!-- Recent Records & Quick Links -->
     <div class="row g-4">
         <div class="col-lg-6">
-            <div class="card border-0 shadow-sm rounded-3 h-100">
-                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
-                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-receipt text-primary me-2"></i>Recent Fee Payments</h6>
-                    <a href="{{ url_for('fee.index') }}" class="small text-decoration-none">View All</a>
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-header bg-transparent py-3 d-flex justify-content-between align-items-center border-bottom">
+                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-receipt text-primary me-2"></i>Recent Fee Collections</h6>
+                    <a href="{{ url_for('fee.index') }}" class="small text-decoration-none fw-semibold">View All Receipts &rarr;</a>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0 small">
-                            <thead class="table-light">
+                            <thead>
                                 <tr>
-                                    <th>Receipt</th>
+                                    <th>Receipt #</th>
                                     <th>Student</th>
                                     <th>Amount</th>
                                     <th>Mode</th>
@@ -141,12 +210,15 @@
                                         <td><code>{{ p.receipt_number }}</code></td>
                                         <td class="fw-semibold">{{ p.student.full_name if p.student else '-' }}</td>
                                         <td class="text-success fw-bold">{{ p.amount|currency }}</td>
-                                        <td><span class="badge bg-light text-dark border">{{ p.payment_mode }}</span></td>
+                                        <td><span class="badge badge-soft-secondary">{{ p.payment_mode }}</span></td>
                                         <td class="text-muted">{{ p.payment_date|date_format }}</td>
                                     </tr>
                                 {% else %}
                                     <tr>
-                                        <td colspan="5" class="text-center py-3 text-muted">No recent payment transactions.</td>
+                                        <td colspan="5" class="text-center py-4 text-muted">
+                                            <i class="fa-solid fa-receipt text-muted opacity-50 d-block mb-1 fs-5"></i>
+                                            No fee payment transactions logged yet.
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -157,23 +229,29 @@
         </div>
 
         <div class="col-lg-6">
-            <div class="card border-0 shadow-sm rounded-3 h-100">
-                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-header bg-transparent py-3 d-flex justify-content-between align-items-center border-bottom">
                     <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-bullhorn text-warning me-2"></i>Latest Institutional Notices</h6>
-                    <a href="{{ url_for('notice.index') }}" class="small text-decoration-none">Manage Notices</a>
+                    <a href="{{ url_for('notice.index') }}" class="small text-decoration-none fw-semibold">Notice Board &rarr;</a>
                 </div>
                 <div class="list-group list-group-flush small">
                     {% for n in recent_notices %}
-                        <div class="list-group-item p-3">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <h6 class="mb-1 fw-bold text-dark">{{ n.title }}</h6>
-                                <span class="badge {% if n.priority == 'Urgent' %}bg-danger{% elif n.priority == 'High' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">{{ n.priority }}</span>
+                        <div class="list-group-item p-3 border-bottom">
+                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                <h6 class="mb-0 fw-bold text-dark">{{ n.title }}</h6>
+                                <span class="badge {% if n.priority == 'Urgent' %}badge-soft-danger{% elif n.priority == 'High' %}badge-soft-warning{% else %}badge-soft-secondary{% endif %}">{{ n.priority }}</span>
                             </div>
-                            <p class="text-muted mb-1 text-truncate">{{ n.content }}</p>
-                            <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{ n.publish_date|date_format }} | Audience: <strong>{{ n.target_audience }}</strong></small>
+                            <p class="text-muted mb-2 text-truncate">{{ n.content }}</p>
+                            <div class="d-flex justify-content-between align-items-center text-muted" style="font-size: 0.75rem;">
+                                <span><i class="fa-regular fa-clock me-1"></i>{{ n.publish_date|date_format }}</span>
+                                <span class="badge bg-light text-dark border">Audience: {{ n.target_audience }}</span>
+                            </div>
                         </div>
                     {% else %}
-                        <div class="p-4 text-center text-muted">No notices posted.</div>
+                        <div class="p-4 text-center text-muted">
+                            <i class="fa-solid fa-bullhorn text-muted opacity-50 d-block mb-1 fs-5"></i>
+                            No circulars or notices posted.
+                        </div>
                     {% endfor %}
                 </div>
             </div>
@@ -181,11 +259,13 @@
     </div>
 </div>
 
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     // Dept bar chart
     const deptCtx = document.getElementById('deptStudentsChart');
-    if (deptCtx) {
+    if (deptCtx && typeof Chart !== 'undefined') {
         new Chart(deptCtx, {
             type: 'bar',
             data: {
@@ -193,37 +273,42 @@ document.addEventListener("DOMContentLoaded", function() {
                 datasets: [{
                     label: 'Enrolled Students',
                     data: {{ dept_student_counts|tojson }},
-                    backgroundColor: '#3b82f6',
+                    backgroundColor: '#2563eb',
+                    hoverBackgroundColor: '#1d4ed8',
                     borderRadius: 6
                 }]
             },
             options: {
                 responsive: true,
                 plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+                scales: { 
+                    y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: 'rgba(226, 232, 240, 0.6)' } },
+                    x: { grid: { display: false } }
+                }
             }
         });
     }
 
     // Fee pie chart
     const feeCtx = document.getElementById('feePieChart');
-    if (feeCtx) {
+    if (feeCtx && typeof Chart !== 'undefined') {
         new Chart(feeCtx, {
             type: 'doughnut',
             data: {
-                labels: ['Collected', 'Pending'],
+                labels: ['Collected', 'Pending Due'],
                 datasets: [{
                     data: [{{ total_fee_collected }}, {{ total_fee_pending }}],
                     backgroundColor: ['#10b981', '#ef4444'],
-                    borderWidth: 0
+                    borderWidth: 0,
+                    hoverOffset: 4
                 }]
             },
             options: {
                 responsive: true,
                 plugins: {
-                    legend: { position: 'bottom' }
+                    legend: { position: 'bottom', labels: { boxWidth: 12, padding: 14 } }
                 },
-                cutout: '70%'
+                cutout: '72%'
             }
         });
     }

@@ -17,21 +17,43 @@
     <!-- Custom ERP Core Stylesheet -->
     <style>
         :root {
-            --cc-primary: #1e3a8a;
+            --cc-primary: #1e40af;
             --cc-primary-dark: #172554;
-            --cc-primary-light: #2563eb;
-            --cc-accent: #0f766e;
+            --cc-primary-light: #3b82f6;
+            --cc-accent: #0d9488;
             --cc-accent-light: #14b8a6;
             --cc-surface: #f8fafc;
+            --cc-surface-card: #ffffff;
             --cc-sidebar-bg: #0f172a;
             --cc-sidebar-hover: #1e293b;
             --cc-sidebar-active: #2563eb;
             --cc-text-main: #0f172a;
             --cc-text-muted: #64748b;
             --cc-border: #e2e8f0;
+            --cc-border-subtle: #f1f5f9;
             --cc-card-bg: #ffffff;
+            --cc-shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+            --cc-shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.08), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+            --cc-shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+            --cc-shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
             --font-body: 'Plus Jakarta Sans', sans-serif;
             --font-heading: 'Space Grotesk', sans-serif;
+        }
+
+        [data-bs-theme="dark"] {
+            --cc-primary: #3b82f6;
+            --cc-primary-dark: #1d4ed8;
+            --cc-primary-light: #60a5fa;
+            --cc-surface: #0b0f19;
+            --cc-surface-card: #111827;
+            --cc-sidebar-bg: #030712;
+            --cc-sidebar-hover: #111827;
+            --cc-sidebar-active: #2563eb;
+            --cc-text-main: #f3f4f6;
+            --cc-text-muted: #9ca3af;
+            --cc-border: #1f2937;
+            --cc-border-subtle: #1e293b;
+            --cc-card-bg: #111827;
         }
 
         body {
@@ -42,11 +64,14 @@
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+            letter-spacing: -0.01em;
+            -webkit-font-smoothing: antialiased;
         }
 
         h1, h2, h3, h4, h5, h6, .brand-font {
             font-family: var(--font-heading);
-            letter-spacing: -0.02em;
+            letter-spacing: -0.025em;
+            color: var(--cc-text-main);
         }
 
         /* Sidebar Styling */
@@ -55,22 +80,22 @@
             background-color: var(--cc-sidebar-bg);
             color: #cbd5e1;
             min-height: 100vh;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1040;
-            box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 2px 0 16px rgba(0, 0, 0, 0.12);
         }
 
         .sidebar .nav-link {
             color: #94a3b8;
             padding: 0.65rem 1rem;
-            margin: 0.15rem 0.75rem;
-            border-radius: 0.5rem;
+            margin: 0.2rem 0.75rem;
+            border-radius: 0.625rem;
             font-size: 0.875rem;
             font-weight: 500;
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            transition: all 0.15s ease-in-out;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
             white-space: nowrap;
         }
@@ -80,23 +105,25 @@
             font-size: 1rem;
             text-align: center;
             opacity: 0.85;
-            transition: transform 0.15s ease;
+            transition: transform 0.2s ease;
         }
 
         .sidebar .nav-link:hover {
             color: #ffffff;
             background-color: var(--cc-sidebar-hover);
+            transform: translateX(3px);
         }
 
         .sidebar .nav-link:hover i {
-            transform: scale(1.1);
+            transform: scale(1.15);
+            opacity: 1;
         }
 
         .sidebar .nav-link.active {
             color: #ffffff;
-            background-color: var(--cc-sidebar-active);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             font-weight: 600;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
         }
 
         .sidebar .nav-link.active i {
@@ -109,61 +136,113 @@
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: #64748b;
-            padding: 1.25rem 1.25rem 0.4rem;
+            padding: 1.25rem 1.25rem 0.35rem;
         }
 
         /* Top Navbar */
         .top-navbar {
-            background-color: #ffffff;
+            background-color: var(--cc-card-bg);
             border-bottom: 1px solid var(--cc-border);
             height: 68px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            box-shadow: var(--cc-shadow-xs);
             position: sticky;
             top: 0;
             z-index: 1020;
+            backdrop-filter: blur(8px);
         }
 
         /* Card enhancements */
-        .erp-card {
+        .erp-card, .card {
             background: var(--cc-card-bg);
             border: 1px solid var(--cc-border);
-            border-radius: 0.75rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-            transition: box-shadow 0.2s ease, transform 0.2s ease;
+            border-radius: 0.875rem;
+            box-shadow: var(--cc-shadow-xs);
+            transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
         }
 
-        .erp-card:hover {
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        .erp-card:hover, .card-hover:hover {
+            box-shadow: var(--cc-shadow-md);
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
         }
 
         .stat-card {
-            border-radius: 0.75rem;
+            border-radius: 0.875rem;
             border: 1px solid var(--cc-border);
-            background: #ffffff;
+            background: var(--cc-card-bg);
             padding: 1.25rem;
             position: relative;
             overflow: hidden;
+            box-shadow: var(--cc-shadow-xs);
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--cc-shadow-md);
+            transform: translateY(-2px);
         }
 
         .stat-icon-wrapper {
             width: 48px;
             height: 48px;
-            border-radius: 0.625rem;
+            border-radius: 0.75rem;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.25rem;
+            box-shadow: var(--cc-shadow-xs);
+        }
+
+        .btn {
+            border-radius: 0.5rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: all 0.15s ease-in-out;
         }
 
         .btn-primary {
-            background-color: var(--cc-primary);
-            border-color: var(--cc-primary);
-            font-weight: 500;
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            border-color: #1e40af;
+            box-shadow: 0 2px 6px rgba(30, 64, 175, 0.25);
         }
 
         .btn-primary:hover, .btn-primary:focus {
-            background-color: var(--cc-primary-dark);
-            border-color: var(--cc-primary-dark);
+            background: linear-gradient(135deg, #172554 0%, #1e40af 100%);
+            border-color: #172554;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(30, 64, 175, 0.35);
+        }
+
+        /* Form Controls */
+        .form-control, .form-select {
+            border-radius: 0.5rem;
+            border: 1px solid var(--cc-border);
+            padding: 0.55rem 0.875rem;
+            font-size: 0.875rem;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+            background-color: var(--cc-card-bg);
+            color: var(--cc-text-main);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--cc-primary-light);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+            outline: 0;
+        }
+
+        .form-label {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--cc-text-main);
+            margin-bottom: 0.35rem;
+        }
+
+        /* Soft Badges */
+        .badge {
+            font-weight: 600;
+            padding: 0.35em 0.65em;
+            border-radius: 0.375rem;
+            letter-spacing: 0.02em;
         }
 
         .badge-soft-primary { background-color: #eff6ff; color: #1e40af; border: 1px solid #dbeafe; }
@@ -171,30 +250,49 @@
         .badge-soft-warning { background-color: #fffbeb; color: #b45309; border: 1px solid #fef3c7; }
         .badge-soft-danger { background-color: #fef2f2; color: #b91c1c; border: 1px solid #fee2e2; }
         .badge-soft-info { background-color: #f0f9ff; color: #0369a1; border: 1px solid #e0f2fe; }
+        .badge-soft-secondary { background-color: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
 
+        /* Tables */
         .table-responsive {
-            border-radius: 0.75rem;
+            border-radius: 0.875rem;
             border: 1px solid var(--cc-border);
-            background: #ffffff;
+            background: var(--cc-card-bg);
+            overflow: hidden;
+        }
+
+        .table {
+            margin-bottom: 0;
+            color: var(--cc-text-main);
         }
 
         .table > :not(caption) > * > * {
-            padding: 0.85rem 1rem;
+            padding: 0.85rem 1.15rem;
             vertical-align: middle;
-            border-bottom-color: var(--cc-border);
+            border-bottom: 1px solid var(--cc-border);
         }
 
         .table thead th {
-            background-color: #f8fafc;
-            color: #475569;
-            font-weight: 600;
-            font-size: 0.8125rem;
+            background-color: var(--cc-surface);
+            color: var(--cc-text-muted);
+            font-weight: 700;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.03em;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--cc-border);
+            white-space: nowrap;
         }
 
+        .table tbody tr {
+            transition: background-color 0.15s ease;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(37, 99, 235, 0.03);
+        }
+
+        /* Empty States */
         .empty-state {
-            padding: 3rem 1.5rem;
+            padding: 3.5rem 1.5rem;
             text-align: center;
         }
 
@@ -209,6 +307,24 @@
             justify-content: center;
             font-size: 1.75rem;
             margin-bottom: 1rem;
+        }
+
+        /* Modals */
+        .modal-content {
+            border-radius: 1rem;
+            border: 1px solid var(--cc-border);
+            box-shadow: var(--cc-shadow-lg);
+            background-color: var(--cc-card-bg);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--cc-border);
+            padding: 1.25rem 1.5rem;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--cc-border);
+            padding: 1rem 1.5rem;
         }
 
         /* Mobile Drawer */
@@ -232,7 +348,7 @@
                 bottom: 0;
                 background: rgba(15, 23, 42, 0.6);
                 z-index: 1030;
-                backdrop-filter: blur(2px);
+                backdrop-filter: blur(4px);
             }
             .sidebar-backdrop.show {
                 display: block;
@@ -627,25 +743,32 @@
             <header class="top-navbar px-3 px-md-4 d-flex align-items-center justify-content-between no-print">
                 <div class="d-flex align-items-center gap-3">
                     {% if current_user.is_authenticated %}
-                        <button class="btn btn-light btn-sm border d-lg-none" type="button" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+                        <button class="btn btn-light btn-sm border d-inline-flex d-lg-none align-items-center justify-content-center shadow-xs" type="button" onclick="toggleSidebar()" aria-label="Toggle Sidebar" style="width: 34px; height: 34px;">
                             <i class="fa-solid fa-bars"></i>
                         </button>
                     {% else %}
                         <a href="{{ url_for('main.index') }}" class="d-flex align-items-center gap-2 text-decoration-none text-dark">
-                            <div class="bg-primary rounded p-2 text-white"><i class="fa-solid fa-building-columns"></i></div>
+                            <div class="bg-primary rounded-3 p-2 text-white shadow-xs"><i class="fa-solid fa-building-columns"></i></div>
                             <span class="fw-bold fs-5 brand-font">{{ APP_NAME }}</span>
                         </a>
                     {% endif %}
                     <div class="d-flex align-items-center gap-2">
-                        <span class="text-secondary fw-semibold fs-7 d-none d-md-inline"><i class="fa-solid fa-landmark text-primary me-1"></i> {{ COLLEGE_NAME }}</span>
+                        <span class="text-secondary fw-semibold fs-7 d-none d-md-inline">
+                            <i class="fa-solid fa-landmark text-primary me-1"></i> {{ COLLEGE_NAME }}
+                        </span>
                     </div>
                 </div>
 
                 <div class="d-flex align-items-center gap-2 gap-md-3">
+                    <!-- Theme Toggle (Light / Dark) -->
+                    <button class="btn btn-light btn-sm rounded-circle p-2 border shadow-xs d-flex align-items-center justify-content-center" type="button" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Theme" style="width: 34px; height: 34px;">
+                        <i class="fa-solid fa-moon text-secondary" id="themeToggleIcon"></i>
+                    </button>
+
                     {% if current_user.is_authenticated %}
                         <!-- Notification Bell Center -->
                         <div class="dropdown">
-                            <button class="btn btn-light btn-sm position-relative rounded-pill px-3 border dropdown-toggle" type="button" id="notifDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn btn-light btn-sm position-relative rounded-pill px-3 border dropdown-toggle shadow-xs" type="button" id="notifDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-bell text-secondary"></i>
                                 <span class="d-none d-sm-inline ms-1 text-secondary">Alerts</span>
                                 {% if unread_notifications_count > 0 %}
@@ -690,7 +813,7 @@
 
                         <!-- User Profile Dropdown -->
                         <div class="dropdown">
-                            <button class="btn btn-light btn-sm d-flex align-items-center gap-2 rounded-pill px-3 border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn btn-light btn-sm d-flex align-items-center gap-2 rounded-pill px-3 border dropdown-toggle shadow-xs" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="{{ current_user.profile_image_url }}" alt="Avatar" class="rounded-circle object-fit-cover shadow-xs" width="26" height="26">
                                 <span class="fw-semibold small text-dark d-none d-sm-inline">{{ current_user.first_name }}</span>
                             </button>
@@ -759,6 +882,41 @@
             if (sidebar) sidebar.classList.toggle('show');
             if (backdrop) backdrop.classList.toggle('show');
         }
+
+        function initTheme() {
+            try {
+                const savedTheme = localStorage.getItem('cc_theme');
+                if (savedTheme === 'dark') {
+                    document.documentElement.setAttribute('data-bs-theme', 'dark');
+                    const icon = document.getElementById('themeToggleIcon');
+                    if (icon) {
+                        icon.classList.remove('fa-moon');
+                        icon.classList.add('fa-sun');
+                    }
+                }
+            } catch (e) {}
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-bs-theme', newTheme);
+            try {
+                localStorage.setItem('cc_theme', newTheme);
+            } catch (e) {}
+            const icon = document.getElementById('themeToggleIcon');
+            if (icon) {
+                if (newTheme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+
+        initTheme();
     </script>
     {% block extra_js %}{% endblock %}
 </body>

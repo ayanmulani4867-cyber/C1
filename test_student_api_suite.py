@@ -5,10 +5,14 @@ including Bearer token authentication, student authorization isolation,
 data schema completeness, and error handling.
 """
 import json
-import sys
 import os
+import sys
 
-# Ensure project root is in sys.path
+# Ensure UTF-8 output on Windows consoles
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
+
+# Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from app import create_app
