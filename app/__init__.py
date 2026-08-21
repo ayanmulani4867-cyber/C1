@@ -63,14 +63,21 @@ def create_app(config_name=None):
             return jsonify({'success': False, 'error': 'Unauthorized', 'message': 'Authentication required.'}), 401
         return redirect(url_for('auth.login', next=request.url))
 
-    # Exempt Bearer authenticated requests from cookie-based CSRF checks
-    orig_csrf_exempt = csrf._is_exempt
-    def custom_csrf_exempt():
+    # Configure CSRF protection using public Flask-WTF APIs
+    app.config.setdefault('WTF_CSRF_CHECK_DEFAULT', False)
+
+    @app.before_request
+    def csrf_protect_requests():
+        if not app.config.get('WTF_CSRF_ENABLED', True):
+            return
+        # Exempt Bearer-authenticated requests from cookie-based CSRF checks
         auth = request.headers.get('Authorization', '')
         if auth.startswith('Bearer '):
-            return True
-        return orig_csrf_exempt()
-    csrf._is_exempt = custom_csrf_exempt
+            return
+        try:
+            csrf.protect(apply_exemptions=True)
+        except TypeError:
+            csrf.protect()
 
     @app.before_request
     def load_bearer_user():
