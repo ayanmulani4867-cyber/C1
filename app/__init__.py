@@ -67,30 +67,52 @@ def create_app(config_name=None):
     app.config.setdefault('WTF_CSRF_CHECK_DEFAULT', False)
 
     @app.before_request
-    def csrf_protect_requests():
+    def process_auth_and_csrf():
+        # 1. Cryptographically verify Bearer token from Authorization header
+        auth_header = request.headers.get('Authorization', '').strip()
+        has_valid_bearer = False
+
+        if auth_header and auth_header.lower().startswith('bearer '):
+            token = auth_header.split(' ', 1)[1].strip()
+            if token:
+                from app.utils.api_auth import verify_api_token
+                user, student, _ = verify_api_token(token)
+                if user and user.is_active:
+                    from flask import g
+                    g._login_user = user
+                    g.current_user = user
+                    g.current_student = student
+                    has_valid_bearer = True
+
+        # 2. Cryptographically verify X-Auth-Token header (Android/API alternative)
+        elif request.headers.get('X-Auth-Token'):
+            token = request.headers.get('X-Auth-Token').strip()
+            if token:
+                from app.utils.api_auth import verify_api_token
+                user, student, _ = verify_api_token(token)
+                if user and user.is_active:
+                    from flask import g
+                    g._login_user = user
+                    g.current_user = user
+                    g.current_student = student
+                    has_valid_bearer = True
+
+        # 3. If request has a valid Bearer token, bypass cookie-session CSRF
+        if has_valid_bearer:
+            return
+
+        # 4. Skip CSRF for REST API endpoints and health check
+        if request.path.startswith('/api/') or request.path == '/health':
+            return
+
+        # 5. Enforce CSRF protection for normal browser cookie-session requests
         if not app.config.get('WTF_CSRF_ENABLED', True):
             return
-        # Exempt Bearer-authenticated requests from cookie-based CSRF checks
-        auth = request.headers.get('Authorization', '')
-        if auth.startswith('Bearer '):
-            return
+
         try:
             csrf.protect(apply_exemptions=True)
         except TypeError:
             csrf.protect()
-
-    @app.before_request
-    def load_bearer_user():
-        auth_header = request.headers.get('Authorization', '')
-        if auth_header.startswith('Bearer '):
-            from flask import g
-            from app.utils.api_auth import verify_api_token
-            token = auth_header.split(' ', 1)[1].strip()
-            user, student, _ = verify_api_token(token)
-            if user and user.is_active:
-                g._login_user = user
-                g.current_user = user
-                g.current_student = student
     
     # Custom Jinja filters and helpers
     @app.template_filter('currency')
@@ -219,14 +241,11 @@ def create_app(config_name=None):
     # Error handlers
     @app.errorhandler(CSRFError)
     def handle_csrf_error(error):
-        if request.path.startswith('/api/'):
+        msg = error.description if hasattr(error, 'description') else str(error)
+        if request.path.startswith('/api/') or request.is_json or 'application/json' in request.headers.get('Accept', ''):
             from flask import jsonify
-            return jsonify({'success': False, 'error': 'CSRF Error', 'message': str(error)}), 400
-        flash('Security validation issue: please refresh and try submitting again.', 'warning')
-        referer = request.referrer
-        if referer and referer.startswith(request.host_url):
-            return redirect(referer)
-        return redirect(url_for('auth.login'))
+            return jsonify({'success': False, 'error': 'CSRF Error', 'message': msg}), 400
+        return f"400 Bad Request: {msg}", 400
 
     @app.errorhandler(403)
     def forbidden_error(error):
