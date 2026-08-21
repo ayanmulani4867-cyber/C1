@@ -1,64 +1,82 @@
 {% extends "base.html" %}
 
-{% block title %}Attendance Management - {{ APP_NAME }}{% endblock %}
+{% block title %}Attendance Control & Registers — {{ APP_NAME }}{% endblock %}
 
 {% block content %}
 <div class="container-fluid py-3">
-    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-        <div>
-            <h4 class="fw-bold brand-font mb-1">Attendance Control & Roll Registers</h4>
-            <p class="text-muted small mb-0">Record, review, and analyze daily classroom attendance.</p>
-        </div>
-        <div class="d-flex gap-2">
-            <a href="{{ url_for('attendance.mark') }}" class="btn btn-primary btn-sm px-3">
-                <i class="fa-solid fa-clipboard-user me-1"></i> Take Attendance
-            </a>
-            <a href="{{ url_for('attendance.low_attendance') }}" class="btn btn-outline-danger btn-sm px-3">
-                <i class="fa-solid fa-triangle-exclamation me-1"></i> Low Attendance Defaulters
-            </a>
+    <!-- Header -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4 text-white overflow-hidden position-relative" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0d9488 100%);">
+        <div class="card-body p-4 position-relative z-1">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center fw-bold shadow-md" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                        <i class="fa-solid fa-clipboard-user"></i>
+                    </div>
+                    <div>
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="badge bg-white bg-opacity-25 text-white px-2 py-1">Classroom Registers</span>
+                            <span class="badge bg-white text-primary px-2 py-1 fw-bold">Live Tracking</span>
+                        </div>
+                        <h3 class="fw-bold brand-font mb-1 text-white">Attendance Control & Roll Registers</h3>
+                        <p class="text-white-50 small mb-0">Record daily lecture attendance, track biometric attendance trends, and monitor student eligibility.</p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <a href="{{ url_for('attendance.low_attendance') }}" class="btn btn-outline-light btn-sm rounded-pill px-3 shadow-xs">
+                        <i class="fa-solid fa-triangle-exclamation me-1"></i> Low Attendance Defaulters
+                    </a>
+                    <a href="{{ url_for('attendance.mark') }}" class="btn btn-light text-primary btn-sm rounded-pill px-3 fw-semibold shadow-xs">
+                        <i class="fa-solid fa-check-double me-1"></i> Take Attendance
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Recent Attendance Sessions -->
-    <div class="card border-0 shadow-sm rounded-3">
-        <div class="card-header bg-white py-3 border-bottom">
-            <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-clock-rotate-left text-primary me-2"></i>Recent Attendance Sessions</h6>
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+            <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-clock-rotate-left text-primary me-2"></i>Recent Classroom Attendance Sessions</h6>
+            <span class="badge badge-soft-primary">{{ recent_sessions|length }} Recent Logs</span>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0 small">
+                <table class="table table-hover align-middle mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th>Date</th>
+                            <th class="ps-4">Date</th>
                             <th>Division & Section</th>
                             <th>Subject</th>
                             <th>Time Slot</th>
-                            <th>Conducted By</th>
-                            <th>Present / Total</th>
-                            <th class="text-end">Action</th>
+                            <th>Instructor</th>
+                            <th>Attendance Rate</th>
+                            <th class="text-end pe-4">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for s in recent_sessions %}
                             <tr>
-                                <td><strong>{{ s.date|date_format }}</strong></td>
-                                <td><span class="badge bg-light text-dark border">Div {{ s.class_division.name if s.class_division else '-' }}</span></td>
-                                <td class="fw-semibold">{{ s.subject.name if s.subject else '-' }}</td>
-                                <td>{{ s.time_slot }}</td>
-                                <td>{{ s.faculty.full_name if s.faculty else 'Faculty' }}</td>
+                                <td class="ps-4"><strong>{{ s.date.strftime('%d %b %Y') if s.date else '-' }}</strong></td>
+                                <td><span class="badge badge-soft-primary">Div {{ s.class_division.name if s.class_division else '-' }}</span></td>
+                                <td class="fw-semibold text-dark">{{ s.subject.name if s.subject else '-' }}</td>
+                                <td><span class="badge badge-soft-secondary">{{ s.time_slot }}</span></td>
+                                <td>{{ s.faculty.full_name if s.faculty else 'Faculty Instructor' }}</td>
                                 <td>
-                                    <span class="badge bg-success">{{ s.records.filter_by(status='Present').count() }} Present</span>
-                                    <span class="badge bg-danger">{{ s.records.filter_by(status='Absent').count() }} Absent</span>
+                                    <span class="badge badge-soft-success">{{ s.records.filter_by(status='Present').count() }} Present</span>
+                                    <span class="badge badge-soft-danger">{{ s.records.filter_by(status='Absent').count() }} Absent</span>
                                 </td>
-                                <td class="text-end">
-                                    <a href="{{ url_for('attendance.session_detail', session_id=s.id) }}" class="btn btn-outline-secondary btn-sm">
-                                        <i class="fa-solid fa-eye me-1"></i> Details
+                                <td class="text-end pe-4">
+                                    <a href="{{ url_for('attendance.session_detail', session_id=s.id) }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                                        <i class="fa-solid fa-eye me-1"></i> View Register
                                     </a>
                                 </td>
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="7" class="text-center py-4 text-muted">No attendance sessions recorded yet.</td>
+                                <td colspan="7" class="text-center py-5 text-muted">
+                                    <i class="fa-solid fa-calendar-xmark fa-2x mb-2 text-slate-300"></i>
+                                    <p class="mb-0">No classroom attendance sessions recorded yet.</p>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

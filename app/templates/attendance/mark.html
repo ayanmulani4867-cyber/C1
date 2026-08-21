@@ -1,18 +1,36 @@
 {% extends "base.html" %}
 
-{% block title %}Mark Classroom Attendance - {{ APP_NAME }}{% endblock %}
+{% block title %}Mark Classroom Attendance — {{ APP_NAME }}{% endblock %}
 
 {% block content %}
 <div class="container-fluid py-3">
-    <div class="card shadow-sm border-0 rounded-3 mb-4">
-        <div class="card-header bg-white py-3 border-bottom">
-            <h5 class="fw-bold mb-0 text-primary"><i class="fa-solid fa-clipboard-user me-2"></i>Mark Classroom Attendance</h5>
+    <!-- Header -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4 text-white overflow-hidden position-relative" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #0d9488 100%);">
+        <div class="card-body p-4 position-relative z-1">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center fw-bold shadow-md" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                        <i class="fa-solid fa-clipboard-user"></i>
+                    </div>
+                    <div>
+                        <span class="badge bg-white bg-opacity-25 text-white px-2 py-1 mb-1">Roll Call Session</span>
+                        <h3 class="fw-bold brand-font mb-1 text-white">Mark Classroom Attendance</h3>
+                        <p class="text-white-50 small mb-0">Record lecture attendance with 1-click batch status presets and real-time ledger updates.</p>
+                    </div>
+                </div>
+                <a href="{{ url_for('attendance.index') }}" class="btn btn-light text-primary btn-sm rounded-pill px-3 fw-semibold shadow-xs">
+                    <i class="fa-solid fa-arrow-left me-1"></i> Attendance Dashboard
+                </a>
+            </div>
         </div>
+    </div>
+
+    <!-- Filter & Load Bar -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
         <div class="card-body p-4">
-            <!-- Filter Bar -->
-            <form method="GET" action="{{ url_for('attendance.mark') }}" class="row g-3 align-items-end mb-4 border-bottom pb-4">
+            <form method="GET" action="{{ url_for('attendance.mark') }}" class="row g-3 align-items-end">
                 <div class="col-md-3">
-                    <label class="form-label fw-semibold small">Class Division</label>
+                    <label class="form-label small fw-semibold">Class Division <span class="text-danger">*</span></label>
                     <select name="class_division_id" class="form-select form-select-sm" required>
                         <option value="">-- Choose Division --</option>
                         {% for val, label in form.class_division_id.choices %}
@@ -21,7 +39,7 @@
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label fw-semibold small">Subject</label>
+                    <label class="form-label small fw-semibold">Teaching Subject <span class="text-danger">*</span></label>
                     <select name="subject_id" class="form-select form-select-sm" required>
                         <option value="">-- Choose Subject --</option>
                         {% for val, label in form.subject_id.choices %}
@@ -30,11 +48,11 @@
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label fw-semibold small">Date</label>
+                    <label class="form-label small fw-semibold">Date</label>
                     <input type="date" name="date" class="form-control form-control-sm" value="{{ att_date }}">
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label fw-semibold small">Time Slot</label>
+                    <label class="form-label small fw-semibold">Time Slot</label>
                     <select name="time_slot" class="form-select form-select-sm">
                         <option value="09:00 - 10:00 AM" {% if time_slot == '09:00 - 10:00 AM' %}selected{% endif %}>09:00 - 10:00 AM</option>
                         <option value="10:00 - 11:00 AM" {% if time_slot == '10:00 - 11:00 AM' %}selected{% endif %}>10:00 - 11:00 AM</option>
@@ -44,12 +62,35 @@
                     </select>
                 </div>
                 <div class="col-md-1">
-                    <button type="submit" class="btn btn-primary btn-sm w-100">Load</button>
+                    <button type="submit" class="btn btn-primary btn-sm w-100 rounded-pill">
+                        <i class="fa-solid fa-arrows-rotate"></i> Load
+                    </button>
                 </div>
             </form>
+        </div>
+    </div>
 
-            {% if students %}
-                <!-- Roll Call Form -->
+    {% if students %}
+        <!-- Roll Call Register Form -->
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+            <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                    <h6 class="fw-bold mb-0 text-dark">
+                        <i class="fa-solid fa-list-check text-primary me-2"></i>Student Roll Register ({{ students|length }} Students)
+                    </h6>
+                    <small class="text-muted">Select status for each student or apply quick presets.</small>
+                </div>
+                <div class="btn-group btn-group-sm">
+                    <button type="button" class="btn btn-outline-success" onclick="markAll('Present')">
+                        <i class="fa-solid fa-check me-1"></i> Mark All Present
+                    </button>
+                    <button type="button" class="btn btn-outline-danger" onclick="markAll('Absent')">
+                        <i class="fa-solid fa-xmark me-1"></i> Mark All Absent
+                    </button>
+                </div>
+            </div>
+
+            <div class="card-body p-4">
                 <form method="POST" action="{{ url_for('attendance.mark') }}">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                     <input type="hidden" name="class_division_id" value="{{ selected_div_id }}">
@@ -57,34 +98,36 @@
                     <input type="hidden" name="date" value="{{ att_date }}">
                     <input type="hidden" name="time_slot" value="{{ time_slot }}">
 
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold small">Topic Covered Today (Optional)</label>
-                        <input type="text" name="topic_covered" class="form-control form-control-sm" placeholder="e.g. Unit 3 - Dynamic Programming Intro">
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h6 class="fw-bold mb-0">Student Roll Register ({{ students|length }} Students)</h6>
-                        <div class="btn-group btn-group-sm">
-                            <button type="button" class="btn btn-outline-success" onclick="markAll('Present')">All Present</button>
-                            <button type="button" class="btn btn-outline-danger" onclick="markAll('Absent')">All Absent</button>
-                        </div>
+                    <div class="mb-4">
+                        <label class="form-label small fw-semibold">Lecture Syllabus Topic Covered Today</label>
+                        <input type="text" name="topic_covered" class="form-control form-control-sm rounded-3" placeholder="e.g. Unit 3 — Graph Algorithms and Shortest Path Analysis">
                     </div>
 
                     <div class="table-responsive mb-4">
-                        <table class="table table-bordered table-hover align-middle small">
+                        <table class="table table-hover align-middle mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="width: 120px;">Roll No</th>
-                                    <th>Student Name</th>
-                                    <th>Status</th>
-                                    <th>Remarks</th>
+                                    <th class="ps-4" style="width: 130px;">Roll Number</th>
+                                    <th>Student Profile</th>
+                                    <th style="width: 260px;">Attendance Status</th>
+                                    <th>Instructor Remarks</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for s in students %}
                                     <tr>
-                                        <td><code>{{ s.roll_no or s.roll_number }}</code></td>
-                                        <td class="fw-semibold">{{ s.full_name }}</td>
+                                        <td class="ps-4"><code>{{ s.roll_no or s.roll_number }}</code></td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px; font-size: 0.85rem;">
+                                                    {{ s.first_name[0] if s.first_name else 'S' }}
+                                                </div>
+                                                <div>
+                                                    <span class="fw-semibold text-dark">{{ s.full_name }}</span>
+                                                    <div class="text-muted" style="font-size: 0.75rem;">ID: {{ s.student_id }}</div>
+                                                </div>
+                                            </div>
+                                        </td>
                                         <td>
                                             <div class="btn-group btn-group-sm" role="group">
                                                 <input type="radio" class="btn-check att-status" name="status_{{ s.id }}" id="pres_{{ s.id }}" value="Present" checked>
@@ -98,7 +141,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <input type="text" name="remarks_{{ s.id }}" class="form-control form-control-sm" placeholder="Optional remark">
+                                            <input type="text" name="remarks_{{ s.id }}" class="form-control form-control-sm rounded-3" placeholder="Optional notes">
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -106,22 +149,28 @@
                         </table>
                     </div>
 
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" name="save_attendance" value="1" class="btn btn-primary px-4 py-2 fw-semibold">
-                            <i class="fa-solid fa-check-double me-2"></i> Submit & Save Attendance Register
+                    <div class="d-flex justify-content-end gap-2 border-top pt-3">
+                        <a href="{{ url_for('attendance.index') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-4">Cancel</a>
+                        <button type="submit" name="save_attendance" value="1" class="btn btn-primary btn-sm rounded-pill px-4 fw-semibold shadow-sm">
+                            <i class="fa-solid fa-check-double me-1"></i> Save & Lock Attendance Register
                         </button>
                     </div>
                 </form>
-            {% elif selected_div_id %}
-                <div class="alert alert-info text-center">No enrolled students found in this division.</div>
-            {% else %}
-                <div class="text-center py-5 text-muted">
-                    <i class="fa-solid fa-arrow-up fa-2x mb-2 text-primary opacity-50"></i>
-                    <p>Select class division and subject above to load student roll register.</p>
-                </div>
-            {% endif %}
+            </div>
         </div>
-    </div>
+    {% elif selected_div_id %}
+        <div class="card border-0 shadow-sm rounded-4 p-5 text-center text-muted">
+            <i class="fa-solid fa-users-slash fa-2x mb-2 text-slate-300"></i>
+            <h6 class="fw-bold text-dark mb-1">No Students Found</h6>
+            <p class="small mb-0">No active students are currently enrolled in the selected class division.</p>
+        </div>
+    {% else %}
+        <div class="card border-0 shadow-sm rounded-4 p-5 text-center text-muted">
+            <i class="fa-solid fa-arrow-up fa-2x mb-3 text-primary opacity-50"></i>
+            <h6 class="fw-bold text-dark mb-1">Select Class Division & Subject</h6>
+            <p class="small mb-0">Choose the division, subject, and lecture date in the filter bar above to open the roll register.</p>
+        </div>
+    {% endif %}
 </div>
 
 <script>
@@ -131,6 +180,7 @@ function markAll(status) {
             radio.checked = true;
         }
     });
+    showToast('Batch Status Applied', `Marked all students as ${status}.`, 'info');
 }
 </script>
 {% endblock %}

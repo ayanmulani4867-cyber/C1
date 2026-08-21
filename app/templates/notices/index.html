@@ -8,7 +8,7 @@
         <h2 class="h3 fw-bold text-dark mb-1">Campus Notices & Announcements</h2>
         <p class="text-muted small mb-0">Official notices, circulars, exam notifications, and campus updates.</p>
     </div>
-    {% if current_user.is_authenticated and current_user.role in ('admin', 'hod', 'faculty') %}
+    {% if current_user.is_authenticated and current_user.role in ('admin', 'hod', 'faculty', 'ADMIN', 'FACULTY') %}
         <a href="{{ url_for('notice.create') }}" class="btn btn-primary shadow-sm rounded-pill px-4">
             <i class="fa-solid fa-plus me-1"></i> Post New Notice
         </a>

@@ -101,17 +101,17 @@ def export_students():
     data = []
     for s in students:
         data.append({
-            'Roll Number': s.roll_number,
-            'Admission Number': s.admission_number,
+            'Roll Number': s.roll_no or s.roll_number,
+            'Admission Number': s.admission_no or s.admission_number,
             'Full Name': s.full_name,
-            'Gender': s.gender,
-            'Official Email': s.official_email,
-            'Mobile': s.mobile,
+            'Gender': s.gender or '',
+            'Official Email': s.official_email or s.college_email,
+            'Mobile': s.mobile or '',
             'Department': s.department.name if s.department else '',
             'Course': s.course.name if s.course else '',
             'Semester': s.semester.name if s.semester else '',
-            'Division': s.class_division.name if s.class_division else 'Unassigned',
-            'Category': s.admission_category or '',
+            'Division': s.class_division.name if s.class_division else (s.division.name if s.division else 'Unassigned'),
+            'Category': s.admission_type or getattr(s, 'admission_category', '') or '',
             'Admission Date': s.admission_date.strftime('%Y-%m-%d') if s.admission_date else '',
             'Status': s.status
         })
@@ -142,7 +142,7 @@ def export_attendance():
         session = r.session
         data.append({
             'Record ID': r.id,
-            'Student Roll': student.roll_number if student else '',
+            'Student Roll': (student.roll_no or student.roll_number) if student else '',
             'Student Name': student.full_name if student else '',
             'Subject': session.subject.name if session and session.subject else '',
             'Date': session.date.strftime('%Y-%m-%d') if session and session.date else '',
@@ -213,7 +213,7 @@ def export_fees():
         data.append({
             'Receipt Number': p.receipt_number,
             'Payment Date': p.payment_date.strftime('%Y-%m-%d %H:%M') if p.payment_date else '',
-            'Student Roll': p.student.roll_number if p.student else '',
+            'Student Roll': (p.student.roll_no or p.student.roll_number) if p.student else '',
             'Student Name': p.student.full_name if p.student else '',
             'Course': p.student.course.code if p.student and p.student.course else '',
             'Amount Paid (₹)': p.amount_paid,

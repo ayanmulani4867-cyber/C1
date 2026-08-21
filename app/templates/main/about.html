@@ -1,37 +1,95 @@
 {% extends "base.html" %}
 
-{% block title %}About Us | {{ COLLEGE_NAME }}{% endblock %}
+{% block title %}About Institution — {{ COLLEGE_NAME }}{% endblock %}
 
 {% block content %}
-<div class="card p-4 mb-4">
-    <div class="d-flex align-items-center gap-3 mb-3">
-        <div class="bg-primary-subtle text-primary p-3 rounded-circle fs-3"><i class="fa-solid fa-graduation-cap"></i></div>
-        <div>
-            <h2 class="fw-bold mb-0">About {{ COLLEGE_NAME }}</h2>
-            <div class="text-muted">Center of Academic Excellence, Innovation, & Leadership</div>
+<div class="container-fluid py-3">
+    <!-- Header -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4 text-white overflow-hidden position-relative" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0d9488 100%);">
+        <div class="card-body p-4 p-md-5 position-relative z-1">
+            <div class="d-flex align-items-center gap-3">
+                <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center fw-bold shadow-md" style="width: 68px; height: 68px; font-size: 1.8rem;">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <span class="badge bg-white bg-opacity-25 text-white px-3 py-1 rounded-pill mb-1">Institutional Heritage & Vision</span>
+                    <h2 class="fw-bold brand-font text-white mb-1">About {{ COLLEGE_NAME }}</h2>
+                    <p class="text-white-50 small mb-0">Center of Academic Excellence, Transformative Innovation & Ethical Leadership</p>
+                </div>
+            </div>
         </div>
     </div>
-    <hr>
+
+    <!-- Main Content -->
     <div class="row g-4">
         <div class="col-lg-8">
-            <h5>Vision & Mission</h5>
-            <p class="text-muted leading-relaxed">
-                Founded with the mission to impart transformative technical and higher education, {{ COLLEGE_NAME }} offers premier undergraduate, postgraduate, and doctoral degree programs. Our campus integrates world-class laboratories, distinguished research faculty, vibrant student clubs, and state-of-the-art infrastructure.
-            </p>
-            <h5 class="mt-4">Accreditation & Standing</h5>
-            <p class="text-muted leading-relaxed">
-                Affiliated with State Technical University, accredited with NAAC Grade 'A+', and recognized by AICTE / UGC. We foster industry collaborations, global internships, and active placement records across top Fortune 500 tech firms and core research laboratories.
-            </p>
+            <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-compass text-primary me-2"></i> Institutional Vision & Mission</h5>
+                <p class="text-muted leading-relaxed mb-4">
+                    Founded with the profound mission to impart world-class higher education and industry-leading research, <strong>{{ COLLEGE_NAME }}</strong> offers premier undergraduate, postgraduate, and professional degree tracks. Our campus integrates advanced computing labs, specialized engineering centers, distinguished professorships, vibrant entrepreneurial incubators, and state-of-the-art sports facilities.
+                </p>
+
+                <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-award text-warning me-2"></i> Accreditations & National Standing</h5>
+                <p class="text-muted leading-relaxed mb-0">
+                    Accredited with <strong>NAAC Grade 'A++'</strong>, recognized by UGC / AICTE, and affiliated with the State Technical University. We foster robust industry collaborations, global exchange programs, and consistent top placement records with leading multinational technology organizations, financial institutions, and research laboratories.
+                </p>
+            </div>
+
+            <!-- Core Values Grid -->
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-light">
+                        <div class="text-primary mb-2 fs-4"><i class="fa-solid fa-lightbulb"></i></div>
+                        <h6 class="fw-bold text-dark mb-1">Innovation</h6>
+                        <p class="text-muted small mb-0">Fostering critical problem solving, patent development, and research publications.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-light">
+                        <div class="text-success mb-2 fs-4"><i class="fa-solid fa-handshake-angle"></i></div>
+                        <h6 class="fw-bold text-dark mb-1">Integrity</h6>
+                        <p class="text-muted small mb-0">Upholding highest standards of academic honesty, ethical conduct, and inclusivity.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-light">
+                        <div class="text-info mb-2 fs-4"><i class="fa-solid fa-earth-americas"></i></div>
+                        <h6 class="fw-bold text-dark mb-1">Global Impact</h6>
+                        <p class="text-muted small mb-0">Graduating industry-ready leaders who make measurable positive impact worldwide.</p>
+                    </div>
+                </div>
+            </div>
         </div>
+
         <div class="col-lg-4">
-            <div class="bg-light p-3 rounded-3 border">
-                <h6 class="fw-bold mb-3"><i class="fa-solid fa-circle-info text-primary me-2"></i> Quick Facts</h6>
-                <ul class="list-unstyled mb-0 small text-muted d-flex flex-column gap-2">
-                    <li><i class="fa-solid fa-calendar-check text-success me-2"></i> Established: <strong>2005</strong></li>
-                    <li><i class="fa-solid fa-award text-warning me-2"></i> NAAC Accreditation: <strong>Grade A+</strong></li>
-                    <li><i class="fa-solid fa-users text-info me-2"></i> Campus Community: <strong>2,500+ Scholars</strong></li>
-                    <li><i class="fa-solid fa-location-dot text-danger me-2"></i> Campus Area: <strong>45 Acres Green Campus</strong></li>
+            <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-light border">
+                <h6 class="fw-bold mb-3 text-dark"><i class="fa-solid fa-circle-info text-primary me-2"></i> Campus Snapshot</h6>
+                <ul class="list-unstyled mb-0 small text-muted d-flex flex-column gap-3">
+                    <li class="d-flex align-items-center justify-content-between">
+                        <span><i class="fa-solid fa-calendar-check text-success me-2"></i> Established:</span>
+                        <strong class="text-dark">2005</strong>
+                    </li>
+                    <li class="d-flex align-items-center justify-content-between">
+                        <span><i class="fa-solid fa-award text-warning me-2"></i> NAAC Accreditation:</span>
+                        <span class="badge badge-soft-success">Grade A++</span>
+                    </li>
+                    <li class="d-flex align-items-center justify-content-between">
+                        <span><i class="fa-solid fa-users text-info me-2"></i> Scholars Enrolled:</span>
+                        <strong class="text-dark">2,500+ Active</strong>
+                    </li>
+                    <li class="d-flex align-items-center justify-content-between">
+                        <span><i class="fa-solid fa-map-location-dot text-danger me-2"></i> Campus Infrastructure:</span>
+                        <strong class="text-dark">45 Acres Smart Campus</strong>
+                    </li>
                 </ul>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-primary text-white">
+                <h6 class="fw-bold mb-2 text-white"><i class="fa-solid fa-headset me-2 text-warning"></i> Campus Helpdesk</h6>
+                <p class="text-white-50 small mb-3">Have questions about admissions, transcripts, or campus services?</p>
+                <a href="{{ url_for('main.contact') }}" class="btn btn-light text-primary btn-sm rounded-pill w-100 fw-bold">
+                    Contact Academic Desk →
+                </a>
             </div>
         </div>
     </div>
