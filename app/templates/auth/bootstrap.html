@@ -12,26 +12,25 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>
+    <style id="erp-bootstrap-style">
         :root {
             --cc-primary: #1e3a8a;
             --cc-surface: #f8fafc;
             --font-body: 'Plus Jakarta Sans', sans-serif;
             --font-heading: 'Space Grotesk', sans-serif;
         }
-        body {
-            font-family: var(--font-body);
-            background-color: var(--cc-surface);
+        .bootstrap-wrapper {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0;
+            background-color: var(--cc-surface);
             padding: 1.5rem;
         }
         .bootstrap-card {
             background: #ffffff;
             border-radius: 1rem;
+            border: 1px solid #e2e8f0;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
             padding: 2.5rem;
             max-width: 440px;
@@ -46,13 +45,15 @@
         }
     </style>
 </head>
-<body>
-    <div id="erp-bootstrap-root" class="bootstrap-card">
-        <div class="spinner-border spinner-custom mb-3" role="status">
-            <span class="visually-hidden">Loading Campus Connect...</span>
+<body class="bg-light">
+    <div class="bootstrap-wrapper">
+        <div id="erp-bootstrap-root" class="bootstrap-card">
+            <div class="spinner-border spinner-custom mb-3" role="status">
+                <span class="visually-hidden">Loading Campus Connect...</span>
+            </div>
+            <h5 class="fw-bold text-dark mb-1">Campus Connect ERP</h5>
+            <p class="text-muted small mb-0">Restoring authenticated session...</p>
         </div>
-        <h5 class="fw-bold text-dark mb-1">Campus Connect ERP</h5>
-        <p class="text-muted small mb-0">Restoring authenticated session...</p>
     </div>
 
     <!-- Bootstrap JS Bundle -->

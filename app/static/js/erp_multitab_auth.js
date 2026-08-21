@@ -37,12 +37,28 @@
         const parser = new DOMParser();
         const newDoc = parser.parseFromString(html, 'text/html');
 
-        // 1. Synchronize Document Title
+        // 1. Synchronize Document Title & <html> attributes
         if (newDoc.title) {
             document.title = newDoc.title;
         }
+        if (newDoc.documentElement.lang) {
+            document.documentElement.lang = newDoc.documentElement.lang;
+        }
 
         // 2. Synchronize Head Stylesheets & Inline Styles
+        // Remove any prior inline <style> elements (including bootstrap-specific styles)
+        document.head.querySelectorAll('style').forEach(s => s.remove());
+        const erpBootstrapStyle = document.getElementById('erp-bootstrap-style');
+        if (erpBootstrapStyle) erpBootstrapStyle.remove();
+
+        // Insert all <style> tags from the new document
+        newDoc.head.querySelectorAll('style').forEach(st => {
+            const newStyle = document.createElement('style');
+            newStyle.textContent = st.textContent;
+            document.head.appendChild(newStyle);
+        });
+
+        // Synchronize Stylesheets (<link rel="stylesheet">)
         const currentLinks = new Set(Array.from(document.head.querySelectorAll('link[rel="stylesheet"]')).map(l => l.href));
         newDoc.head.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
             if (!currentLinks.has(link.href)) {
@@ -52,18 +68,13 @@
             }
         });
 
-        // Replace any dynamic inline styles
-        document.head.querySelectorAll('style[data-erp-dynamic="true"]').forEach(s => s.remove());
-        newDoc.head.querySelectorAll('style').forEach(st => {
-            const newStyle = document.createElement('style');
-            newStyle.setAttribute('data-erp-dynamic', 'true');
-            newStyle.textContent = st.textContent;
-            document.head.appendChild(newStyle);
-        });
-
         // 3. Update Body Attributes and Inner HTML
         document.body.className = newDoc.body.className || '';
-        document.body.style.cssText = newDoc.body.style.cssText || '';
+        if (newDoc.body.getAttribute('style')) {
+            document.body.style.cssText = newDoc.body.style.cssText;
+        } else {
+            document.body.removeAttribute('style');
+        }
         document.body.innerHTML = newDoc.body.innerHTML;
 
         // 4. Re-execute Scripts in DOM Order (excluding this manager script itself)
