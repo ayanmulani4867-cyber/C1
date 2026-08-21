@@ -116,9 +116,23 @@ def review(request_id):
 def download(request_id=None, cert_id=None):
     req_id = request_id or cert_id
     cert_req = CertificateRequest.query.get_or_404(req_id)
-    if cert_req.status != 'Approved':
-        flash('Certificate has not been approved or issued yet.', 'warning')
-        return redirect(url_for('certificate.index'))
+
+    # Permission check
+    if current_user.role == Role.STUDENT:
+        student = Student.query.filter_by(user_id=current_user.id).first()
+        if not student or cert_req.student_id != student.id:
+            flash('Unauthorized to download this certificate.', 'danger')
+            return redirect(url_for('certificate.index'))
+        if cert_req.status not in ('Approved', 'Issued'):
+            flash('Certificate has not been approved or issued yet.', 'warning')
+            return redirect(url_for('certificate.index'))
+
+    # Auto-generate certificate number & issue date if needed
+    if not cert_req.certificate_number:
+        cert_req.certificate_number = generate_certificate_code(cert_req.certificate_type)
+    if not cert_req.issued_date:
+        cert_req.issued_date = datetime.utcnow().date()
+    db.session.commit()
 
     college_info = {
         'name': current_app.config.get('COLLEGE_NAME', 'Apex Institute of Technology & Science'),
@@ -128,9 +142,11 @@ def download(request_id=None, cert_id=None):
     }
 
     pdf_buffer = generate_certificate_pdf(cert_req, college_info=college_info)
+    c_type_safe = cert_req.certificate_type.replace(' ', '_')
+    code_safe = cert_req.certificate_number or cert_req.id
     return send_file(
         pdf_buffer,
         mimetype='application/pdf',
         as_attachment=True,
-        download_name=f"Certificate_{cert_req.certificate_type.replace(' ', '_')}_{cert_req.certificate_number or cert_req.id}.pdf"
+        download_name=f"Certificate_{c_type_safe}_{code_safe}.pdf"
     )

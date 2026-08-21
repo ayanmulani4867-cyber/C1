@@ -1,35 +1,45 @@
 {% extends "base.html" %}
 
-{% block title %}Request Certificate - {{ APP_NAME }}{% endblock %}
+{% block title %}Request Official Certificate — {{ APP_NAME }}{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-lg-6">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-white py-3 border-bottom">
-                <h4 class="card-title fw-bold text-dark mb-0"><i class="fa-solid fa-stamp text-primary me-2"></i> Request Official Certificate</h4>
-            </div>
-            <div class="card-body p-4">
-                <form method="POST">
-                    {{ form.hidden_tag() }}
+<div class="container-fluid py-3">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-xl-6">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0 text-dark">
+                        <i class="fa-solid fa-stamp text-primary me-2"></i>Apply for Institutional Certificate
+                    </h5>
+                    <a href="{{ url_for('certificate.index') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                        <i class="fa-solid fa-arrow-left me-1"></i> Back
+                    </a>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" action="{{ url_for('certificate.request_cert') }}">
+                        {{ form.hidden_tag() }}
 
-                    <div class="mb-3">
-                        {{ form.certificate_type.label(class="form-label fw-semibold") }}
-                        {{ form.certificate_type(class="form-select" + (" is-invalid" if form.certificate_type.errors else "")) }}
-                        {% for err in form.certificate_type.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Certificate Type <span class="text-danger">*</span></label>
+                            {{ form.certificate_type(class="form-select form-select-sm rounded-3" + (" is-invalid" if form.certificate_type.errors else "")) }}
+                            {% for err in form.certificate_type.errors %}<div class="invalid-feedback small">{{ err }}</div>{% endfor %}
+                            <div class="form-text small">Select Bonafide, Character, Fee Certificate, or Course Completion.</div>
+                        </div>
 
-                    <div class="mb-4">
-                        {{ form.purpose.label(class="form-label fw-semibold") }}
-                        {{ form.purpose(class="form-control" + (" is-invalid" if form.purpose.errors else ""), rows="4", placeholder="State the purpose for this request (e.g., Passport application, Scholarship, Higher studies)...") }}
-                        {% for err in form.purpose.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
-                    </div>
+                        <div class="mb-4">
+                            <label class="form-label small fw-semibold">Purpose of Request <span class="text-danger">*</span></label>
+                            {{ form.purpose(class="form-control form-control-sm rounded-3" + (" is-invalid" if form.purpose.errors else ""), rows="4", placeholder="State why you require this certificate (e.g. Passport application, Scholarship renewal, Higher education admission, Internship verification)...") }}
+                            {% for err in form.purpose.errors %}<div class="invalid-feedback small">{{ err }}</div>{% endfor %}
+                        </div>
 
-                    <div class="d-flex justify-content-end gap-2">
-                        <a href="{{ url_for('certificate.index') }}" class="btn btn-light px-4">Cancel</a>
-                        <button type="submit" class="btn btn-primary px-4">Submit Application</button>
-                    </div>
-                </form>
+                        <div class="d-flex justify-content-end gap-2 pt-3 border-top">
+                            <a href="{{ url_for('certificate.index') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-4">Cancel</a>
+                            <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4 fw-semibold shadow-sm">
+                                <i class="fa-solid fa-paper-plane me-1"></i> Submit Application to Registrar
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

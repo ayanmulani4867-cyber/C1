@@ -545,53 +545,77 @@ def generate_certificate_pdf(cert_req, college_info=None, *args, **kwargs):
     
     elements = []
     
+    college_name = (college_info.get('name') if college_info else None) or current_app.config.get('COLLEGE_NAME', 'Apex Institute of Technology & Science')
+    college_address = (college_info.get('address') if college_info else None) or current_app.config.get('COLLEGE_ADDRESS', 'Knowledge City, Tech Campus')
+    
     # College Header
-    elements.append(Paragraph(current_app.config.get('COLLEGE_NAME', 'Apex Institute of Technology & Science'), title_style))
-    elements.append(Paragraph(f"{current_app.config.get('COLLEGE_ADDRESS', '')} | Accredited 'A+' Grade", sub_style))
+    elements.append(Paragraph(college_name, title_style))
+    elements.append(Paragraph(f"{college_address} | Accredited 'A++' Grade", sub_style))
     elements.append(HRFlowable(width="100%", thickness=2, color=colors.HexColor('#1E3A8A'), spaceBefore=2, spaceAfter=15))
+    
+    cert_num = cert_req.certificate_number or f"CERT-{cert_req.id:05d}"
+    verif_code = getattr(cert_req, 'verification_code', None) or f"V-{cert_req.id:06d}"
+    issued_dt = cert_req.issued_date.strftime('%d-%b-%Y') if cert_req.issued_date else datetime.utcnow().strftime('%d-%b-%Y')
     
     # Certificate Number and Date
     ref_data = [
-        [Paragraph(f"<b>Ref No:</b> {cert_req.certificate_number or 'N/A'}", styles['Normal']),
-         Paragraph(f"<b>Date:</b> {cert_req.issued_date.strftime('%d-%b-%Y') if cert_req.issued_date else datetime.utcnow().strftime('%d-%b-%Y')}", ParagraphStyle('r', alignment=TA_RIGHT))]
+        [Paragraph(f"<b>Ref No:</b> {cert_num}", styles['Normal']),
+         Paragraph(f"<b>Date of Issue:</b> {issued_dt}", ParagraphStyle('r', alignment=TA_RIGHT))]
     ]
     ref_table = Table(ref_data, colWidths=[260, 260])
     elements.append(ref_table)
     elements.append(Spacer(1, 20))
     
     # Certificate Type
-    elements.append(Paragraph(f"<u><b>{cert_req.certificate_type.upper()}</b></u>", cert_title_style))
+    c_type = (cert_req.certificate_type or 'Bonafide Certificate').upper()
+    elements.append(Paragraph(f"<u><b>{c_type}</b></u>", cert_title_style))
     elements.append(Spacer(1, 10))
     
     student = cert_req.student
-    gender_prefix = "Mr." if student.gender == 'Male' else ("Ms." if student.gender == 'Female' else "")
-    pronoun = "he" if student.gender == 'Male' else "she"
-    possessive = "his" if student.gender == 'Male' else "her"
+    student_name = student.full_name if student else "Student"
+    student_id = student.student_id if student else "STD-000"
+    enroll_no = getattr(student, 'enrollment_no', None) or getattr(student, 'enrollment_number', None) or (student.roll_no if student else None) or student_id
+    gender = getattr(student, 'gender', 'Male') if student else 'Male'
+    gender_prefix = "Mr." if gender == 'Male' else ("Ms." if gender == 'Female' else "")
+    pronoun = "he" if gender == 'Male' else "she"
+    possessive = "his" if gender == 'Male' else "her"
+    course_name = student.course.name if (student and student.course) else 'Degree Program'
+    dept_name = student.department.name if (student and student.department) else 'Academic Department'
+    session_name = student.session.name if (student and student.session) else '2025-26'
+    purpose = cert_req.purpose or 'Institutional Records & Verification'
     
-    if cert_req.certificate_type == 'Bonafide':
+    if 'Bonafide' in c_type:
         cert_text = (
-            f"This is to certify that <b>{gender_prefix} {student.full_name}</b>, "
-            f"bearing Enrollment Number <b>{student.enrollment_no}</b> and Student ID <b>{student.student_id}</b>, "
-            f"is a bonafide student of this institution studying in <b>{student.course.name if student.course else 'Degree Program'}</b>, "
-            f"Department of <b>{student.department.name if student.department else 'Engineering'}</b>, "
-            f"during the academic session <b>{student.session.name if student.session else '2025-26'}</b>. "
-            f"<br/><br/>This certificate is issued on {possessive} request for the purpose of: <b>{cert_req.purpose}</b>."
+            f"This is to certify that <b>{gender_prefix} {student_name}</b>, "
+            f"bearing Enrollment Number <b>{enroll_no}</b> and Student ID <b>{student_id}</b>, "
+            f"is a bonafide scholar of this institution pursuing studies in <b>{course_name}</b>, "
+            f"Department of <b>{dept_name}</b>, "
+            f"during the academic session <b>{session_name}</b>. "
+            f"<br/><br/>This certificate is officially issued upon {possessive} request for the express purpose of: <b>{purpose}</b>."
         )
-    elif cert_req.certificate_type == 'Character Certificate':
+    elif 'Character' in c_type:
         cert_text = (
-            f"This is to certify that <b>{gender_prefix} {student.full_name}</b>, "
-            f"bearing Enrollment Number <b>{student.enrollment_no}</b>, has been a student of this institute in "
-            f"<b>{student.course.name if student.course else 'Degree Program'}</b>. "
-            f"During {possessive} period of study in this college, {possessive} conduct and character have been found to be exemplary and satisfactory. "
-            f"{pronoun.capitalize()} bears good moral character."
-            f"<br/><br/>Issued for the purpose of: <b>{cert_req.purpose}</b>."
+            f"This is to certify that <b>{gender_prefix} {student_name}</b>, "
+            f"bearing Enrollment Number <b>{enroll_no}</b>, has been a registered scholar of this institute in "
+            f"<b>{course_name}</b>. "
+            f"During {possessive} tenure of academic study at this college, {possessive} conduct and character have been found to be exemplary, disciplined, and satisfactory. "
+            f"{pronoun.capitalize()} bears high moral and ethical character."
+            f"<br/><br/>Issued for the purpose of: <b>{purpose}</b>."
+        )
+    elif 'Fee' in c_type or 'Tuition' in c_type:
+        cert_text = (
+            f"This is to certify that <b>{gender_prefix} {student_name}</b>, "
+            f"bearing Enrollment Number <b>{enroll_no}</b> and Student ID <b>{student_id}</b>, "
+            f"is enrolled in <b>{course_name}</b> (Department of {dept_name}). "
+            f"All fee dues and institutional billings are reviewed under college bursar regulations."
+            f"<br/><br/>Certificate issued for: <b>{purpose}</b>."
         )
     else:
         cert_text = (
-            f"This is to certify that <b>{gender_prefix} {student.full_name}</b>, "
-            f"bearing Enrollment Number <b>{student.enrollment_no}</b>, is enrolled in "
-            f"<b>{student.course.name if student.course else 'Degree Program'}</b> at this institute. "
-            f"<br/><br/>Certificate Purpose / Verification: <b>{cert_req.purpose}</b>."
+            f"This is to certify that <b>{gender_prefix} {student_name}</b>, "
+            f"bearing Enrollment Number <b>{enroll_no}</b> and Student ID <b>{student_id}</b>, is actively enrolled in "
+            f"<b>{course_name}</b> at {college_name}. "
+            f"<br/><br/>Certificate Purpose & Verification Request: <b>{purpose}</b>."
         )
         
     elements.append(Paragraph(cert_text, cert_body_style))
@@ -599,7 +623,7 @@ def generate_certificate_pdf(cert_req, college_info=None, *args, **kwargs):
     
     # Generate QR Code for verification
     qr = qrcode.QRCode(box_size=3, border=1)
-    verify_data = f"CERT:{cert_req.certificate_number}|STUDENT:{student.student_id}|VERIFY:{cert_req.verification_code}"
+    verify_data = f"CERT:{cert_num}|STUDENT:{student_id}|VERIFY:{verif_code}"
     qr.add_data(verify_data)
     qr.make(fit=True)
     qr_img = qr.make_image(fill_color="black", back_color="white")
@@ -613,8 +637,8 @@ def generate_certificate_pdf(cert_req, college_info=None, *args, **kwargs):
     # Footer table with QR Code and Signatures
     footer_data = [
         [qr_reportlab,
-         Paragraph(f"<font size=8 color='#64748B'>Scan to verify authenticity<br/>Code: <b>{cert_req.verification_code}</b></font>", styles['Normal']),
-         Paragraph("<b>Registrar / Dean Academics</b><br/><font size=8>Apex Institute of Technology</font>", ParagraphStyle('sig', alignment=TA_RIGHT, fontSize=10))]
+         Paragraph(f"<font size=8 color='#64748B'>Scan to verify authenticity<br/>Digital Ref: <b>{verif_code}</b></font>", styles['Normal']),
+         Paragraph(f"<b>Registrar / Dean Academics</b><br/><font size=8>{college_name}</font>", ParagraphStyle('sig', alignment=TA_RIGHT, fontSize=10))]
     ]
     footer_table = Table(footer_data, colWidths=[100, 180, 240])
     footer_table.setStyle(TableStyle([
