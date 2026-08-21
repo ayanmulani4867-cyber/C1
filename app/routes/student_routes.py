@@ -431,13 +431,24 @@ def edit(student_id):
     student = Student.query.get_or_404(student_id)
     form = StudentEditForm(obj=student)
     
-    form.department_id.choices = [(d.id, d.name) for d in Department.query.filter_by(is_active=True).all()]
-    form.course_id.choices = [(c.id, c.name) for c in Course.query.filter_by(is_active=True).all()]
+    form.department_id.choices = [(d.id, f"{d.name} ({d.code})") for d in Department.query.filter_by(is_active=True).all()]
+    form.course_id.choices = [(c.id, f"{c.name} ({c.code})") for c in Course.query.filter_by(is_active=True).all()]
     form.semester_id.choices = [(s.id, s.name) for s in Semester.query.filter_by(is_active=True).order_by(Semester.number.asc()).all()]
     form.session_id.choices = [(ses.id, ses.name) for ses in AcademicSession.query.all()]
     
     divisions = ClassDivision.query.all()
     form.division_id.choices = [(0, '-- None / Unassigned --')] + [(div.id, f"{div.name} ({div.course.code if div.course else 'Course'} - Sem {div.semester.number if div.semester else ''})") for div in divisions]
+
+    if request.method == 'GET':
+        form.department_id.data = student.department_id
+        form.course_id.data = student.course_id
+        form.semester_id.data = student.semester_id
+        form.session_id.data = student.session_id
+        form.division_id.data = student.division_id or 0
+        if student.dob:
+            form.dob.data = student.dob
+        if student.admission_date:
+            form.admission_date.data = student.admission_date
 
     if form.validate_on_submit():
         student.first_name = form.first_name.data.strip()
@@ -445,9 +456,12 @@ def edit(student_id):
         student.last_name = form.last_name.data.strip()
         student.full_name = f"{form.first_name.data.strip()} {form.middle_name.data.strip() + ' ' if form.middle_name.data else ''}{form.last_name.data.strip()}".strip()
         student.roll_no = form.roll_no.data.strip() if form.roll_no.data else None
+        student.batch = form.batch.data.strip() if form.batch.data else None
+        student.admission_date = form.admission_date.data
         student.dob = form.dob.data
         student.gender = form.gender.data
         student.blood_group = form.blood_group.data
+        student.nationality = form.nationality.data.strip() if form.nationality.data else 'Indian'
         student.personal_email = form.personal_email.data.strip().lower() if form.personal_email.data else None
         student.mobile = form.mobile.data.strip()
         student.alt_mobile = form.alt_mobile.data.strip() if form.alt_mobile.data else None
@@ -466,24 +480,82 @@ def edit(student_id):
                     student.user.profile_image = filename
 
         student.curr_address_line1 = form.curr_address_line1.data or ''
+        student.curr_address_line2 = form.curr_address_line2.data or ''
         student.curr_city = form.curr_city.data or ''
+        student.curr_district = form.curr_district.data or ''
         student.curr_state = form.curr_state.data or ''
         student.curr_pincode = form.curr_pincode.data or ''
+
         student.perm_address_line1 = form.perm_address_line1.data or ''
+        student.perm_address_line2 = form.perm_address_line2.data or ''
         student.perm_city = form.perm_city.data or ''
+        student.perm_district = form.perm_district.data or ''
         student.perm_state = form.perm_state.data or ''
         student.perm_pincode = form.perm_pincode.data or ''
 
         student.father_name = form.father_name.data or ''
         student.father_phone = form.father_phone.data or ''
+        student.father_email = form.father_email.data or ''
+        student.father_occupation = form.father_occupation.data or ''
         student.mother_name = form.mother_name.data or ''
+        student.mother_phone = form.mother_phone.data or ''
+        student.mother_email = form.mother_email.data or ''
+        student.mother_occupation = form.mother_occupation.data or ''
+
+        student.emergency_name = form.emergency_name.data or ''
+        student.emergency_relation = form.emergency_relation.data or ''
         student.emergency_phone = form.emergency_phone.data or ''
+        student.emergency_alt_phone = form.emergency_alt_phone.data or ''
+
+        student.prev_qualification = form.prev_qualification.data or ''
+        student.prev_institution = form.prev_institution.data or ''
+        student.prev_percentage = form.prev_percentage.data
+        student.admission_type = form.admission_type.data or 'Regular'
+        student.scholarship_status = form.scholarship_status.data or 'None'
+        student.hostel_status = form.hostel_status.data or 'Day Scholar'
+        student.transport_status = form.transport_status.data or 'Self'
+
+        # Also sync user status and mobile
+        if student.user:
+            student.user.first_name = student.first_name
+            student.user.last_name = student.last_name
+            student.user.phone = student.mobile
+            student.user.is_active = (student.status == 'Active')
 
         db.session.commit()
         flash(f'Student profile for {student.full_name} updated successfully.', 'success')
         return redirect(url_for('student.profile_view', student_id=student.id))
 
     return render_template('student/edit.html', form=form, student=student)
+
+
+@student_bp.route('/<int:student_id>/toggle-status', methods=['POST'])
+@login_required
+@admin_required
+def toggle_status(student_id):
+    student = Student.query.get_or_404(student_id)
+    student.status = 'Inactive' if student.status == 'Active' else 'Active'
+    if student.user:
+        student.user.is_active = (student.status == 'Active')
+    db.session.commit()
+    flash(f'Student {student.full_name} status updated to {student.status}.', 'success')
+    return redirect(request.referrer or url_for('student.index'))
+
+
+@student_bp.route('/<int:student_id>/delete', methods=['POST'])
+@login_required
+@admin_required
+def delete(student_id):
+    student = Student.query.get_or_404(student_id)
+    name = student.full_name
+    # Remove user account if exists
+    user = student.user
+    db.session.delete(student)
+    if user:
+        db.session.delete(user)
+    db.session.commit()
+    flash(f'Student record for {name} has been deleted.', 'info')
+    return redirect(url_for('student.index'))
 
 
 @student_bp.route('/<int:student_id>/id-card')

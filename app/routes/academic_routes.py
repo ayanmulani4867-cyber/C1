@@ -235,6 +235,67 @@ def division_create():
     return render_template('academic/division_form.html', form=form, title='Create Class Division')
 
 
+@academic_bp.route('/divisions/<int:division_id>/edit', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def division_edit(division_id):
+    div = ClassDivision.query.get_or_404(division_id)
+    form = ClassDivisionForm(obj=div)
+    form.department_id.choices = [(d.id, d.name) for d in Department.query.filter_by(is_active=True).all()]
+    form.course_id.choices = [(c.id, c.name) for c in Course.query.filter_by(is_active=True).all()]
+    form.semester_id.choices = [(s.id, s.name) for s in Semester.query.filter_by(is_active=True).order_by(Semester.number.asc()).all()]
+    form.session_id.choices = [(ses.id, ses.name) for ses in AcademicSession.query.all()]
+
+    if form.validate_on_submit():
+        div.name = form.name.data.strip().upper()
+        div.department_id = form.department_id.data
+        div.course_id = form.course_id.data
+        div.semester_id = form.semester_id.data
+        div.session_id = form.session_id.data
+        div.room_number = form.room_number.data.strip() if form.room_number.data else None
+        db.session.commit()
+        flash(f'Class Division "{div.name}" updated successfully.', 'success')
+        return redirect(url_for('academic.divisions'))
+
+    return render_template('academic/division_form.html', form=form, title='Edit Class Division', div=div)
+
+
+@academic_bp.route('/divisions/<int:division_id>/delete', methods=['POST'])
+@login_required
+@admin_required
+def division_delete(division_id):
+    div = ClassDivision.query.get_or_404(division_id)
+    name = div.name
+    db.session.delete(div)
+    db.session.commit()
+    flash(f'Class Division "{name}" deleted.', 'info')
+    return redirect(url_for('academic.divisions'))
+
+
+@academic_bp.route('/departments/<int:dept_id>/delete', methods=['POST'])
+@login_required
+@admin_required
+def department_delete(dept_id):
+    dept = Department.query.get_or_404(dept_id)
+    name = dept.name
+    dept.is_active = False
+    db.session.commit()
+    flash(f'Department "{name}" deactivated.', 'info')
+    return redirect(url_for('academic.departments'))
+
+
+@academic_bp.route('/courses/<int:course_id>/delete', methods=['POST'])
+@login_required
+@admin_required
+def course_delete(course_id):
+    course = Course.query.get_or_404(course_id)
+    name = course.name
+    course.is_active = False
+    db.session.commit()
+    flash(f'Course "{name}" deactivated.', 'info')
+    return redirect(url_for('academic.courses'))
+
+
 # --- SUBJECTS ---
 @academic_bp.route('/subjects')
 @login_required
@@ -330,3 +391,15 @@ def subject_edit(subj_id):
         return redirect(url_for('academic.subjects'))
 
     return render_template('academic/subject_form.html', form=form, title='Edit Subject', subj=subj)
+
+
+@academic_bp.route('/subjects/<int:subj_id>/delete', methods=['POST'])
+@login_required
+@admin_required
+def subject_delete(subj_id):
+    subj = Subject.query.get_or_404(subj_id)
+    name = subj.name
+    db.session.delete(subj)
+    db.session.commit()
+    flash(f'Subject "{name}" deleted.', 'info')
+    return redirect(url_for('academic.subjects'))

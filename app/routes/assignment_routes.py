@@ -219,3 +219,27 @@ def material_upload():
             return redirect(url_for('assignment.index'))
 
     return render_template('assignments/material_upload.html', form=form)
+
+
+@assignment_bp.route('/<int:assignment_id>/delete', methods=['POST'])
+@login_required
+@role_required(Role.ADMIN, Role.FACULTY)
+def delete(assignment_id):
+    assignment = Assignment.query.get_or_404(assignment_id)
+    title = assignment.title
+    db.session.delete(assignment)
+    db.session.commit()
+    flash(f'Assignment "{title}" deleted.', 'info')
+    return redirect(url_for('assignment.index'))
+
+
+@assignment_bp.route('/materials/<int:material_id>/delete', methods=['POST'])
+@login_required
+@role_required(Role.ADMIN, Role.FACULTY)
+def material_delete(material_id):
+    mat = StudyMaterial.query.get_or_404(material_id)
+    title = mat.title
+    db.session.delete(mat)
+    db.session.commit()
+    flash(f'Study material "{title}" deleted.', 'info')
+    return redirect(url_for('assignment.index'))

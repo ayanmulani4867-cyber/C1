@@ -310,25 +310,18 @@ def profile_view(faculty_id):
 def edit(faculty_id):
     faculty = Faculty.query.get_or_404(faculty_id)
     form = FacultyEditForm(obj=faculty)
-    form.department_id.choices = [(d.id, d.name) for d in Department.query.filter_by(is_active=True).all()]
+    form.department_id.choices = [(d.id, f"{d.name} ({d.code})") for d in Department.query.filter_by(is_active=True).all()]
 
     if request.method == 'GET':
         form.department_id.data = faculty.department_id
-        curr_addr = faculty.current_address
-        if curr_addr:
-            form.curr_address_line1.data = curr_addr.line1
-            form.curr_city.data = curr_addr.city
-            form.curr_state.data = curr_addr.state
-            form.curr_pincode.data = curr_addr.pincode
-        emerg = faculty.emergency_contact
-        if emerg:
-            form.emergency_name.data = emerg.contact_name
-            form.emergency_phone.data = emerg.phone_primary
+        if faculty.dob:
+            form.dob.data = faculty.dob
 
     if form.validate_on_submit():
         faculty.first_name = form.first_name.data.strip()
         faculty.middle_name = form.middle_name.data.strip() if form.middle_name.data else None
         faculty.last_name = form.last_name.data.strip()
+        faculty.full_name = f"{form.first_name.data.strip()} {form.middle_name.data.strip() + ' ' if form.middle_name.data else ''}{form.last_name.data.strip()}".strip()
         faculty.dob = form.dob.data
         faculty.gender = form.gender.data
         faculty.blood_group = form.blood_group.data
@@ -350,22 +343,66 @@ def edit(faculty_id):
                 if faculty.user:
                     faculty.user.profile_image = filename
 
-        # Update address
-        if not faculty.current_address:
-            curr_addr = FacultyAddress(faculty_id=faculty.id, address_type='Current')
-            db.session.add(curr_addr)
-        else:
-            curr_addr = faculty.current_address
-        curr_addr.line1 = form.curr_address_line1.data or ''
-        curr_addr.city = form.curr_city.data or ''
-        curr_addr.state = form.curr_state.data or ''
-        curr_addr.pincode = form.curr_pincode.data or ''
+        # Direct fields on faculty model
+        faculty.curr_address_line1 = form.curr_address_line1.data or ''
+        faculty.curr_address_line2 = form.curr_address_line2.data or ''
+        faculty.curr_city = form.curr_city.data or ''
+        faculty.curr_district = form.curr_district.data or ''
+        faculty.curr_state = form.curr_state.data or ''
+        faculty.curr_pincode = form.curr_pincode.data or ''
+
+        faculty.perm_address_line1 = form.perm_address_line1.data or ''
+        faculty.perm_address_line2 = form.perm_address_line2.data or ''
+        faculty.perm_city = form.perm_city.data or ''
+        faculty.perm_district = form.perm_district.data or ''
+        faculty.perm_state = form.perm_state.data or ''
+        faculty.perm_pincode = form.perm_pincode.data or ''
+
+        faculty.emergency_name = form.emergency_name.data or ''
+        faculty.emergency_relation = form.emergency_relation.data or ''
+        faculty.emergency_phone = form.emergency_phone.data or ''
+        faculty.emergency_alt_phone = form.emergency_alt_phone.data or ''
+
+        # Also sync linked user
+        if faculty.user:
+            faculty.user.first_name = faculty.first_name
+            faculty.user.last_name = faculty.last_name
+            faculty.user.phone = faculty.mobile
+            faculty.user.is_active = (faculty.status == 'Active')
 
         db.session.commit()
         flash(f'Faculty profile for {faculty.full_name} updated successfully.', 'success')
         return redirect(url_for('faculty.profile_view', faculty_id=faculty.id))
 
     return render_template('faculty/edit.html', form=form, faculty=faculty)
+
+
+@faculty_bp.route('/<int:faculty_id>/toggle-status', methods=['POST'])
+@login_required
+@admin_required
+def toggle_status(faculty_id):
+    faculty = Faculty.query.get_or_404(faculty_id)
+    faculty.status = 'Inactive' if faculty.status == 'Active' else 'Active'
+    if faculty.user:
+        faculty.user.is_active = (faculty.status == 'Active')
+    db.session.commit()
+    flash(f'Faculty member {faculty.full_name} status updated to {faculty.status}.', 'success')
+    return redirect(request.referrer or url_for('faculty.index'))
+
+
+@faculty_bp.route('/<int:faculty_id>/delete', methods=['POST'])
+@login_required
+@admin_required
+def delete(faculty_id):
+    faculty = Faculty.query.get_or_404(faculty_id)
+    name = faculty.full_name
+    user = faculty.user
+    db.session.delete(faculty)
+    if user:
+        db.session.delete(user)
+    db.session.commit()
+    flash(f'Faculty record for {name} has been deleted.', 'info')
+    return redirect(url_for('faculty.index'))
 
 
 @faculty_bp.route('/<int:faculty_id>/id-card/download')

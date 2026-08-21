@@ -1,1 +1,309 @@
-{% extends "student/form.html" %}
+{% extends "base.html" %}
+
+{% block title %}Edit Student Profile - {{ student.full_name }} - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+    <!-- Header -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4 text-white overflow-hidden position-relative" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #0d9488 100%);">
+        <div class="card-body p-4 position-relative z-1">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    {% if student.profile_photo %}
+                        <img src="/static/uploads/profiles/{{ student.profile_photo }}" alt="{{ student.full_name }}" class="rounded-circle object-fit-cover shadow-md border border-2 border-white" width="64" height="64">
+                    {% else %}
+                        <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center fw-bold shadow-md" style="width: 64px; height: 64px; font-size: 1.6rem;">
+                            {{ student.first_name[0] if student.first_name else 'S' }}
+                        </div>
+                    {% endif %}
+                    <div>
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="badge bg-white bg-opacity-25 text-white px-2 py-1">Student Record Edit</span>
+                            <span class="badge bg-white text-primary px-2 py-1"><code>{{ student.student_id }}</code></span>
+                        </div>
+                        <h3 class="fw-bold brand-font mb-1 text-white">{{ student.full_name }}</h3>
+                        <p class="text-white-50 small mb-0">Roll No: <strong>{{ student.roll_no or student.roll_number }}</strong> &bull; Official Email: {{ student.college_email }}</p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('student.profile_view', student_id=student.id) }}" class="btn btn-outline-light btn-sm rounded-pill px-3 shadow-xs">
+                        <i class="fa-solid fa-arrow-left me-1"></i> View Profile
+                    </a>
+                    <a href="{{ url_for('student.index') }}" class="btn btn-light text-primary btn-sm rounded-pill px-3 fw-semibold shadow-xs">
+                        <i class="fa-solid fa-users me-1"></i> All Students
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Form Card -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+        <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+            <h6 class="fw-bold mb-0 text-dark">
+                <i class="fa-solid fa-user-pen me-2 text-primary"></i>Modify Student Profile & Enrollment Attributes
+            </h6>
+            <span class="badge badge-soft-primary">Status: {{ student.status }}</span>
+        </div>
+        <div class="card-body p-4">
+            <form method="POST" action="{{ url_for('student.edit', student_id=student.id) }}" enctype="multipart/form-data" id="editStudentForm">
+                {{ form.hidden_tag() }}
+
+                <!-- Section 1: Academic & Program Details -->
+                <div class="mb-4">
+                    <h6 class="fw-bold text-primary text-uppercase small mb-3 border-bottom pb-2">
+                        <i class="fa-solid fa-graduation-cap me-1"></i> 1. Academic & Institutional Enrollment
+                    </h6>
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Department <span class="text-danger">*</span></label>
+                            {{ form.department_id(class="form-select form-select-sm" + (" is-invalid" if form.department_id.errors else "")) }}
+                            {% for err in form.department_id.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Degree / Course <span class="text-danger">*</span></label>
+                            {{ form.course_id(class="form-select form-select-sm" + (" is-invalid" if form.course_id.errors else "")) }}
+                            {% for err in form.course_id.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Current Semester <span class="text-danger">*</span></label>
+                            {{ form.semester_id(class="form-select form-select-sm" + (" is-invalid" if form.semester_id.errors else "")) }}
+                            {% for err in form.semester_id.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Academic Session <span class="text-danger">*</span></label>
+                            {{ form.session_id(class="form-select form-select-sm" + (" is-invalid" if form.session_id.errors else "")) }}
+                            {% for err in form.session_id.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Class Division</label>
+                            {{ form.division_id(class="form-select form-select-sm") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Roll Number</label>
+                            {{ form.roll_no(class="form-control form-control-sm", placeholder="e.g. CSE-A-01") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Batch / Year</label>
+                            {{ form.batch(class="form-control form-control-sm", placeholder="e.g. 2023-2027") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Enrollment Status</label>
+                            {{ form.status(class="form-select form-select-sm") }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Personal Information -->
+                <div class="mb-4">
+                    <h6 class="fw-bold text-primary text-uppercase small mb-3 border-bottom pb-2">
+                        <i class="fa-solid fa-id-card me-1"></i> 2. Personal Information
+                    </h6>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold">First Name <span class="text-danger">*</span></label>
+                            {{ form.first_name(class="form-control form-control-sm" + (" is-invalid" if form.first_name.errors else "")) }}
+                            {% for err in form.first_name.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold">Middle Name</label>
+                            {{ form.middle_name(class="form-control form-control-sm") }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold">Last Name <span class="text-danger">*</span></label>
+                            {{ form.last_name(class="form-control form-control-sm" + (" is-invalid" if form.last_name.errors else "")) }}
+                            {% for err in form.last_name.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Date of Birth</label>
+                            {{ form.dob(class="form-control form-control-sm", type="date") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Gender <span class="text-danger">*</span></label>
+                            {{ form.gender(class="form-select form-select-sm") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Blood Group</label>
+                            {{ form.blood_group(class="form-select form-select-sm") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Nationality</label>
+                            {{ form.nationality(class="form-control form-control-sm") }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold">Change Profile Photo</label>
+                            {{ form.profile_photo(class="form-control form-control-sm") }}
+                            <small class="text-muted">JPG, PNG, or WebP format up to 2MB.</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold">Admission Date</label>
+                            {{ form.admission_date(class="form-control form-control-sm", type="date") }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Contact & Communication -->
+                <div class="mb-4">
+                    <h6 class="fw-bold text-primary text-uppercase small mb-3 border-bottom pb-2">
+                        <i class="fa-solid fa-address-book me-1"></i> 3. Contact & Communication
+                    </h6>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold">Mobile Number <span class="text-danger">*</span></label>
+                            {{ form.mobile(class="form-control form-control-sm" + (" is-invalid" if form.mobile.errors else "")) }}
+                            {% for err in form.mobile.errors %}<div class="invalid-feedback">{{ err }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold">Alternate Mobile</label>
+                            {{ form.alt_mobile(class="form-control form-control-sm") }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold">Personal Email</label>
+                            {{ form.personal_email(class="form-control form-control-sm", placeholder="personal@gmail.com") }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Residential Address -->
+                <div class="mb-4">
+                    <h6 class="fw-bold text-primary text-uppercase small mb-3 border-bottom pb-2">
+                        <i class="fa-solid fa-location-dot me-1"></i> 4. Residential Address
+                    </h6>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded-3">
+                                <h6 class="fw-bold small text-dark mb-2">Current / Local Address</h6>
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        <label class="form-label small">Address Line 1</label>
+                                        {{ form.curr_address_line1(class="form-control form-control-sm") }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small">City</label>
+                                        {{ form.curr_city(class="form-control form-control-sm") }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small">District</label>
+                                        {{ form.curr_district(class="form-control form-control-sm") }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small">State</label>
+                                        {{ form.curr_state(class="form-control form-control-sm") }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small">PIN Code</label>
+                                        {{ form.curr_pincode(class="form-control form-control-sm") }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded-3">
+                                <h6 class="fw-bold small text-dark mb-2">Permanent Address</h6>
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        <label class="form-label small">Address Line 1</label>
+                                        {{ form.perm_address_line1(class="form-control form-control-sm") }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small">City</label>
+                                        {{ form.perm_city(class="form-control form-control-sm") }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small">District</label>
+                                        {{ form.perm_district(class="form-control form-control-sm") }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small">State</label>
+                                        {{ form.perm_state(class="form-control form-control-sm") }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small">PIN Code</label>
+                                        {{ form.perm_pincode(class="form-control form-control-sm") }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 5: Parent & Guardian Details -->
+                <div class="mb-4">
+                    <h6 class="fw-bold text-primary text-uppercase small mb-3 border-bottom pb-2">
+                        <i class="fa-solid fa-people-roof me-1"></i> 5. Parent & Guardian Information
+                    </h6>
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Father / Guardian Name</label>
+                            {{ form.father_name(class="form-control form-control-sm") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Father Phone</label>
+                            {{ form.father_phone(class="form-control form-control-sm") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Father Email</label>
+                            {{ form.father_email(class="form-control form-control-sm") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Father Occupation</label>
+                            {{ form.father_occupation(class="form-control form-control-sm") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Mother Name</label>
+                            {{ form.mother_name(class="form-control form-control-sm") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Mother Phone</label>
+                            {{ form.mother_phone(class="form-control form-control-sm") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Mother Email</label>
+                            {{ form.mother_email(class="form-control form-control-sm") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Mother Occupation</label>
+                            {{ form.mother_occupation(class="form-control form-control-sm") }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 6: Emergency Contact & Amenities -->
+                <div class="mb-4">
+                    <h6 class="fw-bold text-primary text-uppercase small mb-3 border-bottom pb-2">
+                        <i class="fa-solid fa-kit-medical me-1"></i> 6. Emergency Contact & Campus Facilities
+                    </h6>
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Emergency Contact Person</label>
+                            {{ form.emergency_name(class="form-control form-control-sm") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Relationship</label>
+                            {{ form.emergency_relation(class="form-control form-control-sm") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Emergency Phone</label>
+                            {{ form.emergency_phone(class="form-control form-control-sm") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Hostel Accommodation</label>
+                            {{ form.hostel_status(class="form-select form-select-sm") }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-end gap-2 border-top pt-3">
+                    <a href="{{ url_for('student.profile_view', student_id=student.id) }}" class="btn btn-outline-secondary btn-sm rounded-pill px-4">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4 shadow-sm" id="saveStudentBtn">
+                        <i class="fa-solid fa-floppy-disk me-1"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -872,6 +872,27 @@
         </div>
     </div>
 
+    <!-- Toast Notification Container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1090;" id="toastContainer">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="toast show border-0 shadow-lg mb-2 rounded-3 overflow-hidden" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header bg-{{ 'danger text-white' if category in ['danger', 'error'] else ('success text-white' if category == 'success' else ('warning text-dark' if category == 'warning' else 'primary text-white')) }} py-2">
+                            <i class="fa-solid {{ 'fa-circle-xmark' if category in ['danger', 'error'] else ('fa-circle-check' if category == 'success' else ('fa-triangle-exclamation' if category == 'warning' else 'fa-circle-info')) }} me-2"></i>
+                            <strong class="me-auto">{{ 'Alert' if category in ['danger', 'error'] else ('Success' if category == 'success' else ('Notice' if category == 'warning' else 'Notification')) }}</strong>
+                            <small class="text-white-50">Just now</small>
+                            <button type="button" class="btn-close {{ 'btn-close-white' if category != 'warning' else '' }}" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body bg-white text-dark small py-3">
+                            {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/erp_multitab_auth.js') }}" id="erp-multitab-auth-script"></script>
@@ -914,6 +935,39 @@
                     icon.classList.add('fa-moon');
                 }
             }
+        }
+
+        function showToast(title, message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+            const toastEl = document.createElement('div');
+            toastEl.className = 'toast show border-0 shadow-lg mb-2 rounded-3 overflow-hidden';
+            toastEl.setAttribute('role', 'alert');
+            toastEl.setAttribute('aria-live', 'assertive');
+            toastEl.setAttribute('aria-atomic', 'true');
+            
+            const bgClass = type === 'error' || type === 'danger' ? 'bg-danger text-white' : (type === 'success' ? 'bg-success text-white' : (type === 'warning' ? 'bg-warning text-dark' : 'bg-primary text-white'));
+            const iconClass = type === 'error' || type === 'danger' ? 'fa-circle-xmark' : (type === 'success' ? 'fa-circle-check' : (type === 'warning' ? 'fa-triangle-exclamation' : 'fa-circle-info'));
+            const closeBtnClass = type === 'warning' ? '' : 'btn-close-white';
+
+            toastEl.innerHTML = `
+                <div class="toast-header ${bgClass} py-2">
+                    <i class="fa-solid ${iconClass} me-2"></i>
+                    <strong class="me-auto">${title}</strong>
+                    <small class="text-white-50">Just now</small>
+                    <button type="button" class="btn-close ${closeBtnClass}" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body bg-white text-dark small py-3">
+                    ${message}
+                </div>
+            `;
+            container.appendChild(toastEl);
+            setTimeout(() => {
+                try {
+                    toastEl.classList.remove('show');
+                    setTimeout(() => toastEl.remove(), 300);
+                } catch(e){}
+            }, 5000);
         }
 
         initTheme();

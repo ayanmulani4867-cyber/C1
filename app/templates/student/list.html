@@ -1,36 +1,55 @@
 {% extends "base.html" %}
 
-{% block title %}Students Directory - {{ APP_NAME }}{% endblock %}
+{% block title %}Student Management & Directory - {{ APP_NAME }}{% endblock %}
 
 {% block content %}
 <div class="container-fluid py-3">
-    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-        <div>
-            <h4 class="fw-bold brand-font mb-1">Student Information System (SIS)</h4>
-            <p class="text-muted small mb-0">Browse student profiles, enrollment, academic status, and records.</p>
+    <!-- Header Section -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4 text-white overflow-hidden position-relative" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #0d9488 100%);">
+        <div class="card-body p-4 position-relative z-1">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center fw-bold shadow-md" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                    <div>
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="badge bg-white bg-opacity-25 text-white px-2 py-1">Student Information System (SIS)</span>
+                            <span class="badge bg-white text-primary px-2 py-1 fw-bold">{{ students|length }} Records</span>
+                        </div>
+                        <h3 class="fw-bold brand-font mb-1 text-white">Student Directory & Academic Records</h3>
+                        <p class="text-white-50 small mb-0">Manage student enrollments, academic progression, identities, and profiles.</p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <a href="{{ url_for('report.export_students', dept_id=selected_dept, course_id=selected_course) }}" class="btn btn-outline-light btn-sm rounded-pill px-3 shadow-xs">
+                        <i class="fa-solid fa-file-excel me-1"></i> Export Excel
+                    </a>
+                    {% if current_user.role == 'ADMIN' %}
+                        <a href="{{ url_for('student.create') }}" class="btn btn-light text-primary btn-sm rounded-pill px-3 fw-semibold shadow-xs">
+                            <i class="fa-solid fa-plus me-1"></i> Enroll New Student
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-        {% if current_user.role == 'ADMIN' %}
-            <a href="{{ url_for('student.create') }}" class="btn btn-primary btn-sm px-3">
-                <i class="fa-solid fa-user-plus me-1"></i> Enroll New Student
-            </a>
-        {% endif %}
     </div>
 
-    <!-- Filter toolbar -->
-    <div class="card border-0 shadow-sm rounded-3 mb-4">
+    <!-- Advanced Filter Toolbar -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
         <div class="card-body p-3">
             <form method="GET" action="{{ url_for('student.index') }}" class="row g-2 align-items-center">
                 <div class="col-md-3">
                     <div class="input-group input-group-sm">
-                        <span class="input-group-text bg-light"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
-                        <input type="text" name="q" value="{{ search }}" class="form-control" placeholder="Search name, roll no, email...">
+                        <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                        <input type="text" name="q" value="{{ search or '' }}" class="form-control border-start-0 ps-0" placeholder="Search name, roll no, email, ID...">
                     </div>
                 </div>
                 <div class="col-md-2">
                     <select name="dept_id" class="form-select form-select-sm" onchange="this.form.submit()">
                         <option value="">All Departments</option>
                         {% for d in departments %}
-                            <option value="{{ d.id }}" {% if selected_dept == d.id %}selected{% endif %}>{{ d.code }}</option>
+                            <option value="{{ d.id }}" {% if selected_dept == d.id %}selected{% endif %}>{{ d.name }} ({{ d.code }})</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -38,7 +57,7 @@
                     <select name="course_id" class="form-select form-select-sm" onchange="this.form.submit()">
                         <option value="">All Courses</option>
                         {% for c in courses %}
-                            <option value="{{ c.id }}" {% if selected_course == c.id %}selected{% endif %}>{{ c.code }}</option>
+                            <option value="{{ c.id }}" {% if selected_course == c.id %}selected{% endif %}>{{ c.name }} ({{ c.code }})</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -48,80 +67,170 @@
                         <option value="Active" {% if selected_status == 'Active' %}selected{% endif %}>Active</option>
                         <option value="Inactive" {% if selected_status == 'Inactive' %}selected{% endif %}>Inactive</option>
                         <option value="Graduated" {% if selected_status == 'Graduated' %}selected{% endif %}>Graduated</option>
+                        <option value="Transferred" {% if selected_status == 'Transferred' %}selected{% endif %}>Transferred</option>
                     </select>
                 </div>
                 <div class="col-md-3 d-flex gap-2">
-                    <button type="submit" class="btn btn-primary btn-sm w-100">Filter</button>
+                    <button type="submit" class="btn btn-primary btn-sm flex-grow-1 rounded-pill">
+                        <i class="fa-solid fa-filter me-1"></i> Apply Filters
+                    </button>
                     {% if search or selected_dept or selected_course or selected_status %}
-                        <a href="{{ url_for('student.index') }}" class="btn btn-light btn-sm">Reset</a>
+                        <a href="{{ url_for('student.index') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </a>
                     {% endif %}
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Student Table -->
-    <div class="card border-0 shadow-sm rounded-3">
+    <!-- Student Table Card -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0 small">
+                <table class="table table-hover align-middle mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th>Student</th>
-                            <th>Roll Number</th>
-                            <th>Department & Course</th>
-                            <th>Semester</th>
-                            <th>Contact</th>
+                            <th class="ps-4">Student Profile</th>
+                            <th>Identifiers</th>
+                            <th>Department & Program</th>
+                            <th>Semester & Class</th>
+                            <th>Contact Details</th>
                             <th>Status</th>
-                            <th class="text-end">Actions</th>
+                            <th class="text-end pe-4">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for s in students %}
                             <tr>
-                                <td>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold" style="width: 34px; height: 34px;">
-                                            {{ s.first_name[0] if s.first_name else 'S' }}
-                                        </div>
-                                        <div>
-                                            <a href="{{ url_for('student.view', student_id=s.id) }}" class="fw-bold text-dark text-decoration-none">{{ s.full_name }}</a>
-                                            <div class="text-muted" style="font-size: 0.75rem;">ID: {{ s.student_id }}</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><code>{{ s.roll_no or s.roll_number }}</code></td>
-                                <td>
-                                    <span class="badge bg-light text-primary border">{{ s.department.code if s.department else '-' }}</span>
-                                    <span class="text-muted">{{ s.course.code if s.course else '' }}</span>
-                                </td>
-                                <td>{{ s.semester.name if s.semester else '-' }} (Div {{ s.division.name if s.division else '-' }})</td>
-                                <td>
-                                    <div><i class="fa-regular fa-envelope text-muted me-1"></i>{{ s.official_email }}</div>
-                                    <div class="text-muted"><i class="fa-solid fa-phone text-muted me-1"></i>{{ s.mobile }}</div>
-                                </td>
-                                <td>
-                                    <span class="badge {% if s.status == 'Active' %}bg-success-subtle text-success border border-success-subtle{% else %}bg-secondary{% endif %}">{{ s.status }}</span>
-                                </td>
-                                <td class="text-end">
-                                    <div class="btn-group btn-group-sm">
-                                        <a href="{{ url_for('student.view', student_id=s.id) }}" class="btn btn-outline-primary btn-sm" title="View Profile">
-                                            <i class="fa-solid fa-eye"></i>
-                                        </a>
-                                        <a href="{{ url_for('student.download_id_card', student_id=s.id) }}" class="btn btn-outline-secondary btn-sm" target="_blank" title="ID Card PDF">
-                                            <i class="fa-solid fa-id-card"></i>
-                                        </a>
-                                        {% if current_user.role == 'ADMIN' %}
-                                            <a href="{{ url_for('student.edit', student_id=s.id) }}" class="btn btn-outline-secondary btn-sm" title="Edit Student">
-                                                <i class="fa-solid fa-pen"></i>
-                                            </a>
+                                <td class="ps-4">
+                                    <div class="d-flex align-items-center gap-3">
+                                        {% if s.profile_photo %}
+                                            <img src="/static/uploads/profiles/{{ s.profile_photo }}" alt="{{ s.full_name }}" class="rounded-circle object-fit-cover shadow-xs" width="42" height="42">
+                                        {% else %}
+                                            <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold shadow-xs" style="width: 42px; height: 42px; font-size: 1rem;">
+                                                {{ s.first_name[0] if s.first_name else 'S' }}
+                                            </div>
                                         {% endif %}
+                                        <div>
+                                            <a href="{{ url_for('student.profile_view', student_id=s.id) }}" class="fw-bold text-dark text-decoration-none hover-text-primary">
+                                                {{ s.full_name }}
+                                            </a>
+                                            <div class="text-muted small">
+                                                <i class="fa-solid fa-id-badge me-1 text-primary"></i><code>{{ s.student_id }}</code>
+                                            </div>
+                                        </div>
                                     </div>
+                                </td>
+                                <td>
+                                    <div><span class="text-muted small">Roll:</span> <strong>{{ s.roll_no or s.roll_number }}</strong></div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">Adm: {{ s.admission_no }}</div>
+                                </td>
+                                <td>
+                                    <span class="badge badge-soft-primary mb-1 d-inline-block">{{ s.department.code if s.department else 'General' }}</span>
+                                    <div class="text-dark fw-medium small">{{ s.course.name if s.course else '-' }}</div>
+                                </td>
+                                <td>
+                                    <div class="fw-semibold text-dark small">{{ s.semester.name if s.semester else 'Semester -' }}</div>
+                                    <span class="badge badge-soft-secondary">Div {{ s.class_division.name if s.class_division else (s.division.name if s.division else 'Unassigned') }}</span>
+                                </td>
+                                <td>
+                                    <div class="small"><i class="fa-regular fa-envelope text-muted me-1"></i>{{ s.college_email }}</div>
+                                    <div class="small text-muted"><i class="fa-solid fa-phone text-muted me-1"></i>{{ s.mobile }}</div>
+                                </td>
+                                <td>
+                                    {% if s.status == 'Active' %}
+                                        <span class="badge badge-soft-success"><i class="fa-solid fa-circle-check me-1"></i>Active</span>
+                                    {% elif s.status == 'Inactive' %}
+                                        <span class="badge badge-soft-danger"><i class="fa-solid fa-circle-xmark me-1"></i>Inactive</span>
+                                    {% elif s.status == 'Graduated' %}
+                                        <span class="badge badge-soft-info"><i class="fa-solid fa-graduation-cap me-1"></i>Graduated</span>
+                                    {% else %}
+                                        <span class="badge badge-soft-warning">{{ s.status }}</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="dropdown">
+                                        <button class="btn btn-light btn-sm rounded-pill border shadow-xs dropdown-toggle px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Actions
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 py-2">
+                                            <li>
+                                                <a class="dropdown-item small py-2" href="{{ url_for('student.profile_view', student_id=s.id) }}">
+                                                    <i class="fa-solid fa-eye me-2 text-primary"></i> View Profile
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item small py-2" href="{{ url_for('student.download_id_card', student_id=s.id) }}" target="_blank">
+                                                    <i class="fa-solid fa-id-card me-2 text-info"></i> Download ID Card
+                                                </a>
+                                            </li>
+                                            {% if current_user.role == 'ADMIN' %}
+                                                <li>
+                                                    <a class="dropdown-item small py-2" href="{{ url_for('student.edit', student_id=s.id) }}">
+                                                        <i class="fa-solid fa-pen-to-square me-2 text-warning"></i> Edit Details
+                                                    </a>
+                                                </li>
+                                                <li><hr class="dropdown-divider my-1"></li>
+                                                <li>
+                                                    <form method="POST" action="{{ url_for('student.toggle_status', student_id=s.id) }}" class="d-inline">
+                                                        <button type="submit" class="dropdown-item small py-2 text-secondary">
+                                                            <i class="fa-solid fa-power-off me-2"></i> {{ 'Deactivate' if s.status == 'Active' else 'Activate' }} Student
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                                <li>
+                                                    <button type="button" class="dropdown-item small py-2 text-danger" data-bs-toggle="modal" data-bs-target="#deleteStudentModal{{ s.id }}">
+                                                        <i class="fa-solid fa-trash me-2"></i> Delete Student
+                                                    </button>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+
+                                    {% if current_user.role == 'ADMIN' %}
+                                    <!-- Delete Modal -->
+                                    <div class="modal fade text-start" id="deleteStudentModal{{ s.id }}" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content border-0 shadow">
+                                                <div class="modal-header border-bottom">
+                                                    <h6 class="modal-title fw-bold text-danger"><i class="fa-solid fa-triangle-exclamation me-2"></i>Confirm Delete Student</h6>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body p-4">
+                                                    <p class="mb-2">Are you sure you want to permanently delete the student record for <strong>{{ s.full_name }}</strong> (<code>{{ s.student_id }}</code>)?</p>
+                                                    <p class="text-muted small mb-0">This will remove the student's linked user account, documents, and academic enrollments.</p>
+                                                </div>
+                                                <div class="modal-footer border-top bg-light">
+                                                    <button type="button" class="btn btn-secondary btn-sm rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                                                    <form method="POST" action="{{ url_for('student.delete', student_id=s.id) }}">
+                                                        <button type="submit" class="btn btn-danger btn-sm rounded-pill px-3">
+                                                            <i class="fa-solid fa-trash me-1"></i> Delete Record
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="7" class="text-center py-4 text-muted">No students found for current filters.</td>
+                                <td colspan="7" class="text-center py-5">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">
+                                            <i class="fa-solid fa-user-slash"></i>
+                                        </div>
+                                        <h5 class="fw-bold text-dark mb-1">No Students Found</h5>
+                                        <p class="text-muted small mb-3">No student records match your active search or filter criteria.</p>
+                                        {% if current_user.role == 'ADMIN' %}
+                                            <a href="{{ url_for('student.create') }}" class="btn btn-primary btn-sm rounded-pill px-4">
+                                                <i class="fa-solid fa-user-plus me-1"></i> Enroll Student
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

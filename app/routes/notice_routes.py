@@ -75,6 +75,41 @@ def create():
     return render_template('notices/create.html', form=form)
 
 
+@notice_bp.route('/<int:notice_id>/edit', methods=['GET', 'POST'])
+@login_required
+@role_required(Role.ADMIN, Role.FACULTY)
+def edit(notice_id):
+    notice = Notice.query.get_or_404(notice_id)
+    form = NoticeForm(obj=notice)
+    depts = Department.query.filter_by(is_active=True).all()
+    form.department_id.choices = [(0, '-- None / Institute-wide --')] + [(d.id, d.name) for d in depts]
+    divs = ClassDivision.query.all()
+    form.class_division_id.choices = [(0, '-- None / All Divisions --')] + [(d.id, d.name) for d in divs]
+
+    if request.method == 'GET':
+        form.department_id.data = notice.department_id or 0
+        form.class_division_id.data = notice.class_division_id or 0
+
+    if form.validate_on_submit():
+        notice.title = form.title.data.strip()
+        notice.content = form.content.data.strip()
+        notice.target_audience = form.target_audience.data
+        notice.department_id = form.department_id.data if form.department_id.data != 0 else None
+        notice.class_division_id = form.class_division_id.data if form.class_division_id.data != 0 else None
+        notice.priority = form.priority.data
+        notice.publish_date = form.publish_date.data
+        notice.expiry_date = form.expiry_date.data
+        if form.attachment_file.data:
+            att = save_uploaded_file(form.attachment_file.data, subfolder='documents')
+            if att:
+                notice.attachment_file = att
+        db.session.commit()
+        flash(f'Notice "{notice.title}" updated successfully.', 'success')
+        return redirect(url_for('notice.detail', notice_id=notice.id))
+
+    return render_template('notices/create.html', form=form, title='Edit Notice', notice=notice)
+
+
 @notice_bp.route('/<int:notice_id>/delete', methods=['POST'])
 @login_required
 @admin_required

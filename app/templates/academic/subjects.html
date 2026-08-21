@@ -1,30 +1,44 @@
 {% extends "base.html" %}
 
-{% block title %}Curriculum Subjects - {{ APP_NAME }}{% endblock %}
+{% block title %}Curriculum Subjects & Modules - {{ APP_NAME }}{% endblock %}
 
 {% block content %}
 <div class="container-fluid py-3">
-    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-        <div>
-            <h4 class="fw-bold brand-font mb-1">Academic Subjects & Syllabus Modules</h4>
-            <p class="text-muted small mb-0">Theory, practical laboratory, and elective courses.</p>
+    <!-- Header -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4 text-white overflow-hidden position-relative" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #0d9488 100%);">
+        <div class="card-body p-4 position-relative z-1">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center fw-bold shadow-md" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                        <i class="fa-solid fa-book-bookmark"></i>
+                    </div>
+                    <div>
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="badge bg-white bg-opacity-25 text-white px-2 py-1">Curriculum & Syllabus</span>
+                            <span class="badge bg-white text-primary px-2 py-1 fw-bold">{{ subjects|length }} Subjects</span>
+                        </div>
+                        <h3 class="fw-bold brand-font mb-1 text-white">Curriculum Subjects & Syllabus Modules</h3>
+                        <p class="text-white-50 small mb-0">Theory courses, practical laboratories, electives, credit weightages, and instructor mappings.</p>
+                    </div>
+                </div>
+                {% if current_user.role == 'ADMIN' %}
+                    <a href="{{ url_for('academic.subject_create') }}" class="btn btn-light text-primary btn-sm rounded-pill px-3 fw-semibold shadow-xs">
+                        <i class="fa-solid fa-plus me-1"></i> Add Subject
+                    </a>
+                {% endif %}
+            </div>
         </div>
-        {% if current_user.role == 'ADMIN' %}
-            <a href="{{ url_for('academic.subject_create') }}" class="btn btn-primary btn-sm px-3">
-                <i class="fa-solid fa-plus me-1"></i> Add Subject
-            </a>
-        {% endif %}
     </div>
 
     <!-- Filter toolbar -->
-    <div class="card border-0 shadow-sm rounded-3 mb-4">
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
         <div class="card-body p-3">
             <form method="GET" action="{{ url_for('academic.subjects') }}" class="row g-2 align-items-center">
                 <div class="col-md-4">
                     <select name="dept_id" class="form-select form-select-sm" onchange="this.form.submit()">
                         <option value="">All Departments</option>
                         {% for d in departments %}
-                            <option value="{{ d.id }}" {% if selected_dept == d.id %}selected{% endif %}>{{ d.name }}</option>
+                            <option value="{{ d.id }}" {% if selected_dept == d.id %}selected{% endif %}>{{ d.name }} ({{ d.code }})</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -32,7 +46,7 @@
                     <select name="course_id" class="form-select form-select-sm" onchange="this.form.submit()">
                         <option value="">All Courses</option>
                         {% for c in courses %}
-                            <option value="{{ c.id }}" {% if selected_course == c.id %}selected{% endif %}>{{ c.name }}</option>
+                            <option value="{{ c.id }}" {% if selected_course == c.id %}selected{% endif %}>{{ c.name }} ({{ c.code }})</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -45,9 +59,11 @@
                     </select>
                 </div>
                 <div class="col-md-2 d-flex gap-2">
-                    <button type="submit" class="btn btn-primary btn-sm w-100">Filter</button>
+                    <button type="submit" class="btn btn-primary btn-sm flex-grow-1 rounded-pill">Filter</button>
                     {% if selected_dept or selected_course or selected_sem %}
-                        <a href="{{ url_for('academic.subjects') }}" class="btn btn-light btn-sm">Reset</a>
+                        <a href="{{ url_for('academic.subjects') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </a>
                     {% endif %}
                 </div>
             </form>
@@ -55,44 +71,80 @@
     </div>
 
     <!-- Subjects Table -->
-    <div class="card border-0 shadow-sm rounded-3">
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0 small">
+                <table class="table table-hover align-middle mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th>Subject Title</th>
+                            <th class="ps-4">Subject Title</th>
                             <th>Code</th>
                             <th>Department & Course</th>
                             <th>Semester</th>
                             <th>Credits</th>
                             <th>Type</th>
                             <th>Assigned Faculty</th>
+                            {% if current_user.role == 'ADMIN' %}<th class="text-end pe-4">Actions</th>{% endif %}
                         </tr>
                     </thead>
                     <tbody>
                         {% for s in subjects %}
                             <tr>
-                                <td><h6 class="mb-0 fw-bold text-dark">{{ s.name }}</h6></td>
+                                <td class="ps-4"><h6 class="mb-0 fw-bold text-dark">{{ s.name }}</h6></td>
                                 <td><code>{{ s.code }}</code></td>
                                 <td>
-                                    <strong>{{ s.department.code if s.department else '-' }}</strong>
-                                    <div class="text-muted">{{ s.course.code if s.course else '' }}</div>
+                                    <span class="badge badge-soft-primary">{{ s.department.code if s.department else '-' }}</span>
+                                    <div class="text-muted small">{{ s.course.name if s.course else '' }}</div>
                                 </td>
-                                <td>{{ s.semester.name if s.semester else '-' }}</td>
-                                <td><span class="badge bg-light text-dark border">{{ s.credits }} Credits</span></td>
-                                <td><span class="badge bg-info-subtle text-info border border-info-subtle">{{ s.subject_type }}</span></td>
+                                <td><span class="badge badge-soft-secondary">{{ s.semester.name if s.semester else '-' }}</span></td>
+                                <td><strong>{{ s.credits }}</strong> Credits</td>
                                 <td>
-                                    {% for f in s.assigned_faculties %}
-                                        <span class="badge bg-secondary-subtle text-dark border me-1">{{ f.full_name }}</span>
+                                    {% if s.subject_type == 'Practical' %}
+                                        <span class="badge badge-soft-info"><i class="fa-solid fa-flask me-1"></i>Lab / Practical</span>
+                                    {% elif s.subject_type == 'Elective' %}
+                                        <span class="badge badge-soft-warning"><i class="fa-solid fa-star me-1"></i>Elective</span>
                                     {% else %}
-                                        <span class="text-muted fst-italic">Unassigned</span>
+                                        <span class="badge badge-soft-primary"><i class="fa-solid fa-book-open me-1"></i>Theory</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% for f in s.faculties %}
+                                        <span class="badge bg-light text-dark border me-1">{{ f.full_name }}</span>
+                                    {% else %}
+                                        <span class="text-muted small fst-italic">Unassigned</span>
                                     {% endfor %}
                                 </td>
+                                {% if current_user.role == 'ADMIN' %}
+                                    <td class="text-end pe-4">
+                                        <div class="d-flex justify-content-end gap-2">
+                                            <a href="{{ url_for('academic.subject_edit', subj_id=s.id) }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                                                <i class="fa-solid fa-pen-to-square me-1"></i> Edit
+                                            </a>
+                                            <form method="POST" action="{{ url_for('academic.subject_delete', subj_id=s.id) }}" class="d-inline">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill" onclick="return confirm('Delete subject {{ s.name }}?')">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                {% endif %}
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="7" class="text-center py-4 text-muted">No subjects found for current selection.</td>
+                                <td colspan="8" class="text-center py-5">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">
+                                            <i class="fa-solid fa-book-slash"></i>
+                                        </div>
+                                        <h5 class="fw-bold text-dark mb-1">No Subjects Found</h5>
+                                        <p class="text-muted small mb-3">No subjects match your selected filters.</p>
+                                        {% if current_user.role == 'ADMIN' %}
+                                            <a href="{{ url_for('academic.subject_create') }}" class="btn btn-primary btn-sm rounded-pill px-4">
+                                                <i class="fa-solid fa-plus me-1"></i> Add Subject
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

@@ -128,6 +128,7 @@ def apply():
 
 @leave_bp.route('/<int:leave_id>/review', methods=['GET', 'POST'])
 @leave_bp.route('/<int:leave_id>/approve', methods=['POST'])
+@leave_bp.route('/<int:leave_id>/reject', methods=['POST'])
 @login_required
 @role_required(Role.ADMIN, Role.FACULTY)
 def review(leave_id):
@@ -141,6 +142,15 @@ def review(leave_id):
         leave_app.reviewed_at = datetime.utcnow()
         db.session.commit()
         flash(f'Leave application #{leave_app.id} approved.', 'success')
+        return redirect(url_for('leave.index'))
+
+    if request.path.endswith('/reject') or (request.method == 'POST' and request.form.get('action') == 'reject'):
+        leave_app.status = 'Rejected'
+        leave_app.review_comment = request.form.get('remarks') or request.form.get('review_comment') or 'Rejected'
+        leave_app.reviewed_by_id = current_user.id
+        leave_app.reviewed_at = datetime.utcnow()
+        db.session.commit()
+        flash(f'Leave application #{leave_app.id} rejected.', 'info')
         return redirect(url_for('leave.index'))
 
     if form.validate_on_submit():

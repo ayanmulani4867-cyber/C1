@@ -141,17 +141,23 @@ class FacultyEditForm(FlaskForm):
     ])
 
     curr_address_line1 = StringField('Address Line 1', validators=[Optional()])
+    curr_address_line2 = StringField('Address Line 2', validators=[Optional()])
     curr_city = StringField('City', validators=[Optional()])
+    curr_district = StringField('District', validators=[Optional()])
     curr_state = StringField('State', validators=[Optional()])
     curr_pincode = StringField('PIN Code', validators=[Optional()])
 
     perm_address_line1 = StringField('Address Line 1', validators=[Optional()])
+    perm_address_line2 = StringField('Address Line 2', validators=[Optional()])
     perm_city = StringField('City', validators=[Optional()])
+    perm_district = StringField('District', validators=[Optional()])
     perm_state = StringField('State', validators=[Optional()])
     perm_pincode = StringField('PIN Code', validators=[Optional()])
 
-    emergency_name = StringField('Emergency Name', validators=[Optional()])
-    emergency_phone = StringField('Emergency Phone', validators=[Optional()])
+    emergency_name = StringField('Emergency Contact Name', validators=[Optional()])
+    emergency_relation = StringField('Relationship', validators=[Optional()])
+    emergency_phone = StringField('Emergency Phone Number', validators=[Optional()])
+    emergency_alt_phone = StringField('Alternate Emergency Phone', validators=[Optional()])
 
     submit = SubmitField('Update Faculty Profile')
 

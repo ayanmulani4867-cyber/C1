@@ -119,11 +119,13 @@ class StudentEditForm(FlaskForm):
     last_name = StringField('Last Name', validators=[DataRequired(), Length(max=50)])
     profile_photo = FileField('Change Profile Photo', validators=[Optional(), FileAllowed(['jpg', 'jpeg', 'png', 'webp'], 'Images only')])
     roll_no = StringField('Roll Number', validators=[Optional(), Length(max=30)])
+    batch = StringField('Batch / Academic Year', validators=[Optional(), Length(max=30)])
+    admission_date = DateField('Admission Date', validators=[Optional()])
     
     dob = DateField('Date of Birth', validators=[Optional()])
     gender = SelectField('Gender', choices=[('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')], validators=[DataRequired()])
     blood_group = SelectField('Blood Group', choices=[('', 'Select Blood Group'), ('A+', 'A+'), ('A-', 'A-'), ('B+', 'B+'), ('B-', 'B-'), ('O+', 'O+'), ('O-', 'O-'), ('AB+', 'AB+'), ('AB-', 'AB-')], validators=[Optional()])
-    nationality = StringField('Nationality', validators=[Optional()])
+    nationality = StringField('Nationality', default='Indian', validators=[Optional()])
     personal_email = StringField('Personal Email', validators=[Optional(), Email()])
     mobile = StringField('Mobile Number', validators=[DataRequired(), Length(min=10, max=15)])
     alt_mobile = StringField('Alternate Mobile Number', validators=[Optional(), Length(max=15)])
@@ -136,7 +138,7 @@ class StudentEditForm(FlaskForm):
     division_id = SelectField('Class Division', coerce=int, validators=[Optional()])
     status = SelectField('Status', choices=[('Active', 'Active'), ('Inactive', 'Inactive'), ('Graduated', 'Graduated'), ('Transferred', 'Transferred')])
 
-    # Address
+    # Current Address
     curr_address_line1 = StringField('Address Line 1', validators=[Optional()])
     curr_address_line2 = StringField('Address Line 2', validators=[Optional()])
     curr_city = StringField('City', validators=[Optional()])
@@ -144,6 +146,7 @@ class StudentEditForm(FlaskForm):
     curr_state = StringField('State', validators=[Optional()])
     curr_pincode = StringField('PIN Code', validators=[Optional()])
 
+    # Permanent Address
     perm_address_line1 = StringField('Address Line 1', validators=[Optional()])
     perm_address_line2 = StringField('Address Line 2', validators=[Optional()])
     perm_city = StringField('City', validators=[Optional()])
@@ -151,20 +154,30 @@ class StudentEditForm(FlaskForm):
     perm_state = StringField('State', validators=[Optional()])
     perm_pincode = StringField('PIN Code', validators=[Optional()])
 
-    # Parent
+    # Parent Details
     father_name = StringField('Father / Guardian Name', validators=[Optional()])
     father_phone = StringField('Father / Guardian Phone', validators=[Optional()])
+    father_email = StringField('Father Email', validators=[Optional()])
+    father_occupation = StringField('Father Occupation', validators=[Optional()])
     mother_name = StringField('Mother Name', validators=[Optional()])
     mother_phone = StringField('Mother Phone', validators=[Optional()])
+    mother_email = StringField('Mother Email', validators=[Optional()])
+    mother_occupation = StringField('Mother Occupation', validators=[Optional()])
 
-    # Emergency
-    emergency_name = StringField('Emergency Name', validators=[Optional()])
+    # Emergency Contact
+    emergency_name = StringField('Emergency Contact Name', validators=[Optional()])
     emergency_relation = StringField('Relationship', validators=[Optional()])
-    emergency_phone = StringField('Emergency Phone', validators=[Optional()])
+    emergency_phone = StringField('Emergency Phone Number', validators=[Optional()])
+    emergency_alt_phone = StringField('Alternate Emergency Phone', validators=[Optional()])
 
-    # Status
+    # Academic Background & Status
+    prev_qualification = StringField('Previous Qualification', validators=[Optional()])
+    prev_institution = StringField('Previous School / College', validators=[Optional()])
+    prev_percentage = FloatField('Previous Percentage / CGPA', validators=[Optional()])
+    admission_type = SelectField('Admission Type', choices=[('Regular', 'Regular'), ('Lateral Entry', 'Lateral Entry'), ('Management Quota', 'Management Quota'), ('Transfer', 'Transfer')], validators=[Optional()])
+    scholarship_status = SelectField('Scholarship Category', choices=[('None', 'None / Self-Financed'), ('Merit', 'Institute Merit Scholarship'), ('Government', 'State/National Scholarship'), ('Category', 'Reserved Category Aid')], validators=[Optional()])
     hostel_status = SelectField('Hostel Status', choices=[('Day Scholar', 'Day Scholar'), ('Hosteller', 'Hosteller')])
-    transport_status = SelectField('Transport Status', choices=[('Self', 'Self'), ('College Bus', 'College Bus')])
+    transport_status = SelectField('Transport Status', choices=[('Self', 'Self / Own Transport'), ('College Bus', 'College Bus Transport')])
 
     submit = SubmitField('Update Student Profile')
 
