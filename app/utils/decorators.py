@@ -9,6 +9,9 @@ def role_required(*allowed_roles):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             if not current_user.is_authenticated:
+                from flask import render_template
+                if 'text/html' in request.headers.get('Accept', '') and not request.path.startswith('/api/'):
+                    return render_template('auth/bootstrap.html'), 200
                 return redirect(url_for('auth.login', next=request.url))
             
             # If the user must change password, force them to change password first

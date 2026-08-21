@@ -42,6 +42,48 @@ def create_app(config_name=None):
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
+
+    @login_manager.request_loader
+    def load_user_from_request(req):
+        from app.utils.api_auth import verify_api_token
+        auth_header = req.headers.get('Authorization')
+        if auth_header and auth_header.startswith('Bearer '):
+            token = auth_header.split(' ', 1)[1].strip()
+            user, _, _ = verify_api_token(token)
+            if user and user.is_active:
+                return user
+        return None
+
+    @login_manager.unauthorized_handler
+    def handle_unauthorized():
+        if 'text/html' in request.headers.get('Accept', '') and not request.path.startswith('/api/'):
+            return render_template('auth/bootstrap.html'), 200
+        if request.path.startswith('/api/'):
+            from flask import jsonify
+            return jsonify({'success': False, 'error': 'Unauthorized', 'message': 'Authentication required.'}), 401
+        return redirect(url_for('auth.login', next=request.url))
+
+    # Exempt Bearer authenticated requests from cookie-based CSRF checks
+    orig_csrf_exempt = csrf._is_exempt
+    def custom_csrf_exempt():
+        auth = request.headers.get('Authorization', '')
+        if auth.startswith('Bearer '):
+            return True
+        return orig_csrf_exempt()
+    csrf._is_exempt = custom_csrf_exempt
+
+    @app.before_request
+    def load_bearer_user():
+        auth_header = request.headers.get('Authorization', '')
+        if auth_header.startswith('Bearer '):
+            from flask import g
+            from app.utils.api_auth import verify_api_token
+            token = auth_header.split(' ', 1)[1].strip()
+            user, student, _ = verify_api_token(token)
+            if user and user.is_active:
+                g._login_user = user
+                g.current_user = user
+                g.current_student = student
     
     # Custom Jinja filters and helpers
     @app.template_filter('currency')

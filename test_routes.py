@@ -22,7 +22,7 @@ anonymous_routes = [
 for url, expected in anonymous_routes:
     res = client.get(url)
     status = res.status_code
-    print(f"GET {url} -> {status} {'✓' if status == expected else '✗ ERROR'}")
+    print(f"GET {url} -> {status} {'[OK]' if status == expected else '[ERROR]'}")
     if status != expected:
         print(f"  Error details: {res.data.decode('utf-8')[:500]}")
 
@@ -105,7 +105,7 @@ for username, password, urls in roles_to_test:
     for url in urls:
         res = client.get(url)
         status = res.status_code
-        print(f"[{username}] GET {url} -> {status} {'✓' if status in (200, 302) else '✗ ERROR'}")
+        print(f"[{username}] GET {url} -> {status} {'[OK]' if status in (200, 302) else '[ERROR]'}")
         if status not in (200, 302):
             print(f"  Error details: {res.data.decode('utf-8')[:600]}")
 

@@ -78,8 +78,6 @@ def api_auth_required(f):
             token = auth_header.split(' ', 1)[1].strip()
         elif request.headers.get('X-Auth-Token'):
             token = request.headers.get('X-Auth-Token').strip()
-        elif request.args.get('token'):
-            token = request.args.get('token').strip()
 
         if token:
             user, student, error_msg = verify_api_token(token)
@@ -93,10 +91,16 @@ def api_auth_required(f):
             g.current_student = student
             return f(*args, **kwargs)
 
-        # 2. Fallback to Flask-Login session if available
-        if current_user.is_authenticated:
-            g.current_user = current_user
-            g.current_student = Student.query.filter_by(user_id=current_user.id).first() if current_user.role == Role.STUDENT else None
+        if token:
+            user, student, error_msg = verify_api_token(token)
+            if error_msg or not user:
+                return jsonify({
+                    'success': False,
+                    'error': 'Unauthorized',
+                    'message': error_msg or 'Authentication failed'
+                }), 401
+            g.current_user = user
+            g.current_student = student
             return f(*args, **kwargs)
 
         return jsonify({
@@ -123,28 +127,20 @@ def api_role_required(*allowed_roles):
                 token = auth_header.split(' ', 1)[1].strip()
             elif request.headers.get('X-Auth-Token'):
                 token = request.headers.get('X-Auth-Token').strip()
-            elif request.args.get('token'):
-                token = request.args.get('token').strip()
 
-            user = None
-            student = None
-
-            if token:
-                user, student, error_msg = verify_api_token(token)
-                if error_msg or not user:
-                    return jsonify({
-                        'success': False,
-                        'error': 'Unauthorized',
-                        'message': error_msg or 'Authentication failed'
-                    }), 401
-            elif current_user.is_authenticated:
-                user = current_user
-                student = Student.query.filter_by(user_id=current_user.id).first() if current_user.role == Role.STUDENT else None
-            else:
+            if not token:
                 return jsonify({
                     'success': False,
                     'error': 'Unauthorized',
                     'message': 'Authorization header required. Pass Bearer <token>.'
+                }), 401
+
+            user, student, error_msg = verify_api_token(token)
+            if error_msg or not user:
+                return jsonify({
+                    'success': False,
+                    'error': 'Unauthorized',
+                    'message': error_msg or 'Authentication failed'
                 }), 401
 
             if not user.is_active:
@@ -201,28 +197,20 @@ def api_student_required(f):
             token = auth_header.split(' ', 1)[1].strip()
         elif request.headers.get('X-Auth-Token'):
             token = request.headers.get('X-Auth-Token').strip()
-        elif request.args.get('token'):
-            token = request.args.get('token').strip()
 
-        user = None
-        student = None
-
-        if token:
-            user, student, error_msg = verify_api_token(token)
-            if error_msg or not user:
-                return jsonify({
-                    'success': False,
-                    'error': 'Unauthorized',
-                    'message': error_msg or 'Authentication failed'
-                }), 401
-        elif current_user.is_authenticated:
-            user = current_user
-            student = Student.query.filter_by(user_id=current_user.id).first()
-        else:
+        if not token:
             return jsonify({
                 'success': False,
                 'error': 'Unauthorized',
                 'message': 'Authorization header required. Pass Bearer <token>.'
+            }), 401
+
+        user, student, error_msg = verify_api_token(token)
+        if error_msg or not user:
+            return jsonify({
+                'success': False,
+                'error': 'Unauthorized',
+                'message': error_msg or 'Authentication failed'
             }), 401
 
         if not user.is_active:
