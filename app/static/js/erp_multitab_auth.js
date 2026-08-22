@@ -167,11 +167,34 @@
             return;
         }
 
-        // Handle Logout specially
+        // Handle Logout with proper authenticated POST to backend
         if (url.pathname === '/auth/logout' || url.pathname.endsWith('/logout')) {
             e.preventDefault();
-            clearToken();
-            window.__erp_navigate('/auth/login');
+            const logoutToken = getToken();
+            const logoutHeaders = {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-ERP-Client': 'web'
+            };
+            if (logoutToken) {
+                logoutHeaders['Authorization'] = 'Bearer ' + logoutToken;
+            }
+            fetch('/auth/logout', {
+                method: 'POST',
+                headers: logoutHeaders
+            })
+            .then(function() {
+                // Always clear this tab's token regardless of response
+                clearToken();
+                try { sessionStorage.removeItem('CAMPUS_CONNECT_ERP_currentView'); } catch(e2) {}
+            })
+            .catch(function() {
+                clearToken();
+                try { sessionStorage.removeItem('CAMPUS_CONNECT_ERP_currentView'); } catch(e2) {}
+            })
+            .finally(function() {
+                // Hard redirect only this tab to login
+                window.location.replace('/auth/login');
+            });
             return;
         }
 

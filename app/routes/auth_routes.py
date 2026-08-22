@@ -48,12 +48,21 @@ def login():
     return render_template('auth/login.html', form=form)
 
 
-@auth_bp.route('/logout')
+@auth_bp.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
+    from flask import jsonify, session
     logout_user()
+    # Clear server-side Flask session entirely
+    session.clear()
+
+    # JSON response for JS fetch() callers (multi-tab Bearer logout)
+    if request.method == 'POST' or request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return jsonify({'success': True, 'message': 'Logged out successfully.'}), 200
+
     flash('You have been logged out securely.', 'info')
     return redirect(url_for('auth.login'))
+
 
 
 @auth_bp.route('/profile', methods=['GET', 'POST'])

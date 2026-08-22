@@ -105,15 +105,12 @@ def create_app(config_name=None):
         if request.path.startswith('/api/') or request.path == '/health':
             return
 
-        # 5. Skip CSRF for safe HTTP methods (GET, HEAD, OPTIONS, TRACE)
+        # 5. CSRF is only meaningful for state-changing methods.
+        #    GET, HEAD, OPTIONS, TRACE are safe methods — skip CSRF check.
         if request.method in ('GET', 'HEAD', 'OPTIONS', 'TRACE'):
             return
 
-        # 6. Skip CSRF for logout (handled by login_required session check)
-        if request.path in ('/auth/logout', '/auth/login'):
-            return
-
-        # 7. Enforce CSRF protection for state-changing browser cookie-session requests
+        # 6. Enforce CSRF protection for POST/PUT/PATCH/DELETE browser cookie-session requests
         if not app.config.get('WTF_CSRF_ENABLED', True):
             return
 
