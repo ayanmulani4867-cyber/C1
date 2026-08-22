@@ -572,10 +572,11 @@ def download_id_card(student_id):
             return redirect(url_for('student.dashboard'))
 
     college_info = {
-        'name': current_app.config.get('COLLEGE_NAME', 'Apex Institute of Technology & Science'),
-        'address': current_app.config.get('COLLEGE_ADDRESS', 'Knowledge City, Tech Campus'),
-        'phone': current_app.config.get('COLLEGE_PHONE', '+91 98765 43210'),
-        'email': current_app.config.get('COLLEGE_EMAIL', 'contact@apextech.edu')
+        'name': current_app.config.get('COLLEGE_NAME', 'Sharad Institute of Technology'),
+        'short_name': current_app.config.get('COLLEGE_SHORT_NAME', 'SITCOE'),
+        'address': current_app.config.get('COLLEGE_ADDRESS', 'Yadrav (Ichalkaranji), Maharashtra - 416145'),
+        'phone': current_app.config.get('COLLEGE_PHONE', '+91 2322 253000'),
+        'email': current_app.config.get('COLLEGE_EMAIL', 'contact@sitcoe.org.in')
     }
 
     pdf_buffer = generate_id_card_pdf(student, college_info=college_info)

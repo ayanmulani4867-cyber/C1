@@ -58,10 +58,11 @@ class Config:
     
     # Application settings
     APP_NAME = "Campus Connect"
-    COLLEGE_NAME = "Apex Institute of Technology & Science"
-    COLLEGE_ADDRESS = "Knowledge City, Expressway Campus, Tech District"
-    COLLEGE_EMAIL = "contact@apextech.edu"
-    COLLEGE_PHONE = "+91 98765 43210"
+    COLLEGE_NAME = "Sharad Institute of Technology"
+    COLLEGE_SHORT_NAME = "SITCOE"
+    COLLEGE_ADDRESS = "Yadrav (Ichalkaranji), Maharashtra - 416145"
+    COLLEGE_EMAIL = "contact@sitcoe.org.in"
+    COLLEGE_PHONE = "+91 2322 253000"
 
     @classmethod
     def init_app(cls, app):

@@ -62,7 +62,7 @@ def generate_fee_receipt_pdf(payment, college_info=None, *args, **kwargs):
     elements = []
     
     # College Header
-    elements.append(Paragraph(current_app.config.get('COLLEGE_NAME', 'Apex Institute of Technology & Science'), title_style))
+    elements.append(Paragraph(current_app.config.get('COLLEGE_NAME', 'Sharad Institute of Technology'), title_style))
     elements.append(Paragraph(f"{current_app.config.get('COLLEGE_ADDRESS', '')} | Tel: {current_app.config.get('COLLEGE_PHONE', '')}", subtitle_style))
     elements.append(HRFlowable(width="100%", thickness=1.5, color=colors.HexColor('#1E3A8A'), spaceBefore=5, spaceAfter=15))
     
@@ -154,7 +154,7 @@ def generate_marksheet_pdf(student, semester_or_results=None, results=None, coll
     )
     
     styles = getSampleStyleSheet()
-    college_name = (college_info.get('name') if college_info else None) or current_app.config.get('COLLEGE_NAME', 'Apex Institute of Technology & Science')
+    college_name = (college_info.get('name') if college_info else None) or current_app.config.get('COLLEGE_NAME', 'Sharad Institute of Technology')
     college_address = (college_info.get('address') if college_info else None) or current_app.config.get('COLLEGE_ADDRESS', 'Knowledge City, Tech Campus')
 
     title_style = ParagraphStyle(
@@ -324,7 +324,7 @@ def generate_id_card_pdf(student, college_info=None):
     )
     
     styles = getSampleStyleSheet()
-    college_name = (college_info.get('name') if college_info else None) or current_app.config.get('COLLEGE_NAME', 'Apex Institute of Technology & Science')
+    college_name = (college_info.get('name') if college_info else None) or current_app.config.get('COLLEGE_NAME', 'Sharad Institute of Technology')
     college_address = (college_info.get('address') if college_info else None) or current_app.config.get('COLLEGE_ADDRESS', 'Knowledge City, Tech Campus')
     
     elements = []
@@ -402,7 +402,7 @@ def generate_admit_card_pdf(student, exams=None, college_info=None):
     )
     
     styles = getSampleStyleSheet()
-    college_name = (college_info.get('name') if college_info else None) or current_app.config.get('COLLEGE_NAME', 'Apex Institute of Technology & Science')
+    college_name = (college_info.get('name') if college_info else None) or current_app.config.get('COLLEGE_NAME', 'Sharad Institute of Technology')
     college_address = (college_info.get('address') if college_info else None) or current_app.config.get('COLLEGE_ADDRESS', 'Knowledge City, Tech Campus')
 
     elements = []
@@ -545,7 +545,7 @@ def generate_certificate_pdf(cert_req, college_info=None, *args, **kwargs):
     
     elements = []
     
-    college_name = (college_info.get('name') if college_info else None) or current_app.config.get('COLLEGE_NAME', 'Apex Institute of Technology & Science')
+    college_name = (college_info.get('name') if college_info else None) or current_app.config.get('COLLEGE_NAME', 'Sharad Institute of Technology')
     college_address = (college_info.get('address') if college_info else None) or current_app.config.get('COLLEGE_ADDRESS', 'Knowledge City, Tech Campus')
     
     # College Header
@@ -665,7 +665,7 @@ def generate_faculty_id_card_pdf(faculty, college_info=None):
     )
     
     styles = getSampleStyleSheet()
-    college_name = (college_info.get('name') if college_info else None) or current_app.config.get('COLLEGE_NAME', 'Apex Institute of Technology & Science')
+    college_name = (college_info.get('name') if college_info else None) or current_app.config.get('COLLEGE_NAME', 'Sharad Institute of Technology')
     college_address = (college_info.get('address') if college_info else None) or current_app.config.get('COLLEGE_ADDRESS', 'Knowledge City, Tech Campus')
     
     elements = []

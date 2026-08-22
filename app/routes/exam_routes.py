@@ -105,8 +105,9 @@ def download_admit_card(exam_id):
         return redirect(url_for('exam.index'))
 
     college_info = {
-        'name': current_app.config.get('COLLEGE_NAME', 'Apex Institute of Technology'),
-        'address': current_app.config.get('COLLEGE_ADDRESS', 'Knowledge City, Tech Campus')
+        'name': current_app.config.get('COLLEGE_NAME', 'Sharad Institute of Technology'),
+        'short_name': current_app.config.get('COLLEGE_SHORT_NAME', 'SITCOE'),
+        'address': current_app.config.get('COLLEGE_ADDRESS', 'Yadrav (Ichalkaranji), Maharashtra - 416145')
     }
 
     pdf_buffer = generate_admit_card_pdf(exam, student, college_info=college_info)
@@ -240,8 +241,9 @@ def download_marksheet(student_id):
     student = Student.query.get_or_404(student_id)
     results = ExamResult.query.filter_by(student_id=student.id, is_published=True).all()
     college_info = {
-        'name': current_app.config.get('COLLEGE_NAME', 'Apex Institute of Technology'),
-        'address': current_app.config.get('COLLEGE_ADDRESS', 'Knowledge City, Tech Campus')
+        'name': current_app.config.get('COLLEGE_NAME', 'Sharad Institute of Technology'),
+        'short_name': current_app.config.get('COLLEGE_SHORT_NAME', 'SITCOE'),
+        'address': current_app.config.get('COLLEGE_ADDRESS', 'Yadrav (Ichalkaranji), Maharashtra - 416145')
     }
 
     pdf_buffer = generate_marksheet_pdf(student, results, college_info=college_info)

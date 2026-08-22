@@ -670,11 +670,12 @@ def get_config():
     return jsonify({
         'success': True,
         'institute': {
-            'name': current_app.config.get('COLLEGE_NAME', 'Apex Institute of Technology & Science'),
-            'address': current_app.config.get('COLLEGE_ADDRESS', 'Knowledge City, Tech Campus'),
-            'email': current_app.config.get('COLLEGE_EMAIL', 'contact@apextech.edu'),
-            'phone': current_app.config.get('COLLEGE_PHONE', '+91 98765 43210'),
-            'website': current_app.config.get('COLLEGE_WEBSITE', 'https://campusconnect.edu'),
+            'name': current_app.config.get('COLLEGE_NAME', 'Sharad Institute of Technology'),
+            'short_name': current_app.config.get('COLLEGE_SHORT_NAME', 'SITCOE'),
+            'address': current_app.config.get('COLLEGE_ADDRESS', 'Yadrav (Ichalkaranji), Maharashtra - 416145'),
+            'email': current_app.config.get('COLLEGE_EMAIL', 'contact@sitcoe.org.in'),
+            'phone': current_app.config.get('COLLEGE_PHONE', '+91 2322 253000'),
+            'website': current_app.config.get('COLLEGE_WEBSITE', 'https://sitcoe.org.in'),
             'academic_session': current_session.name if current_session else '2025-26'
         },
         'api_version': 'v1',
@@ -1662,8 +1663,8 @@ def delete_profile_photo():
 @api_student_required
 def student_id_card():
     std = g.current_student
-    college_name = current_app.config.get('COLLEGE_NAME', 'Apex Institute of Technology & Science')
-    college_address = current_app.config.get('COLLEGE_ADDRESS', 'Knowledge City, Tech Campus')
+    college_name = current_app.config.get('COLLEGE_NAME', 'Sharad Institute of Technology')
+    college_address = current_app.config.get('COLLEGE_ADDRESS', 'Yadrav (Ichalkaranji), Maharashtra - 416145')
     
     # Generate digital ID validation string
     qr_payload = f"CAMPUS_CONNECT|STD_ID:{std.student_id}|ROLL:{std.roll_no}|ENR:{std.enrollment_no}|NAME:{std.full_name}|DEPT:{std.department.code if std.department else 'GEN'}|VERIFIED:TRUE"

@@ -164,10 +164,11 @@ def create_app(config_name=None):
             
         return {
             'APP_NAME': app.config.get('APP_NAME', 'Campus Connect'),
-            'COLLEGE_NAME': app.config.get('COLLEGE_NAME', 'Apex Institute of Technology & Science'),
-            'COLLEGE_ADDRESS': app.config.get('COLLEGE_ADDRESS', 'Knowledge City, Expressway Campus'),
-            'COLLEGE_EMAIL': app.config.get('COLLEGE_EMAIL', 'contact@apextech.edu'),
-            'COLLEGE_PHONE': app.config.get('COLLEGE_PHONE', '+91 98765 43210'),
+            'COLLEGE_NAME': app.config.get('COLLEGE_NAME', 'Sharad Institute of Technology'),
+            'COLLEGE_SHORT_NAME': app.config.get('COLLEGE_SHORT_NAME', 'SITCOE'),
+            'COLLEGE_ADDRESS': app.config.get('COLLEGE_ADDRESS', 'Yadrav (Ichalkaranji), Maharashtra - 416145'),
+            'COLLEGE_EMAIL': app.config.get('COLLEGE_EMAIL', 'contact@sitcoe.org.in'),
+            'COLLEGE_PHONE': app.config.get('COLLEGE_PHONE', '+91 2322 253000'),
             'unread_notices_count': unread_notices_count,
             'unread_notifications_count': unread_notifications_count,
             'recent_notifications': recent_notifications,

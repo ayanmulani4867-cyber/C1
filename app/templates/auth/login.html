@@ -44,7 +44,7 @@
                         <label class="form-label fw-semibold small text-dark">Username or Email</label>
                         <div class="input-group input-group-sm">
                             <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-user text-muted"></i></span>
-                            {{ form.identifier(class="form-control border-start-0 ps-0" + (" is-invalid" if form.identifier.errors else ""), id="loginIdentifier", placeholder="e.g. admin, student@apextech.edu") }}
+                            {{ form.identifier(class="form-control border-start-0 ps-0" + (" is-invalid" if form.identifier.errors else ""), id="loginIdentifier", placeholder="e.g. admin, student@sitcoe.org.in") }}
                         </div>
                         {% for err in form.identifier.errors %}
                             <div class="text-danger small mt-1" style="font-size: 0.75rem;">{{ err }}</div>
