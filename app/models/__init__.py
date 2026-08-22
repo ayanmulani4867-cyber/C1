@@ -22,6 +22,13 @@ from app.models.complaint import Complaint
 from app.models.event import Event, EventRegistration
 from app.models.notification import Notification
 from app.models.audit_log import AuditLog
+from app.models.mobile_config import (
+    MobileAppConfig,
+    MobileHomeSection,
+    MobileQuickAction,
+    MobileBanner,
+    MobileFeatureFlag
+)
 
 __all__ = [
     'User',
@@ -57,4 +64,10 @@ __all__ = [
     'EventRegistration',
     'Notification',
     'AuditLog',
+    'MobileAppConfig',
+    'MobileHomeSection',
+    'MobileQuickAction',
+    'MobileBanner',
+    'MobileFeatureFlag',
 ]
+

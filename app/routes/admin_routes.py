@@ -21,6 +21,14 @@ from app.models.feedback import Feedback
 from app.models.event import Event
 from app.models.audit_log import AuditLog
 from app.models.notification import Notification
+from app.models.mobile_config import (
+    MobileAppConfig,
+    MobileHomeSection,
+    MobileQuickAction,
+    MobileBanner,
+    MobileFeatureFlag
+)
+from app.routes.api_routes import ensure_default_mobile_config
 from app.forms.auth_forms import UserCreateForm
 
 admin_bp = Blueprint('admin', __name__)
@@ -276,3 +284,120 @@ def settings():
         sessions=sessions,
         current_session=current_session
     )
+
+
+# ==========================================
+# MOBILE APP MANAGEMENT (REMOTE CONFIG ENGINE)
+# ==========================================
+
+@admin_bp.route('/mobile-management', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def mobile_management():
+    ensure_default_mobile_config()
+
+    if request.method == 'POST':
+        action_type = request.form.get('action_type', 'save_config')
+
+        if action_type == 'save_config':
+            # 1. Update Core Settings
+            cfg = MobileAppConfig.query.first()
+            if not cfg:
+                cfg = MobileAppConfig()
+                db.session.add(cfg)
+
+            cfg.config_version = request.form.get('config_version', '1.0').strip()
+            cfg.maintenance_mode = 'maintenance_mode' in request.form
+            cfg.maintenance_message = request.form.get('maintenance_message', '').strip()
+            cfg.min_app_version = request.form.get('min_app_version', '1.0.0').strip()
+            cfg.update_url = request.form.get('update_url', '').strip()
+            cfg.updated_at = datetime.utcnow()
+
+            # 2. Update Home Sections
+            sections = MobileHomeSection.query.all()
+            for sec in sections:
+                sec.is_enabled = f"section_{sec.section_key}_enabled" in request.form
+                order_val = request.form.get(f"section_{sec.section_key}_order", str(sec.display_order))
+                try:
+                    sec.display_order = int(order_val)
+                except ValueError:
+                    pass
+
+            # 3. Update Quick Actions
+            actions = MobileQuickAction.query.all()
+            for act in actions:
+                act.is_enabled = f"action_{act.action_key}_enabled" in request.form
+                order_val = request.form.get(f"action_{act.action_key}_order", str(act.display_order))
+                try:
+                    act.display_order = int(order_val)
+                except ValueError:
+                    pass
+
+            # 4. Update Feature Flags
+            flags = MobileFeatureFlag.query.all()
+            for flg in flags:
+                flg.is_enabled = f"flag_{flg.flag_key}_enabled" in request.form
+
+            db.session.commit()
+            flash('Mobile App configuration published successfully to student devices.', 'success')
+            return redirect(url_for('admin.mobile_management'))
+
+    cfg = MobileAppConfig.query.first()
+    sections = MobileHomeSection.query.order_by(MobileHomeSection.display_order.asc()).all()
+    actions = MobileQuickAction.query.order_by(MobileQuickAction.display_order.asc()).all()
+    banners = MobileBanner.query.order_by(MobileBanner.display_order.asc()).all()
+    flags = MobileFeatureFlag.query.all()
+
+    return render_template('admin/mobile_management.html',
+        config=cfg,
+        sections=sections,
+        actions=actions,
+        banners=banners,
+        flags=flags
+    )
+
+
+@admin_bp.route('/mobile-management/banner/create', methods=['POST'])
+@login_required
+@admin_required
+def create_mobile_banner():
+    title = request.form.get('title', '').strip()
+    subtitle = request.form.get('subtitle', '').strip()
+    image_url = request.form.get('image_url', '').strip()
+    action_url = request.form.get('action_url', '').strip()
+    order_val = request.form.get('display_order', '1')
+
+    if title:
+        try:
+            order = int(order_val)
+        except ValueError:
+            order = 1
+
+        banner = MobileBanner(
+            title=title,
+            subtitle=subtitle if subtitle else None,
+            image_url=image_url if image_url else None,
+            action_url=action_url if action_url else None,
+            is_active=True,
+            display_order=order
+        )
+        db.session.add(banner)
+        db.session.commit()
+        flash(f'Promotional Banner "{title}" created.', 'success')
+    else:
+        flash('Banner title is required.', 'danger')
+
+    return redirect(url_for('admin.mobile_management'))
+
+
+@admin_bp.route('/mobile-management/banner/<int:banner_id>/delete', methods=['POST'])
+@login_required
+@admin_required
+def delete_mobile_banner(banner_id):
+    banner = MobileBanner.query.get_or_404(banner_id)
+    title = banner.title
+    db.session.delete(banner)
+    db.session.commit()
+    flash(f'Banner "{title}" deleted.', 'info')
+    return redirect(url_for('admin.mobile_management'))
+

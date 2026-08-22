@@ -25,6 +25,13 @@ from app.models.notice import Notice
 from app.models.event import Event, EventRegistration
 from app.models.feedback import Feedback
 from app.models.notification import Notification
+from app.models.mobile_config import (
+    MobileAppConfig,
+    MobileHomeSection,
+    MobileQuickAction,
+    MobileBanner,
+    MobileFeatureFlag
+)
 from app.utils.api_auth import api_auth_required, api_student_required, generate_api_token
 from app.utils.helpers import generate_receipt_number, generate_transaction_id, generate_certificate_code
 from app.utils.id_generator import (
@@ -3033,3 +3040,118 @@ def students_by_division(division_id):
         'full_name': s.full_name,
         'photo': s.profile_photo
     } for s in students])
+
+
+# ==========================================
+# 19. REMOTE MOBILE CONFIGURATION (SAFE UI)
+# ==========================================
+
+def ensure_default_mobile_config():
+    """Ensure database contains initialized default remote config entities if empty."""
+    # Ensure tables exist
+    db.create_all()
+
+    # 1. Base App Config
+    cfg = MobileAppConfig.query.first()
+    if not cfg:
+        cfg = MobileAppConfig(
+            config_version='1.0',
+            maintenance_mode=False,
+            maintenance_message='University portal maintenance in progress. Please check back shortly.',
+            min_app_version='1.0.0',
+            update_url=''
+        )
+        db.session.add(cfg)
+
+    # 2. Home Sections
+    if MobileHomeSection.query.count() == 0:
+        default_sections = [
+            ('header', 'Welcome Header', True, 1),
+            ('attendance', 'Attendance Overview', True, 2),
+            ('stats', 'Quick Metrics', True, 3),
+            ('timetable', 'Today Schedule', True, 4),
+            ('assignments', 'Pending Assignments', True, 5),
+            ('exams', 'Upcoming Exams', True, 6),
+            ('quick_actions', 'Quick Actions Grid', True, 7)
+        ]
+        for key, name, enabled, order in default_sections:
+            db.session.add(MobileHomeSection(
+                section_key=key,
+                name=name,
+                is_enabled=enabled,
+                display_order=order
+            ))
+
+    # 3. Quick Actions
+    if MobileQuickAction.query.count() == 0:
+        default_actions = [
+            ('attendance', 'Attendance', 'attendance', 'fact_check', True, 1),
+            ('timetable', 'Timetable', 'timetable', 'calendar_today', True, 2),
+            ('results', 'Results', 'results', 'grade', True, 3),
+            ('materials', 'Materials', 'study_materials', 'menu_book', True, 4),
+            ('fees', 'Fees', 'fees', 'account_balance_wallet', True, 5),
+            ('leave', 'Leave', 'leave', 'event_busy', True, 6),
+            ('certificates', 'Certificates', 'certificates', 'card_membership', True, 7),
+            ('notices', 'Notices', 'notices', 'campaign', True, 8)
+        ]
+        for key, title, route, icon, enabled, order in default_actions:
+            db.session.add(MobileQuickAction(
+                action_key=key,
+                title=title,
+                route=route,
+                icon=icon,
+                is_enabled=enabled,
+                display_order=order
+            ))
+
+    # 4. Feature Flags
+    if MobileFeatureFlag.query.count() == 0:
+        default_flags = [
+            ('enable_photo_upload', 'Student Photo Upload', True),
+            ('enable_feedback', 'Course Feedback', True),
+            ('enable_certificates', 'Certificate Requests', True),
+            ('enable_grievance', 'Grievance Desk', True),
+            ('enable_exam_schedule', 'Exam Schedules', True)
+        ]
+        for key, name, enabled in default_flags:
+            db.session.add(MobileFeatureFlag(
+                flag_key=key,
+                name=name,
+                is_enabled=enabled
+            ))
+
+    try:
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+
+
+@api_bp.route('/mobile/config')
+@api_bp.route('/v1/mobile/config')
+@api_student_required
+def get_mobile_config():
+    ensure_default_mobile_config()
+
+    cfg = MobileAppConfig.query.first()
+    sections = MobileHomeSection.query.order_by(MobileHomeSection.display_order.asc()).all()
+    actions = MobileQuickAction.query.order_by(MobileQuickAction.display_order.asc()).all()
+    banners = MobileBanner.query.filter_by(is_active=True).order_by(MobileBanner.display_order.asc()).all()
+    flags = MobileFeatureFlag.query.all()
+
+    flags_dict = {f.flag_key: f.is_enabled for f in flags}
+
+    return jsonify({
+        'success': True,
+        'config': {
+            'config_version': cfg.config_version if cfg else '1.0',
+            'maintenance_mode': cfg.maintenance_mode if cfg else False,
+            'maintenance_message': cfg.maintenance_message if cfg else '',
+            'min_app_version': cfg.min_app_version if cfg else '1.0.0',
+            'update_url': cfg.update_url if cfg else '',
+            'home_sections': [s.to_dict() for s in sections],
+            'quick_actions': [a.to_dict() for a in actions],
+            'banners': [b.to_dict() for b in banners],
+            'feature_flags': flags_dict
+        }
+    })
+

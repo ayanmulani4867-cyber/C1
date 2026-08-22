@@ -526,6 +526,9 @@
                     <a href="{{ url_for('admin.settings') }}" class="nav-link {% if ep == 'admin.settings' %}active{% endif %}">
                         <i class="fa-solid fa-sliders"></i> System Settings
                     </a>
+                    <a href="{{ url_for('admin.mobile_management') }}" class="nav-link {% if ep == 'admin.mobile_management' %}active{% endif %}">
+                        <i class="fa-solid fa-mobile-screen-button"></i> Mobile App Management
+                    </a>
 
                 {# ==================== 2. HOD SIDEBAR ==================== #}
                 {% elif current_user.role == 'HOD' %}

@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block title %}Mobile App Management - {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="h3 fw-bold text-dark mb-1"><i class="fa-solid fa-mobile-screen text-primary me-2"></i> Mobile App Management</h2>
+        <p class="text-muted small mb-0">Manage CampusConnect native Android remote configuration, home sections, and banners in real-time.</p>
+    </div>
+    <div>
+        <a href="{{ url_for('api.get_mobile_config') }}" target="_blank" class="btn btn-outline-secondary btn-sm me-2">
+            <i class="fa-solid fa-code me-1"></i> View Live Config API
+        </a>
+    </div>
+</div>
+
+<form method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="action_type" value="save_config">
+
+    <div class="row g-4">
+        <!-- 1. System Maintenance & Versioning -->
+        <div class="col-lg-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-shield-halved text-danger me-2"></i> Maintenance & Release Policy</h5>
+                    <span class="badge bg-light text-dark border">Android Policy</span>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Config Version</label>
+                            <input type="text" name="config_version" class="form-control" value="{{ config.config_version if config else '1.0' }}" required>
+                            <div class="form-text small">Increments force immediate cache refresh on app.</div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Min Supported App Version</label>
+                            <input type="text" name="min_app_version" class="form-control" value="{{ config.min_app_version if config else '1.0.0' }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">App Update Store / Download URL</label>
+                            <input type="url" name="update_url" class="form-control" value="{{ config.update_url if config else '' }}" placeholder="https://play.google.com/store/apps/details?id=com.campusconnect.student">
+                        </div>
+                        <div class="col-12">
+                            <hr class="my-2">
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" name="maintenance_mode" id="maintMode" {% if config and config.maintenance_mode %}checked{% endif %}>
+                                <label class="form-check-label fw-bold text-danger" for="maintMode">Enable Emergency Maintenance Mode (Halts Student App Operations)</label>
+                            </div>
+                            <input type="text" name="maintenance_message" class="form-control" value="{{ config.maintenance_message if config else 'University portal maintenance in progress. Please check back shortly.' }}" placeholder="Maintenance banner message...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Home Dashboard Sections -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white py-3 border-bottom">
+                    <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-table-cells-large text-primary me-2"></i> Dashboard Sections Visibility & Ordering</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-3">Section</th>
+                                    <th>Key</th>
+                                    <th style="width: 100px;">Order</th>
+                                    <th class="text-center">Active</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for sec in sections %}
+                                <tr>
+                                    <td class="ps-3 fw-semibold">{{ sec.name }}</td>
+                                    <td><code>{{ sec.section_key }}</code></td>
+                                    <td>
+                                        <input type="number" name="section_{{ sec.section_key }}_order" class="form-control form-control-sm text-center" value="{{ sec.display_order }}" min="1" max="20">
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="form-check form-switch d-inline-block">
+                                            <input class="form-check-input" type="checkbox" name="section_{{ sec.section_key }}_enabled" {% if sec.is_enabled %}checked{% endif %}>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Quick Actions Launcher -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white py-3 border-bottom">
+                    <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-bolt text-warning me-2"></i> Quick Action Tiles</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-3">Action</th>
+                                    <th>Route</th>
+                                    <th style="width: 100px;">Order</th>
+                                    <th class="text-center">Active</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for act in actions %}
+                                <tr>
+                                    <td class="ps-3 fw-semibold">{{ act.title }}</td>
+                                    <td><code>{{ act.route }}</code></td>
+                                    <td>
+                                        <input type="number" name="action_{{ act.action_key }}_order" class="form-control form-control-sm text-center" value="{{ act.display_order }}" min="1" max="20">
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="form-check form-switch d-inline-block">
+                                            <input class="form-check-input" type="checkbox" name="action_{{ act.action_key }}_enabled" {% if act.is_enabled %}checked{% endif %}>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Feature Flags -->
+        <div class="col-lg-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3 border-bottom">
+                    <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-toggle-on text-success me-2"></i> Feature Flags</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        {% for flg in flags %}
+                        <div class="col-md-4">
+                            <div class="p-3 border rounded-3 bg-light d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="fw-bold text-dark">{{ flg.name }}</div>
+                                    <code class="small text-muted">{{ flg.flag_key }}</code>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" name="flag_{{ flg.flag_key }}_enabled" {% if flg.is_enabled %}checked{% endif %}>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save & Publish Floating Bar -->
+        <div class="col-12 text-end">
+            <button type="submit" class="btn btn-primary btn-lg px-5 shadow">
+                <i class="fa-solid fa-cloud-arrow-up me-2"></i> Save & Publish Configuration
+            </button>
+        </div>
+    </div>
+</form>
+
+<hr class="my-5">
+
+<!-- 5. Promotional Banners & Announcements -->
+<div class="row g-4 mb-4">
+    <div class="col-lg-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-plus-circle text-primary me-2"></i> Create Promotional Banner</h5>
+            </div>
+            <div class="card-body p-4">
+                <form action="{{ url_for('admin.create_mobile_banner') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Banner Title</label>
+                        <input type="text" name="title" class="form-control" placeholder="e.g. Annual Tech Symposium 2026" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Subtitle / Summary</label>
+                        <input type="text" name="subtitle" class="form-control" placeholder="e.g. Registrations now open for all departments">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Image URL</label>
+                        <input type="url" name="image_url" class="form-control" placeholder="https://images.unsplash.com/photo-...">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Action Deep-link / Web URL</label>
+                        <input type="text" name="action_url" class="form-control" placeholder="e.g. events or https://college.edu/fest">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Display Priority Order</label>
+                        <input type="number" name="display_order" class="form-control" value="1" min="1" max="20">
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">
+                        <i class="fa-solid fa-plus me-1"></i> Add Promotional Banner
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-images text-info me-2"></i> Active Mobile Banners ({{ banners|length }})</h5>
+            </div>
+            <div class="card-body p-0">
+                {% if banners %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-3">Banner</th>
+                                <th>Order</th>
+                                <th class="text-end pe-3">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for b in banners %}
+                            <tr>
+                                <td class="ps-3">
+                                    <div class="fw-bold text-dark">{{ b.title }}</div>
+                                    {% if b.subtitle %}<div class="small text-muted">{{ b.subtitle }}</div>{% endif %}
+                                </td>
+                                <td><span class="badge bg-secondary">#{{ b.display_order }}</span></td>
+                                <td class="text-end pe-3">
+                                    <form action="{{ url_for('admin.delete_mobile_banner', banner_id=b.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this mobile banner?');">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="p-4 text-center text-muted">
+                    <i class="fa-regular fa-images fs-2 mb-2"></i>
+                    <div>No active mobile promotional banners configured.</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
