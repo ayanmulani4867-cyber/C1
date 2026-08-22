@@ -159,13 +159,34 @@ def student_performance():
 @faculty_bp.route('/documents')
 @login_required
 def documents():
+    doc_form = FacultyDocumentForm()
     if current_user.role == Role.ADMIN:
-        docs = FacultyDocument.query.order_by(FacultyDocument.uploaded_at.desc()).all()
+        docs = FacultyDocument.query.order_by(FacultyDocument.upload_date.desc()).all()
+        faculty = None
     else:
         faculty = Faculty.query.filter_by(user_id=current_user.id).first()
-        docs = FacultyDocument.query.filter_by(faculty_id=faculty.id).all() if faculty else []
+        docs = FacultyDocument.query.filter_by(faculty_id=faculty.id).order_by(FacultyDocument.upload_date.desc()).all() if faculty else []
 
-    return render_template('faculty/documents.html', documents=docs)
+    return render_template('faculty/documents.html', documents=docs, faculty=faculty, doc_form=doc_form)
+
+
+@faculty_bp.route('/<int:faculty_id>/documents')
+@login_required
+def faculty_documents(faculty_id):
+    faculty = Faculty.query.get_or_404(faculty_id)
+    # Check permissions
+    if current_user.role in (Role.FACULTY, Role.HOD):
+        curr_fac = Faculty.query.filter_by(user_id=current_user.id).first()
+        if not curr_fac or curr_fac.id != faculty.id:
+            flash('Access restricted.', 'danger')
+            return redirect(url_for('faculty.dashboard'))
+    elif current_user.role != Role.ADMIN:
+        flash('Access restricted.', 'danger')
+        return redirect(url_for('main.index'))
+
+    docs = FacultyDocument.query.filter_by(faculty_id=faculty.id).order_by(FacultyDocument.upload_date.desc()).all()
+    doc_form = FacultyDocumentForm()
+    return render_template('faculty/documents.html', documents=docs, faculty=faculty, doc_form=doc_form)
 
 
 @faculty_bp.route('/id-card')
@@ -292,7 +313,7 @@ def profile_view(faculty_id):
     schedule = Timetable.query.filter_by(faculty_id=faculty.id).order_by(Timetable.day_of_week.asc(), Timetable.start_time.asc()).all()
     feedbacks = Feedback.query.filter_by(faculty_id=faculty.id).order_by(Feedback.created_at.desc()).limit(10).all()
     leaves = LeaveRequest.query.filter_by(faculty_id=faculty.id).order_by(LeaveRequest.created_at.desc()).limit(5).all()
-    documents = FacultyDocument.query.filter_by(faculty_id=faculty.id).all()
+    documents = FacultyDocument.query.filter_by(faculty_id=faculty.id).order_by(FacultyDocument.upload_date.desc()).all()
 
     return render_template('faculty/profile.html',
         faculty=faculty,
@@ -423,3 +444,96 @@ def download_id_card(faculty_id):
         as_attachment=True,
         download_name=f"Faculty_ID_{faculty.faculty_id.replace('/', '_')}.pdf"
     )
+
+
+@faculty_bp.route('/<int:faculty_id>/upload-document', methods=['POST'])
+@faculty_bp.route('/<int:faculty_id>/documents/upload', methods=['POST'])
+@login_required
+def upload_document(faculty_id):
+    faculty = Faculty.query.get_or_404(faculty_id)
+    # Check permissions
+    if current_user.role in (Role.FACULTY, Role.HOD):
+        curr_fac = Faculty.query.filter_by(user_id=current_user.id).first()
+        if not curr_fac or curr_fac.id != faculty.id:
+            flash('Unauthorized action.', 'danger')
+            return redirect(url_for('faculty.dashboard'))
+    elif current_user.role != Role.ADMIN:
+        flash('Access restricted.', 'danger')
+        return redirect(url_for('main.index'))
+
+    form = FacultyDocumentForm()
+    if form.validate_on_submit():
+        filename = save_uploaded_file(form.document_file.data, subfolder='documents', prefix='fac_doc')
+        if filename:
+            doc = FacultyDocument(
+                faculty_id=faculty.id,
+                doc_type=form.doc_type.data,
+                title=form.title.data.strip(),
+                file_path=filename,
+                upload_date=datetime.utcnow(),
+                verification_status='Verified' if current_user.role == Role.ADMIN else 'Pending'
+            )
+            db.session.add(doc)
+            db.session.commit()
+            flash(f'Document "{doc.title}" uploaded successfully.', 'success')
+        else:
+            flash('Failed to save document. Please ensure the file is in PDF, DOC, or Image format.', 'danger')
+    else:
+        for field, errors in form.errors.items():
+            for err in errors:
+                flash(f'Upload error ({field}): {err}', 'danger')
+
+    redirect_target = request.referrer or url_for('faculty.faculty_documents', faculty_id=faculty.id)
+    return redirect(redirect_target)
+
+
+@faculty_bp.route('/documents/<int:doc_id>/download')
+@login_required
+def download_document(doc_id):
+    doc = FacultyDocument.query.get_or_404(doc_id)
+    # Security: check authorization
+    if current_user.role in (Role.FACULTY, Role.HOD):
+        curr_fac = Faculty.query.filter_by(user_id=current_user.id).first()
+        if not curr_fac or curr_fac.id != doc.faculty_id:
+            flash('Unauthorized access to document.', 'danger')
+            return redirect(url_for('faculty.dashboard'))
+    elif current_user.role != Role.ADMIN:
+        flash('Access restricted.', 'danger')
+        return redirect(url_for('main.index'))
+
+    import os
+    clean_path = str(doc.file_path).replace('\\', '/').lstrip('/')
+    if clean_path.startswith('static/'):
+        clean_path = clean_path[7:]
+    full_path = os.path.join(current_app.root_path, 'static', clean_path)
+
+    if not os.path.isfile(full_path):
+        flash('Document file not found on the server.', 'danger')
+        return redirect(request.referrer or url_for('faculty.documents'))
+
+    ext = doc.file_path.rsplit('.', 1)[-1].lower() if '.' in doc.file_path else 'pdf'
+    from werkzeug.utils import secure_filename
+    safe_title = secure_filename(doc.title) or f"Document_{doc.id}"
+    return send_file(
+        full_path,
+        as_attachment=True,
+        download_name=f"{safe_title}.{ext}"
+    )
+
+
+@faculty_bp.route('/documents/<int:doc_id>/delete', methods=['POST'])
+@login_required
+@admin_required
+def delete_document(doc_id):
+    doc = FacultyDocument.query.get_or_404(doc_id)
+    fac_id = doc.faculty_id
+    doc_title = doc.title
+    
+    from app.utils.uploads import delete_uploaded_file
+    delete_uploaded_file(doc.file_path)
+    
+    db.session.delete(doc)
+    db.session.commit()
+    flash(f'Document "{doc_title}" deleted successfully.', 'info')
+    return redirect(request.referrer or url_for('faculty.faculty_documents', faculty_id=fac_id))
+

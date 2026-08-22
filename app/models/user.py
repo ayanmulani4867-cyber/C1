@@ -132,24 +132,13 @@ class User(UserMixin, db.Model):
 
     @property
     def profile_image_url(self):
-        if self.profile_image:
-            if self.profile_image.startswith('http://') or self.profile_image.startswith('https://') or self.profile_image.startswith('/'):
-                return self.profile_image
-            return f"/static/{self.profile_image}"
-        if self.student_profile and self.student_profile.profile_photo:
+        from app.utils.uploads import format_profile_image_url
+        photo = self.profile_image
+        if not photo and self.student_profile and self.student_profile.profile_photo:
             photo = self.student_profile.profile_photo
-            if photo.startswith('http://') or photo.startswith('https://') or photo.startswith('/'):
-                return photo
-            return f"/static/{photo}"
-        if self.faculty_profile and self.faculty_profile.profile_photo:
+        elif not photo and self.faculty_profile and self.faculty_profile.profile_photo:
             photo = self.faculty_profile.profile_photo
-            if photo.startswith('http://') or photo.startswith('https://') or photo.startswith('/'):
-                return photo
-            return f"/static/{photo}"
-        
-        # Professional fallback avatar
-        initials = (self.first_name or self.username or 'U')[:2].strip().upper()
-        return f"https://ui-avatars.com/api/?name={initials}&background=1e3a8a&color=ffffff&size=128&bold=true"
+        return format_profile_image_url(photo, name=self.full_name or self.username, bg_color="1e3a8a")
 
     def __repr__(self):
         return f'<User {self.username} [{self.role}]>'

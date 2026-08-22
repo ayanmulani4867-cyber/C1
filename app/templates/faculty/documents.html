@@ -1,18 +1,171 @@
 {% extends "base.html" %}
 
-{% block title %}Faculty Documents & Credentials - {{ APP_NAME }}{% endblock %}
+{% block title %}{% if faculty %}{{ faculty.full_name }} - Documents{% else %}Faculty Document Repository{% endif %} | {{ APP_NAME }}{% endblock %}
 
 {% block content %}
-<div class="mb-4">
-    <h2 class="h3 fw-bold text-dark mb-1">Faculty Document Repository</h2>
-    <p class="text-muted small mb-0">Employment contracts, academic credentials, service records, and publications.</p>
-</div>
+<div class="container-fluid py-3">
+    <!-- Header banner -->
+    {% if faculty %}
+    <div class="card border-0 shadow-sm rounded-4 mb-4 text-white overflow-hidden position-relative" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0d9488 100%);">
+        <div class="card-body p-4 position-relative z-1">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <img src="{{ faculty.profile_image_url }}" alt="{{ faculty.full_name }}" class="rounded-circle object-fit-cover shadow-md border border-2 border-white" width="64" height="64" onerror="this.src='https://ui-avatars.com/api/?name={{ faculty.first_name[0] if faculty.first_name else 'F' }}&background=1e3a8a&color=ffffff&size=128&bold=true'">
+                    <div>
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="badge bg-white bg-opacity-25 text-white px-2 py-1">Document Archive</span>
+                            <span class="badge bg-white text-dark px-2 py-1"><code>{{ faculty.faculty_id }}</code></span>
+                        </div>
+                        <h3 class="fw-bold brand-font mb-1 text-white">{{ faculty.full_name }}</h3>
+                        <p class="text-white-50 small mb-0">{{ faculty.designation }} &bull; {{ faculty.department.name if faculty.department else 'Engineering Department' }} &bull; Emp ID: <strong>{{ faculty.employee_id }}</strong></p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <a href="{{ url_for('faculty.profile_view', faculty_id=faculty.id) }}" class="btn btn-outline-light btn-sm rounded-pill px-3 shadow-xs">
+                        <i class="fa-solid fa-arrow-left me-1"></i> View Profile
+                    </a>
+                    <button type="button" class="btn btn-light text-dark btn-sm rounded-pill px-3 fw-semibold shadow-xs" data-bs-toggle="modal" data-bs-target="#uploadFacultyDocModal">
+                        <i class="fa-solid fa-cloud-arrow-up me-1"></i> Upload Document
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold brand-font text-dark mb-1"><i class="fa-solid fa-folder-open text-primary me-2"></i>Faculty Document Repository</h3>
+            <p class="text-muted small mb-0">Central archive of faculty resumes, degree certificates, experience letters, and credentials.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('faculty.index') }}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                <i class="fa-solid fa-users me-1"></i> Faculty Directory
+            </a>
+        </div>
+    </div>
+    {% endif %}
 
-<div class="card shadow-sm border-0">
-    <div class="card-body p-4 text-center py-5">
-        <i class="fa-solid fa-folder-closed fa-3x text-muted opacity-50 mb-3"></i>
-        <h5 class="fw-bold text-dark">Faculty Records Archive</h5>
-        <p class="text-muted small mb-0">Administrative records and faculty certificates are archived securely.</p>
+    <!-- Documents List Table -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+        <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+            <h6 class="fw-bold mb-0 text-dark">
+                <i class="fa-solid fa-file-lines text-primary me-2"></i>Uploaded Faculty Documents
+            </h6>
+            <span class="badge badge-soft-primary">{{ documents|length }} Files Available</span>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 small">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Document Type</th>
+                            <th>Title / Description</th>
+                            {% if not faculty %}
+                                <th>Faculty Member</th>
+                            {% endif %}
+                            <th>Upload Date</th>
+                            <th>Status</th>
+                            <th class="text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for doc in documents %}
+                            <tr>
+                                <td class="ps-4">
+                                    <span class="badge badge-soft-primary px-2 py-1">
+                                        <i class="fa-solid fa-file-pdf me-1"></i>{{ doc.doc_type or 'Document' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="fw-bold text-dark">{{ doc.title }}</div>
+                                </td>
+                                {% if not faculty %}
+                                    <td>
+                                        {% if doc.faculty %}
+                                            <a href="{{ url_for('faculty.faculty_documents', faculty_id=doc.faculty_id) }}" class="text-decoration-none text-dark fw-semibold">
+                                                {{ doc.faculty.full_name }}
+                                            </a>
+                                            <div class="text-muted small"><code>{{ doc.faculty.faculty_id }}</code></div>
+                                        {% else %}
+                                            <span class="text-muted">Faculty #{{ doc.faculty_id }}</span>
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
+                                <td class="text-muted">
+                                    {{ doc.upload_date.strftime('%d %b %Y, %I:%M %p') if doc.upload_date else '-' }}
+                                </td>
+                                <td>
+                                    {% if doc.is_verified %}
+                                        <span class="badge badge-soft-success"><i class="fa-solid fa-circle-check me-1"></i>Verified</span>
+                                    {% else %}
+                                        <span class="badge badge-soft-warning"><i class="fa-solid fa-clock me-1"></i>Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="d-inline-flex gap-2">
+                                        <a href="{{ url_for('faculty.download_document', doc_id=doc.id) }}" class="btn btn-outline-primary btn-sm rounded-pill px-3" target="_blank">
+                                            <i class="fa-solid fa-download me-1"></i> Download
+                                        </a>
+                                        {% if current_user.role == 'ADMIN' %}
+                                            <form method="POST" action="{{ url_for('faculty.delete_document', doc_id=doc.id) }}" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this document?');">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-2" title="Delete Document">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="{% if not faculty %}6{% else %}5{% endif %}" class="text-center py-5 text-muted">
+                                    <i class="fa-solid fa-folder-open fa-2x mb-2 text-muted opacity-50"></i>
+                                    <div>No documents currently uploaded.</div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+
+{% if faculty %}
+<!-- Upload Faculty Document Modal -->
+<div class="modal fade" id="uploadFacultyDocModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-bottom">
+                <h6 class="modal-title fw-bold text-primary"><i class="fa-solid fa-cloud-arrow-up me-2"></i>Upload Faculty Document</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{{ url_for('faculty.upload_document', faculty_id=faculty.id) }}" enctype="multipart/form-data">
+                {{ doc_form.hidden_tag() }}
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Document Category <span class="text-danger">*</span></label>
+                        {{ doc_form.doc_type(class="form-select form-select-sm") }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Document Title <span class="text-danger">*</span></label>
+                        {{ doc_form.title(class="form-control form-control-sm", placeholder="e.g. Ph.D Degree Certificate Original") }}
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small fw-semibold">Select File (PDF / DOC / Image) <span class="text-danger">*</span></label>
+                        {{ doc_form.document_file(class="form-control form-control-sm") }}
+                        <small class="text-muted">Maximum file size: 5MB.</small>
+                    </div>
+                </div>
+                <div class="modal-footer border-top bg-light">
+                    <button type="button" class="btn btn-secondary btn-sm rounded-pill px-3" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4 shadow-sm">
+                        <i class="fa-solid fa-upload me-1"></i> Upload File
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
 {% endblock %}

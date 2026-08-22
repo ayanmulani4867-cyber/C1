@@ -105,13 +105,7 @@
                             <tr>
                                 <td class="ps-4">
                                     <div class="d-flex align-items-center gap-3">
-                                        {% if s.profile_photo %}
-                                            <img src="/static/uploads/profiles/{{ s.profile_photo }}" alt="{{ s.full_name }}" class="rounded-circle object-fit-cover shadow-xs" width="42" height="42">
-                                        {% else %}
-                                            <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold shadow-xs" style="width: 42px; height: 42px; font-size: 1rem;">
-                                                {{ s.first_name[0] if s.first_name else 'S' }}
-                                            </div>
-                                        {% endif %}
+                                        <img src="{{ s.profile_image_url }}" alt="{{ s.full_name }}" class="rounded-circle object-fit-cover shadow-xs border" width="42" height="42" onerror="this.src='https://ui-avatars.com/api/?name={{ s.first_name[0] if s.first_name else 'S' }}&background=0f766e&color=ffffff&size=128&bold=true'">
                                         <div>
                                             <a href="{{ url_for('student.profile_view', student_id=s.id) }}" class="fw-bold text-dark text-decoration-none hover-text-primary">
                                                 {{ s.full_name }}
@@ -158,6 +152,11 @@
                                             <li>
                                                 <a class="dropdown-item small py-2" href="{{ url_for('student.profile_view', student_id=s.id) }}">
                                                     <i class="fa-solid fa-eye me-2 text-primary"></i> View Profile
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item small py-2" href="{{ url_for('student.student_documents', student_id=s.id) }}">
+                                                    <i class="fa-solid fa-folder-open me-2 text-success"></i> Documents
                                                 </a>
                                             </li>
                                             <li>

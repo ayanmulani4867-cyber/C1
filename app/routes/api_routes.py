@@ -798,8 +798,12 @@ def login():
             'divisionName': student.division.name if student.division else None,
             'batch': student.batch,
             'status': student.status,
-            'profile_photo': student.profile_photo,
-            'profilePhoto': student.profile_photo
+            'profile_photo': student.profile_image_url,
+            'profilePhoto': student.profile_image_url,
+            'photo_url': student.profile_image_url,
+            'photoUrl': student.profile_image_url,
+            'profile_image': student.profile_image_url,
+            'profileImage': student.profile_image_url
         }
 
     # Format faculty payload if faculty/hod
@@ -838,8 +842,12 @@ def login():
             'experience_years': faculty.experience_years,
             'experienceYears': faculty.experience_years,
             'status': faculty.status,
-            'profile_photo': faculty.profile_photo or user.profile_image,
-            'profilePhoto': faculty.profile_photo or user.profile_image
+            'profile_photo': faculty.profile_image_url,
+            'profilePhoto': faculty.profile_image_url,
+            'photo_url': faculty.profile_image_url,
+            'photoUrl': faculty.profile_image_url,
+            'profile_image': faculty.profile_image_url,
+            'profileImage': faculty.profile_image_url
         }
 
     dept_name = None
@@ -933,8 +941,12 @@ def auth_me():
             'divisionId': student.division_id,
             'batch': student.batch,
             'status': student.status,
-            'profile_photo': student.profile_photo,
-            'profilePhoto': student.profile_photo
+            'profile_photo': student.profile_image_url,
+            'profilePhoto': student.profile_image_url,
+            'photo_url': student.profile_image_url,
+            'photoUrl': student.profile_image_url,
+            'profile_image': student.profile_image_url,
+            'profileImage': student.profile_image_url
         }
 
     faculty_payload = None
@@ -972,8 +984,12 @@ def auth_me():
             'experience_years': faculty.experience_years,
             'experienceYears': faculty.experience_years,
             'status': faculty.status,
-            'profile_photo': faculty.profile_photo or user.profile_image,
-            'profilePhoto': faculty.profile_photo or user.profile_image
+            'profile_photo': faculty.profile_image_url,
+            'profilePhoto': faculty.profile_image_url,
+            'photo_url': faculty.profile_image_url,
+            'photoUrl': faculty.profile_image_url,
+            'profile_image': faculty.profile_image_url,
+            'profileImage': faculty.profile_image_url
         }
 
     dept_name = None
@@ -1105,8 +1121,12 @@ def student_profile():
         'admissionDate': std.admission_date.strftime('%Y-%m-%d') if std.admission_date else None,
         'batch': std.batch,
         'status': std.status,
-        'profile_photo': std.profile_photo,
-        'profilePhoto': std.profile_photo,
+        'profile_photo': std.profile_image_url,
+        'profilePhoto': std.profile_image_url,
+        'photo_url': std.profile_image_url,
+        'photoUrl': std.profile_image_url,
+        'profile_image': std.profile_image_url,
+        'profileImage': std.profile_image_url,
         'academic': {
             'department_id': std.department_id,
             'departmentId': std.department_id,
@@ -1172,6 +1192,31 @@ def student_profile():
         'success': True,
         'profile': profile_data,
         **profile_data
+    })
+
+
+@api_bp.route('/student/documents')
+@api_bp.route('/v1/student/documents')
+@api_student_required
+def api_student_documents():
+    std = g.current_student
+    docs = StudentDocument.query.filter_by(student_id=std.id).order_by(StudentDocument.upload_date.desc()).all()
+    results = []
+    for d in docs:
+        results.append({
+            'id': d.id,
+            'doc_type': d.doc_type,
+            'title': d.title,
+            'file_url': d.document_url,
+            'upload_date': d.upload_date.strftime('%Y-%m-%d %H:%M:%S') if d.upload_date else None,
+            'uploaded_by': d.uploaded_by,
+            'verification_status': d.verification_status,
+            'is_verified': d.is_verified
+        })
+    return jsonify({
+        'success': True,
+        'count': len(results),
+        'documents': results
     })
 
 

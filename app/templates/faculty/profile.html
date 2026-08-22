@@ -9,13 +9,7 @@
         <div class="card-body p-4 position-relative z-1">
             <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
                 <div class="d-flex align-items-center gap-3">
-                    {% if faculty.profile_photo %}
-                        <img src="/static/uploads/profiles/{{ faculty.profile_photo }}" alt="{{ faculty.full_name }}" class="rounded-circle object-fit-cover shadow-md border border-2 border-white" width="72" height="72">
-                    {% else %}
-                        <div class="rounded-circle bg-white text-dark d-flex align-items-center justify-content-center fw-bold shadow-md" style="width: 72px; height: 72px; font-size: 1.8rem;">
-                            {{ faculty.first_name[0] if faculty.first_name else 'F' }}
-                        </div>
-                    {% endif %}
+                    <img src="{{ faculty.profile_image_url }}" alt="{{ faculty.full_name }}" class="rounded-circle object-fit-cover shadow-md border border-2 border-white" width="72" height="72" onerror="this.src='https://ui-avatars.com/api/?name={{ faculty.first_name[0] if faculty.first_name else 'F' }}&background=1e3a8a&color=ffffff&size=128&bold=true'">
                     <div>
                         <div class="d-flex align-items-center gap-2 mb-1">
                             <span class="badge bg-white bg-opacity-25 text-white px-2 py-1">FACULTY</span>
@@ -34,12 +28,15 @@
                     </div>
                 </div>
                 <div class="d-flex gap-2 flex-wrap">
+                    <a href="{{ url_for('faculty.faculty_documents', faculty_id=faculty.id) }}" class="btn btn-outline-light btn-sm rounded-pill px-3 shadow-xs">
+                        <i class="fa-solid fa-folder-open me-1"></i> Documents
+                    </a>
                     <a href="{{ url_for('faculty.download_id_card', faculty_id=faculty.id) }}" class="btn btn-outline-light btn-sm rounded-pill px-3 shadow-xs" target="_blank">
                         <i class="fa-solid fa-id-card me-1"></i> ID Card PDF
                     </a>
                     {% if current_user.role == 'ADMIN' %}
                         <a href="{{ url_for('faculty.edit', faculty_id=faculty.id) }}" class="btn btn-light text-dark btn-sm rounded-pill px-3 fw-semibold shadow-xs">
-                            <i class="fa-solid fa-pen-to-square me-1"></i> Edit Faculty
+                            <i class="fa-solid fa-pen-to-square me-1"></i> Edit Profile
                         </a>
                     {% endif %}
                 </div>
@@ -48,84 +45,65 @@
     </div>
 
     <div class="row g-4">
-        <!-- Left Column: Details -->
+        <!-- Left Column: Personal & Employment Details -->
         <div class="col-lg-4">
-            <!-- Academic Profile -->
+            <!-- Academic/Employment Info Card -->
             <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-header bg-transparent py-3 border-bottom">
-                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-graduation-cap text-primary me-2"></i>Academic Profile</h6>
+                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-briefcase text-primary me-2"></i>Employment & Academic Profile</h6>
                 </div>
-                <div class="card-body p-3 small">
-                    <div class="d-flex justify-content-between py-2 border-bottom">
-                        <span class="text-muted">Department:</span>
+                <div class="card-body p-3">
+                    <div class="mb-2">
+                        <span class="text-muted small d-block">Department:</span>
                         <span class="fw-semibold text-dark">{{ faculty.department.name if faculty.department else '-' }}</span>
                     </div>
-                    <div class="d-flex justify-content-between py-2 border-bottom">
-                        <span class="text-muted">Designation:</span>
+                    <div class="mb-2">
+                        <span class="text-muted small d-block">Designation:</span>
                         <span class="fw-semibold text-dark">{{ faculty.designation }}</span>
                     </div>
-                    <div class="d-flex justify-content-between py-2 border-bottom">
-                        <span class="text-muted">Employment Type:</span>
-                        <span class="badge badge-soft-secondary">{{ faculty.employment_type }}</span>
+                    <div class="mb-2">
+                        <span class="text-muted small d-block">Employment Type:</span>
+                        <span class="badge badge-soft-primary">{{ faculty.employment_type }}</span>
                     </div>
-                    <div class="d-flex justify-content-between py-2 border-bottom">
-                        <span class="text-muted">Qualification:</span>
-                        <span class="fw-semibold text-dark">{{ faculty.qualification or '-' }}</span>
+                    <div class="mb-2">
+                        <span class="text-muted small d-block">Highest Qualification:</span>
+                        <span class="fw-semibold text-dark">{{ faculty.qualification or 'Not specified' }}</span>
                     </div>
-                    <div class="d-flex justify-content-between py-2 border-bottom">
-                        <span class="text-muted">Specialization:</span>
-                        <span class="text-dark">{{ faculty.specialization or '-' }}</span>
+                    <div class="mb-2">
+                        <span class="text-muted small d-block">Specialization:</span>
+                        <span class="fw-semibold text-dark">{{ faculty.specialization or 'Not specified' }}</span>
                     </div>
-                    <div class="d-flex justify-content-between py-2 border-bottom">
-                        <span class="text-muted">Experience:</span>
-                        <span class="text-dark">{{ faculty.experience_years or 0.0 }} Years</span>
+                    <div class="mb-2">
+                        <span class="text-muted small d-block">Experience:</span>
+                        <span class="fw-semibold text-dark">{{ faculty.experience_years or 0 }} Years</span>
                     </div>
-                    <div class="d-flex justify-content-between py-2">
-                        <span class="text-muted">Status:</span>
-                        <span class="badge badge-soft-success">{{ faculty.status }}</span>
+                    <div>
+                        <span class="text-muted small d-block">Date of Joining:</span>
+                        <span class="fw-semibold text-dark">{{ faculty.joining_date.strftime('%d %B %Y') if faculty.joining_date else '-' }}</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Contact Information -->
+            <!-- Contact Information Card -->
             <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-header bg-transparent py-3 border-bottom">
-                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-address-book text-success me-2"></i>Contact Details</h6>
+                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-address-book text-primary me-2"></i>Contact Details</h6>
                 </div>
                 <div class="card-body p-3 small">
                     <div class="mb-2">
-                        <span class="text-muted d-block">Official Email:</span>
-                        <span class="fw-semibold text-dark">{{ faculty.official_email }}</span>
+                        <span class="text-muted d-block fw-semibold">Official Email:</span>
+                        <span class="text-dark">{{ faculty.official_email }}</span>
                     </div>
+                    {% if faculty.personal_email %}
                     <div class="mb-2">
-                        <span class="text-muted d-block">Personal Email:</span>
-                        <span class="text-dark">{{ faculty.personal_email or 'Not specified' }}</span>
+                        <span class="text-muted d-block fw-semibold">Personal Email:</span>
+                        <span class="text-dark">{{ faculty.personal_email }}</span>
                     </div>
+                    {% endif %}
                     <div class="mb-2">
-                        <span class="text-muted d-block">Mobile Phone:</span>
-                        <span class="fw-semibold text-dark">{{ faculty.mobile }}</span>
+                        <span class="text-muted d-block fw-semibold">Mobile:</span>
+                        <span class="text-dark">{{ faculty.mobile }}</span>
                     </div>
-                    <div class="d-flex justify-content-between py-1 border-top mt-2">
-                        <span class="text-muted">Date of Birth:</span>
-                        <span class="text-dark">{{ faculty.dob.strftime('%d %b %Y') if faculty.dob else '-' }}</span>
-                    </div>
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">Gender:</span>
-                        <span class="text-dark">{{ faculty.gender or '-' }}</span>
-                    </div>
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">Blood Group:</span>
-                        <span class="badge badge-soft-danger">{{ faculty.blood_group or '-' }}</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Address & Emergency Contact -->
-            <div class="card border-0 shadow-sm rounded-4 mb-4">
-                <div class="card-header bg-transparent py-3 border-bottom">
-                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-location-dot text-danger me-2"></i>Address & Emergency</h6>
-                </div>
-                <div class="card-body p-3 small">
                     <div class="mb-2">
                         <span class="text-muted d-block fw-semibold">Current Address:</span>
                         <span class="text-dark">{{ faculty.curr_address_line1 or '' }}{% if faculty.curr_city %}, {{ faculty.curr_city }}{% endif %}{% if faculty.curr_state %}, {{ faculty.curr_state }}{% endif %}{% if faculty.curr_pincode %} - {{ faculty.curr_pincode }}{% endif %}</span>
@@ -177,6 +155,103 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Documents Card -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                <div class="card-header bg-transparent py-3 d-flex justify-content-between align-items-center border-bottom">
+                    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-folder-open text-primary me-2"></i>Faculty Document Archive</h6>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-primary btn-sm rounded-pill px-3 shadow-xs" data-bs-toggle="modal" data-bs-target="#uploadFacultyDocModal">
+                            <i class="fa-solid fa-upload me-1"></i> Upload Document
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0 small">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Document Type</th>
+                                    <th>Title</th>
+                                    <th>Upload Date</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for doc in documents %}
+                                    <tr>
+                                        <td><span class="badge badge-soft-primary">{{ doc.doc_type }}</span></td>
+                                        <td class="fw-semibold text-dark">{{ doc.title }}</td>
+                                        <td class="text-muted">{{ doc.upload_date.strftime('%d %b %Y') if doc.upload_date else '-' }}</td>
+                                        <td>
+                                            {% if doc.is_verified %}
+                                                <span class="badge badge-soft-success"><i class="fa-solid fa-check me-1"></i>Verified</span>
+                                            {% else %}
+                                                <span class="badge badge-soft-warning">Pending</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-end">
+                                            <div class="d-inline-flex gap-2">
+                                                <a href="{{ url_for('faculty.download_document', doc_id=doc.id) }}" class="btn btn-outline-primary btn-sm rounded-pill px-3" target="_blank">
+                                                    <i class="fa-solid fa-download me-1"></i> Download
+                                                </a>
+                                                {% if current_user.role == 'ADMIN' %}
+                                                    <form method="POST" action="{{ url_for('faculty.delete_document', doc_id=doc.id) }}" class="d-inline" onsubmit="return confirm('Delete this faculty document?');">
+                                                        <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-2" title="Delete Document">
+                                                            <i class="fa-solid fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5" class="text-center py-4 text-muted">No faculty documents uploaded yet.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Upload Faculty Document Modal -->
+<div class="modal fade" id="uploadFacultyDocModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-bottom">
+                <h6 class="modal-title fw-bold text-primary"><i class="fa-solid fa-cloud-arrow-up me-2"></i>Upload Faculty Document</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{{ url_for('faculty.upload_document', faculty_id=faculty.id) }}" enctype="multipart/form-data">
+                {{ doc_form.hidden_tag() }}
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Document Category <span class="text-danger">*</span></label>
+                        {{ doc_form.doc_type(class="form-select form-select-sm") }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Document Title <span class="text-danger">*</span></label>
+                        {{ doc_form.title(class="form-control form-control-sm", placeholder="e.g. Ph.D Degree Certificate Original") }}
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small fw-semibold">Select File (PDF / DOC / Image) <span class="text-danger">*</span></label>
+                        {{ doc_form.document_file(class="form-control form-control-sm") }}
+                        <small class="text-muted">Maximum file size: 5MB.</small>
+                    </div>
+                </div>
+                <div class="modal-footer border-top bg-light">
+                    <button type="button" class="btn btn-secondary btn-sm rounded-pill px-3" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4 shadow-sm">
+                        <i class="fa-solid fa-upload me-1"></i> Upload File
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -97,12 +97,8 @@ class Faculty(db.Model):
 
     @property
     def profile_image_url(self):
-        if self.profile_photo:
-            if self.profile_photo.startswith('http://') or self.profile_photo.startswith('https://') or self.profile_photo.startswith('/'):
-                return self.profile_photo
-            return f"/static/{self.profile_photo}"
-        name = self.full_name or f"{self.first_name} {self.last_name}"
-        return f"https://ui-avatars.com/api/?name={name.replace(' ', '+')}&background=1e3a8a&color=ffffff&size=128&bold=true"
+        from app.utils.uploads import format_profile_image_url
+        return format_profile_image_url(self.profile_photo, name=self.full_name or f"{self.first_name} {self.last_name}", bg_color="1e3a8a")
 
     @property
     def subjects(self):
@@ -148,5 +144,19 @@ class FacultyDocument(db.Model):
     upload_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     verification_status = db.Column(db.String(30), default='Verified', nullable=False)  # Pending, Verified, Rejected
 
+    @property
+    def uploaded_at(self):
+        return self.upload_date
+
+    @property
+    def is_verified(self):
+        return self.verification_status == 'Verified'
+
+    @property
+    def document_url(self):
+        from app.utils.uploads import format_document_url
+        return format_document_url(self.file_path)
+
     def __repr__(self):
         return f'<FacultyDocument {self.doc_type} - {self.title}>'
+

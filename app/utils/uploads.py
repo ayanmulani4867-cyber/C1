@@ -54,8 +54,70 @@ def delete_uploaded_file(relative_path):
     if not relative_path:
         return
     try:
-        full_path = os.path.join(current_app.root_path, 'static', relative_path)
+        clean_path = str(relative_path).replace('\\', '/').lstrip('/')
+        if clean_path.startswith('static/'):
+            clean_path = clean_path[7:]
+        full_path = os.path.join(current_app.root_path, 'static', clean_path)
         if os.path.exists(full_path):
             os.remove(full_path)
     except Exception:
         pass
+
+
+def format_profile_image_url(photo_path, name="", bg_color="1e3a8a"):
+    """
+    Returns a valid, web-accessible URL for a profile image.
+    Handles all stored formats (relative paths, full URLs, raw filenames) and provides a clean fallback.
+    """
+    if not photo_path or not str(photo_path).strip():
+        clean_name = str(name).strip() if name else "User"
+        parts = [p for p in clean_name.split() if p]
+        if len(parts) >= 2:
+            initials = f"{parts[0][0]}{parts[1][0]}".upper()
+        elif len(parts) == 1:
+            initials = parts[0][:2].upper()
+        else:
+            initials = "U"
+        return f"https://ui-avatars.com/api/?name={initials}&background={bg_color}&color=ffffff&size=128&bold=true"
+
+    path_str = str(photo_path).strip().replace('\\', '/')
+    if path_str.startswith('http://') or path_str.startswith('https://'):
+        return path_str
+    if path_str.startswith('/static/'):
+        return path_str
+    if path_str.startswith('static/'):
+        return f"/{path_str}"
+    if path_str.startswith('/uploads/'):
+        return f"/static{path_str}"
+    if path_str.startswith('uploads/'):
+        return f"/static/{path_str}"
+    if path_str.startswith('photos/'):
+        return f"/static/uploads/{path_str}"
+    if path_str.startswith('/'):
+        return path_str
+    return f"/static/uploads/photos/{path_str}"
+
+
+def format_document_url(file_path):
+    """
+    Returns a valid, web-accessible URL for an uploaded document file.
+    """
+    if not file_path or not str(file_path).strip():
+        return None
+    path_str = str(file_path).strip().replace('\\', '/')
+    if path_str.startswith('http://') or path_str.startswith('https://'):
+        return path_str
+    if path_str.startswith('/static/'):
+        return path_str
+    if path_str.startswith('static/'):
+        return f"/{path_str}"
+    if path_str.startswith('/uploads/'):
+        return f"/static{path_str}"
+    if path_str.startswith('uploads/'):
+        return f"/static/{path_str}"
+    if path_str.startswith('documents/'):
+        return f"/static/uploads/{path_str}"
+    if path_str.startswith('/'):
+        return path_str
+    return f"/static/uploads/documents/{path_str}"
+

@@ -168,13 +168,34 @@ def index():
 @student_bp.route('/documents')
 @login_required
 def documents():
+    doc_form = StudentDocumentForm()
     if current_user.role == Role.ADMIN:
-        docs = StudentDocument.query.order_by(StudentDocument.uploaded_at.desc()).all()
+        docs = StudentDocument.query.order_by(StudentDocument.upload_date.desc()).all()
+        student = None
     else:
         student = Student.query.filter_by(user_id=current_user.id).first()
-        docs = StudentDocument.query.filter_by(student_id=student.id).all() if student else []
+        docs = StudentDocument.query.filter_by(student_id=student.id).order_by(StudentDocument.upload_date.desc()).all() if student else []
 
-    return render_template('student/documents.html', documents=docs)
+    return render_template('student/documents.html', documents=docs, student=student, doc_form=doc_form)
+
+
+@student_bp.route('/<int:student_id>/documents')
+@login_required
+def student_documents(student_id):
+    student = Student.query.get_or_404(student_id)
+    # Check permissions
+    if current_user.role == Role.STUDENT:
+        current_std = Student.query.filter_by(user_id=current_user.id).first()
+        if not current_std or current_std.id != student.id:
+            flash('Access restricted.', 'danger')
+            return redirect(url_for('student.dashboard'))
+    elif current_user.role not in (Role.ADMIN, Role.HOD, Role.FACULTY):
+        flash('Access restricted.', 'danger')
+        return redirect(url_for('main.index'))
+
+    docs = StudentDocument.query.filter_by(student_id=student.id).order_by(StudentDocument.upload_date.desc()).all()
+    doc_form = StudentDocumentForm()
+    return render_template('student/documents.html', documents=docs, student=student, doc_form=doc_form)
 
 
 @student_bp.route('/profile')
@@ -589,22 +610,94 @@ def download_id_card(student_id):
 
 
 @student_bp.route('/<int:student_id>/upload-document', methods=['POST'])
+@student_bp.route('/<int:student_id>/documents/upload', methods=['POST'])
 @login_required
 def upload_document(student_id):
     student = Student.query.get_or_404(student_id)
+    # Check permissions
+    if current_user.role == Role.STUDENT:
+        current_std = Student.query.filter_by(user_id=current_user.id).first()
+        if not current_std or current_std.id != student.id:
+            flash('Unauthorized action.', 'danger')
+            return redirect(url_for('student.dashboard'))
+    elif current_user.role not in (Role.ADMIN, Role.HOD, Role.FACULTY):
+        flash('Access restricted.', 'danger')
+        return redirect(url_for('main.index'))
+
     form = StudentDocumentForm()
     if form.validate_on_submit():
-        filename = save_uploaded_file(form.document_file.data, subfolder='documents')
+        filename = save_uploaded_file(form.document_file.data, subfolder='documents', prefix='std_doc')
         if filename:
             doc = StudentDocument(
                 student_id=student.id,
                 doc_type=form.doc_type.data,
                 title=form.title.data.strip(),
-                file_path=filename
+                file_path=filename,
+                upload_date=datetime.utcnow(),
+                uploaded_by=current_user.role,
+                verification_status='Verified' if current_user.role in (Role.ADMIN, Role.HOD, Role.FACULTY) else 'Pending'
             )
             db.session.add(doc)
             db.session.commit()
-            flash('Document uploaded successfully.', 'success')
+            flash(f'Document "{doc.title}" uploaded successfully.', 'success')
         else:
-            flash('Failed to save document. Check file format.', 'danger')
-    return redirect(url_for('student.profile_view', student_id=student.id))
+            flash('Failed to save document. Please ensure the file is in PDF, DOC, or Image format.', 'danger')
+    else:
+        for field, errors in form.errors.items():
+            for err in errors:
+                flash(f'Upload error ({field}): {err}', 'danger')
+
+    redirect_target = request.referrer or url_for('student.student_documents', student_id=student.id)
+    return redirect(redirect_target)
+
+
+@student_bp.route('/documents/<int:doc_id>/download')
+@login_required
+def download_document(doc_id):
+    doc = StudentDocument.query.get_or_404(doc_id)
+    # Security: check authorization
+    if current_user.role == Role.STUDENT:
+        std = Student.query.filter_by(user_id=current_user.id).first()
+        if not std or std.id != doc.student_id:
+            flash('Unauthorized access to document.', 'danger')
+            return redirect(url_for('student.dashboard'))
+    elif current_user.role not in (Role.ADMIN, Role.HOD, Role.FACULTY):
+        flash('Access restricted.', 'danger')
+        return redirect(url_for('main.index'))
+
+    import os
+    clean_path = str(doc.file_path).replace('\\', '/').lstrip('/')
+    if clean_path.startswith('static/'):
+        clean_path = clean_path[7:]
+    full_path = os.path.join(current_app.root_path, 'static', clean_path)
+
+    if not os.path.isfile(full_path):
+        flash('Document file not found on the server.', 'danger')
+        return redirect(request.referrer or url_for('student.documents'))
+
+    ext = doc.file_path.rsplit('.', 1)[-1].lower() if '.' in doc.file_path else 'pdf'
+    from werkzeug.utils import secure_filename
+    safe_title = secure_filename(doc.title) or f"Document_{doc.id}"
+    return send_file(
+        full_path,
+        as_attachment=True,
+        download_name=f"{safe_title}.{ext}"
+    )
+
+
+@student_bp.route('/documents/<int:doc_id>/delete', methods=['POST'])
+@login_required
+@admin_required
+def delete_document(doc_id):
+    doc = StudentDocument.query.get_or_404(doc_id)
+    std_id = doc.student_id
+    doc_title = doc.title
+    
+    from app.utils.uploads import delete_uploaded_file
+    delete_uploaded_file(doc.file_path)
+    
+    db.session.delete(doc)
+    db.session.commit()
+    flash(f'Document "{doc_title}" deleted successfully.', 'info')
+    return redirect(request.referrer or url_for('student.student_documents', student_id=std_id))
+
