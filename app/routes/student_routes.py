@@ -108,6 +108,8 @@ def dashboard():
     )
 
 
+@student_bp.route('')
+@student_bp.route('/')
 @student_bp.route('/list')
 @login_required
 def index():
@@ -150,12 +152,22 @@ def index():
     semesters = Semester.query.filter_by(is_active=True).all()
     divisions = ClassDivision.query.all()
 
+    # Real Database Metrics
+    total_students_count = Student.query.count()
+    active_students_count = Student.query.filter_by(status='Active').count()
+    inactive_students_count = Student.query.filter_by(status='Inactive').count()
+    total_departments_count = Department.query.filter_by(is_active=True).count()
+
     return render_template('student/list.html',
         students=students,
         departments=departments,
         courses=courses,
         semesters=semesters,
         divisions=divisions,
+        total_students_count=total_students_count,
+        active_students_count=active_students_count,
+        inactive_students_count=inactive_students_count,
+        total_departments_count=total_departments_count,
         selected_dept=dept_id,
         selected_course=course_id,
         selected_sem=semester_id,
@@ -445,6 +457,7 @@ def profile_view(student_id):
     )
 
 
+@student_bp.route('/edit/<int:student_id>', methods=['GET', 'POST'])
 @student_bp.route('/<int:student_id>/edit', methods=['GET', 'POST'])
 @login_required
 @admin_required

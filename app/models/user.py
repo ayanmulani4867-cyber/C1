@@ -100,19 +100,19 @@ class User(UserMixin, db.Model):
 
     @property
     def is_admin(self):
-        return self.role == 'ADMIN'
+        return str(self.role).strip().upper() == 'ADMIN' if self.role else False
 
     @property
     def is_hod(self):
-        return self.role == 'HOD'
+        return str(self.role).strip().upper() == 'HOD' if self.role else False
 
     @property
     def is_faculty(self):
-        return self.role in ('FACULTY', 'HOD')
+        return str(self.role).strip().upper() in ('FACULTY', 'HOD') if self.role else False
 
     @property
     def is_student(self):
-        return self.role == 'STUDENT'
+        return str(self.role).strip().upper() == 'STUDENT' if self.role else False
 
     @property
     def full_name(self):

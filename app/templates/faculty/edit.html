@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Edit Faculty Profile - {{ faculty.full_name }} - {{ APP_NAME }}{% endblock %}
+{% block title %}Edit Faculty - {{ faculty.full_name }} - SITCOE Campus Connect{% endblock %}
 
 {% block content %}
 <div class="container-fluid py-3">
@@ -9,19 +9,22 @@
         <div class="card-body p-4 position-relative z-1">
             <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
                 <div class="d-flex align-items-center gap-3">
-                    <img src="{{ faculty.profile_image_url }}" alt="{{ faculty.full_name }}" class="rounded-circle object-fit-cover shadow-md border border-2 border-white" width="64" height="64" onerror="this.src='https://ui-avatars.com/api/?name={{ faculty.first_name[0] if faculty.first_name else 'F' }}&background=1e3a8a&color=ffffff&size=128&bold=true'">
+                    <img src="{{ faculty.profile_image_url }}" alt="{{ faculty.full_name }}" class="rounded-circle object-fit-cover shadow-md border border-2 border-white" width="64" height="64" style="aspect-ratio: 1/1;" onerror="this.src='https://ui-avatars.com/api/?name={{ faculty.first_name[0] if faculty.first_name else 'F' }}&background=1e3a8a&color=ffffff&size=128&bold=true'">
                     <div>
                         <div class="d-flex align-items-center gap-2 mb-1">
-                            <span class="badge bg-white bg-opacity-25 text-white px-2 py-1">Faculty Record Edit</span>
+                            <span class="badge bg-white bg-opacity-25 text-white px-2 py-1">SITCOE Campus Connect</span>
                             <span class="badge bg-white text-dark px-2 py-1"><code>{{ faculty.faculty_id }}</code></span>
                         </div>
                         <h3 class="fw-bold brand-font mb-1 text-white">{{ faculty.full_name }}</h3>
-                        <p class="text-white-50 small mb-0">Emp ID: <strong>{{ faculty.employee_id }}</strong> &bull; Official Email: {{ faculty.official_email }}</p>
+                        <p class="text-white-50 small mb-0">Emp ID: <strong>{{ faculty.employee_id }}</strong> &bull; Department: {{ faculty.department.name if faculty.department else '-' }}</p>
                     </div>
                 </div>
                 <div class="d-flex gap-2">
                     <a href="{{ url_for('faculty.profile_view', faculty_id=faculty.id) }}" class="btn btn-outline-light btn-sm rounded-pill px-3 shadow-xs">
-                        <i class="fa-solid fa-arrow-left me-1"></i> View Profile
+                        <i class="fa-solid fa-eye me-1"></i> View Profile
+                    </a>
+                    <a href="{{ url_for('faculty.faculty_documents', faculty_id=faculty.id) }}" class="btn btn-outline-light btn-sm rounded-pill px-3 shadow-xs">
+                        <i class="fa-solid fa-folder-open me-1"></i> Documents
                     </a>
                     <a href="{{ url_for('faculty.index') }}" class="btn btn-light text-dark btn-sm rounded-pill px-3 fw-semibold shadow-xs">
                         <i class="fa-solid fa-users me-1"></i> All Faculty
@@ -43,10 +46,38 @@
             <form method="POST" action="{{ url_for('faculty.edit', faculty_id=faculty.id) }}" enctype="multipart/form-data" id="editFacultyForm">
                 {{ form.hidden_tag() }}
 
-                <!-- Section 1: Professional Details -->
+                <!-- Section 1: Profile Photo Card / Live Preview -->
+                <div class="mb-4 p-3 bg-light rounded-4 border">
+                    <h6 class="fw-bold text-primary text-uppercase small mb-3">
+                        <i class="fa-solid fa-image me-1"></i> Profile Photo Management
+                    </h6>
+                    <div class="row align-items-center g-4">
+                        <div class="col-sm-6 col-md-3 text-center">
+                            <div class="text-muted small fw-semibold mb-2">Current Photo</div>
+                            <div class="position-relative d-inline-block">
+                                <img src="{{ faculty.profile_image_url }}" id="currentFacultyPhoto" alt="{{ faculty.full_name }}" class="rounded-circle object-fit-cover border shadow-sm" width="100" height="100" style="aspect-ratio: 1/1;" onerror="this.src='https://ui-avatars.com/api/?name={{ faculty.first_name[0] if faculty.first_name else 'F' }}&background=1e3a8a&color=ffffff&size=128&bold=true'">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3 text-center">
+                            <div class="text-muted small fw-semibold mb-2">New Photo Preview</div>
+                            <div class="position-relative d-inline-block">
+                                <img id="newFacultyPhotoPreview" src="https://ui-avatars.com/api/?name=New&background=e2e8f0&color=64748b&size=128" alt="New Preview" class="rounded-circle object-fit-cover border shadow-sm" width="100" height="100" style="aspect-ratio: 1/1; opacity: 0.6;">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold">Choose New Photo</label>
+                            {{ form.profile_photo(class="form-control form-control-sm", id="facultyPhotoInput", onchange="previewFacultyPhoto(this)") }}
+                            <div class="form-text small text-muted mt-2">
+                                <i class="fa-solid fa-info-circle me-1 text-primary"></i> Supported formats: JPG, PNG, WebP (max 2MB). Immediately reflected in Directory, Profile, and ID Card.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Professional Details -->
                 <div class="mb-4">
                     <h6 class="fw-bold text-primary text-uppercase small mb-3 border-bottom pb-2">
-                        <i class="fa-solid fa-briefcase me-1"></i> 1. Professional & Departmental Information
+                        <i class="fa-solid fa-briefcase me-1"></i> Professional & Departmental Information
                     </h6>
                     <div class="row g-3">
                         <div class="col-md-3">
@@ -66,30 +97,25 @@
                             <label class="form-label small fw-semibold">Faculty Status</label>
                             {{ form.status(class="form-select form-select-sm") }}
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label small fw-semibold">Highest Qualification</label>
                             {{ form.qualification(class="form-control form-control-sm", placeholder="e.g. Ph.D in Computer Science, M.Tech") }}
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label small fw-semibold">Area of Specialization</label>
                             {{ form.specialization(class="form-control form-control-sm", placeholder="e.g. Artificial Intelligence, Distributed Systems") }}
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label small fw-semibold">Experience (Years)</label>
                             {{ form.experience_years(class="form-control form-control-sm", placeholder="e.g. 7.5") }}
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-semibold">Change Profile Photo</label>
-                            {{ form.profile_photo(class="form-control form-control-sm") }}
-                            <small class="text-muted">JPG, PNG, or WebP format up to 2MB.</small>
                         </div>
                     </div>
                 </div>
 
-                <!-- Section 2: Personal Information -->
+                <!-- Section 3: Personal Information -->
                 <div class="mb-4">
                     <h6 class="fw-bold text-primary text-uppercase small mb-3 border-bottom pb-2">
-                        <i class="fa-solid fa-id-card me-1"></i> 2. Personal Information
+                        <i class="fa-solid fa-id-card me-1"></i> Personal Information
                     </h6>
                     <div class="row g-3">
                         <div class="col-md-4">
@@ -121,10 +147,10 @@
                     </div>
                 </div>
 
-                <!-- Section 3: Contact Details -->
+                <!-- Section 4: Contact Details -->
                 <div class="mb-4">
                     <h6 class="fw-bold text-primary text-uppercase small mb-3 border-bottom pb-2">
-                        <i class="fa-solid fa-address-book me-1"></i> 3. Contact & Communication
+                        <i class="fa-solid fa-address-book me-1"></i> Contact & Communication
                     </h6>
                     <div class="row g-3">
                         <div class="col-md-4">
@@ -143,84 +169,45 @@
                     </div>
                 </div>
 
-                <!-- Section 4: Residential Address -->
+                <!-- Section 5: Residential Address -->
                 <div class="mb-4">
                     <h6 class="fw-bold text-primary text-uppercase small mb-3 border-bottom pb-2">
-                        <i class="fa-solid fa-location-dot me-1"></i> 4. Residential Address
-                    </h6>
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <div class="p-3 bg-light rounded-3">
-                                <h6 class="fw-bold small text-dark mb-2">Current Address</h6>
-                                <div class="row g-2">
-                                    <div class="col-12">
-                                        <label class="form-label small">Address Line 1</label>
-                                        {{ form.curr_address_line1(class="form-control form-control-sm") }}
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small">City</label>
-                                        {{ form.curr_city(class="form-control form-control-sm") }}
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small">State</label>
-                                        {{ form.curr_state(class="form-control form-control-sm") }}
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label small">PIN Code</label>
-                                        {{ form.curr_pincode(class="form-control form-control-sm") }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="p-3 bg-light rounded-3">
-                                <h6 class="fw-bold small text-dark mb-2">Permanent Address</h6>
-                                <div class="row g-2">
-                                    <div class="col-12">
-                                        <label class="form-label small">Address Line 1</label>
-                                        {{ form.perm_address_line1(class="form-control form-control-sm") }}
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small">City</label>
-                                        {{ form.perm_city(class="form-control form-control-sm") }}
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small">State</label>
-                                        {{ form.perm_state(class="form-control form-control-sm") }}
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label small">PIN Code</label>
-                                        {{ form.perm_pincode(class="form-control form-control-sm") }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Section 5: Emergency Contact -->
-                <div class="mb-4">
-                    <h6 class="fw-bold text-primary text-uppercase small mb-3 border-bottom pb-2">
-                        <i class="fa-solid fa-kit-medical me-1"></i> 5. Emergency Contact
+                        <i class="fa-solid fa-location-dot me-1"></i> Residential Address
                     </h6>
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label small fw-semibold">Emergency Contact Person</label>
-                            {{ form.emergency_name(class="form-control form-control-sm") }}
+                            <label class="form-label small fw-semibold">Address Line 1</label>
+                            {{ form.curr_address_line1(class="form-control form-control-sm") }}
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-semibold">Emergency Phone Number</label>
-                            {{ form.emergency_phone(class="form-control form-control-sm") }}
+                            <label class="form-label small fw-semibold">Address Line 2</label>
+                            {{ form.curr_address_line2(class="form-control form-control-sm") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">City</label>
+                            {{ form.curr_city(class="form-control form-control-sm") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">District</label>
+                            {{ form.curr_district(class="form-control form-control-sm") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">State</label>
+                            {{ form.curr_state(class="form-control form-control-sm") }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">PIN Code</label>
+                            {{ form.curr_pincode(class="form-control form-control-sm") }}
                         </div>
                     </div>
                 </div>
 
-                <!-- Action Buttons -->
-                <div class="d-flex justify-content-end gap-2 border-top pt-3">
-                    <a href="{{ url_for('faculty.profile_view', faculty_id=faculty.id) }}" class="btn btn-outline-secondary btn-sm rounded-pill px-4">
+                <!-- Form Action Buttons -->
+                <div class="d-flex justify-content-end align-items-center gap-2 pt-3 border-top">
+                    <a href="{{ url_for('faculty.profile_view', faculty_id=faculty.id) }}" class="btn btn-light btn-sm px-4 rounded-pill">
                         Cancel
                     </a>
-                    <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4 shadow-sm" id="saveFacultyBtn">
+                    <button type="submit" class="btn btn-primary btn-sm px-4 rounded-pill shadow-sm" id="saveFacultyBtn">
                         <i class="fa-solid fa-floppy-disk me-1"></i> Save Changes
                     </button>
                 </div>
@@ -228,4 +215,21 @@
         </div>
     </div>
 </div>
+
+<script>
+function previewFacultyPhoto(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('newFacultyPhotoPreview');
+            if (preview) {
+                preview.src = e.target.result;
+                preview.style.opacity = '1';
+                preview.classList.add('border-primary');
+            }
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
 {% endblock %}

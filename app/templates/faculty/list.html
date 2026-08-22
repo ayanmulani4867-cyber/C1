@@ -1,33 +1,33 @@
 {% extends "base.html" %}
 
-{% block title %}Faculty & Academic Staff Directory - {{ APP_NAME }}{% endblock %}
+{% block title %}Faculty - SITCOE Campus Connect{% endblock %}
 
 {% block content %}
 <div class="container-fluid py-3">
-    <!-- Header Section -->
+    <!-- Top Header -->
     <div class="card border-0 shadow-sm rounded-4 mb-4 text-white overflow-hidden position-relative" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0d9488 100%);">
         <div class="card-body p-4 position-relative z-1">
             <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
                 <div class="d-flex align-items-center gap-3">
-                    <div class="rounded-circle bg-white text-dark d-flex align-items-center justify-content-center fw-bold shadow-md" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                    <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center fw-bold shadow-md" style="width: 60px; height: 60px; font-size: 1.5rem;">
                         <i class="fa-solid fa-chalkboard-user"></i>
                     </div>
                     <div>
                         <div class="d-flex align-items-center gap-2 mb-1">
-                            <span class="badge bg-white bg-opacity-25 text-white px-2 py-1">Academic & Staff Management</span>
-                            <span class="badge bg-white text-dark px-2 py-1 fw-bold">{{ faculty_list|length }} Instructors</span>
+                            <span class="badge bg-white bg-opacity-25 text-white px-2 py-1">SITCOE Campus Connect</span>
+                            <span class="badge bg-white text-dark px-2 py-1 fw-bold">{{ faculty_list|length }} Faculty Members</span>
                         </div>
-                        <h3 class="fw-bold brand-font mb-1 text-white">Faculty & Department Directory</h3>
-                        <p class="text-white-50 small mb-0">Manage teaching staff, professorships, workload distributions, and departmental affiliations.</p>
+                        <h3 class="fw-bold brand-font mb-1 text-white">Faculty</h3>
+                        <p class="text-white-50 small mb-0">Manage faculty profiles, departments, designations and documents.</p>
                     </div>
                 </div>
                 <div class="d-flex gap-2 flex-wrap">
-                    <a href="{{ url_for('report.export_faculty') }}" class="btn btn-outline-light btn-sm rounded-pill px-3 shadow-xs">
+                    <a href="{{ url_for('report.export_faculty', dept_id=selected_dept) }}" class="btn btn-outline-light btn-sm rounded-pill px-3 shadow-xs">
                         <i class="fa-solid fa-file-excel me-1"></i> Export Excel
                     </a>
-                    {% if current_user.role == 'ADMIN' %}
+                    {% if current_user.is_admin or current_user.role == 'ADMIN' %}
                         <a href="{{ url_for('faculty.create') }}" class="btn btn-light text-dark btn-sm rounded-pill px-3 fw-semibold shadow-xs">
-                            <i class="fa-solid fa-plus me-1"></i> Add Faculty Member
+                            <i class="fa-solid fa-plus me-1"></i> + Add Faculty
                         </a>
                     {% endif %}
                 </div>
@@ -35,39 +35,102 @@
         </div>
     </div>
 
-    <!-- Advanced Filter Toolbar -->
+    <!-- Faculty Statistics Cards (Real Database Values) -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-white">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-muted small text-uppercase fw-semibold">Total Faculty</div>
+                        <h4 class="fw-bold text-dark mb-0 mt-1">{{ total_faculty_count }}</h4>
+                    </div>
+                    <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; font-size: 1.2rem;">
+                        <i class="fa-solid fa-users-gear"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-white">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-muted small text-uppercase fw-semibold">Active Faculty</div>
+                        <h4 class="fw-bold text-success mb-0 mt-1">{{ active_faculty_count }}</h4>
+                    </div>
+                    <div class="rounded-circle bg-success bg-opacity-10 text-success d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; font-size: 1.2rem;">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-white">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-muted small text-uppercase fw-semibold">Departments</div>
+                        <h4 class="fw-bold text-info mb-0 mt-1">{{ total_departments_count }}</h4>
+                    </div>
+                    <div class="rounded-circle bg-info bg-opacity-10 text-info d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; font-size: 1.2rem;">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-white">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-muted small text-uppercase fw-semibold">Designations</div>
+                        <h4 class="fw-bold text-warning mb-0 mt-1">{{ designations_list|length }}</h4>
+                    </div>
+                    <div class="rounded-circle bg-warning bg-opacity-10 text-warning d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; font-size: 1.2rem;">
+                        <i class="fa-solid fa-id-badge"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls & Filter Toolbar -->
     <div class="card border-0 shadow-sm rounded-4 mb-4">
         <div class="card-body p-3">
             <form method="GET" action="{{ url_for('faculty.index') }}" class="row g-2 align-items-center">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="input-group input-group-sm">
                         <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
-                        <input type="text" name="q" value="{{ search or '' }}" class="form-control border-start-0 ps-0" placeholder="Search by name, employee ID, email, designation...">
+                        <input type="text" name="q" value="{{ search or '' }}" class="form-control border-start-0 ps-0" placeholder="Search Faculty (Name, ID, Email)...">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <select name="dept_id" class="form-select form-select-sm" onchange="this.form.submit()">
-                        <option value="">All Academic Departments</option>
+                        <option value="">Department ▼</option>
                         {% for d in departments %}
                             <option value="{{ d.id }}" {% if selected_dept == d.id %}selected{% endif %}>{{ d.name }} ({{ d.code }})</option>
                         {% endfor %}
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
+                    <select name="designation" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">Designation ▼</option>
+                        {% for des in designations_list %}
+                            <option value="{{ des }}" {% if selected_desig == des %}selected{% endif %}>{{ des }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
                     <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
-                        <option value="">All Statuses</option>
+                        <option value="">Status ▼</option>
                         <option value="Active" {% if selected_status == 'Active' %}selected{% endif %}>Active</option>
-                        <option value="On Leave" {% if selected_status == 'On Leave' %}selected{% endif %}>On Leave</option>
                         <option value="Inactive" {% if selected_status == 'Inactive' %}selected{% endif %}>Inactive</option>
-                        <option value="Retired" {% if selected_status == 'Retired' %}selected{% endif %}>Retired</option>
+                        <option value="On Leave" {% if selected_status == 'On Leave' %}selected{% endif %}>On Leave</option>
                     </select>
                 </div>
                 <div class="col-md-2 d-flex gap-2">
                     <button type="submit" class="btn btn-primary btn-sm flex-grow-1 rounded-pill">
                         <i class="fa-solid fa-filter me-1"></i> Filter
                     </button>
-                    {% if search or selected_dept or selected_status %}
-                        <a href="{{ url_for('faculty.index') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                    {% if search or selected_dept or selected_desig or selected_status %}
+                        <a href="{{ url_for('faculty.index') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3" title="Reset Filters">
                             <i class="fa-solid fa-rotate-left"></i>
                         </a>
                     {% endif %}
@@ -83,11 +146,11 @@
                 <table class="table table-hover align-middle mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th class="ps-4">Faculty Member</th>
-                            <th>Identifiers</th>
-                            <th>Department & Role</th>
-                            <th>Designation & Type</th>
-                            <th>Contact Information</th>
+                            <th class="ps-4">Photo</th>
+                            <th>Name</th>
+                            <th>Faculty ID / Employee ID</th>
+                            <th>Department</th>
+                            <th>Designation</th>
                             <th>Status</th>
                             <th class="text-end pe-4">Actions</th>
                         </tr>
@@ -96,88 +159,80 @@
                         {% for f in faculty_list %}
                             <tr>
                                 <td class="ps-4">
-                                    <div class="d-flex align-items-center gap-3">
-                                        <img src="{{ f.profile_image_url }}" alt="{{ f.full_name }}" class="rounded-circle object-fit-cover shadow-xs border" width="42" height="42" onerror="this.src='https://ui-avatars.com/api/?name={{ f.first_name[0] if f.first_name else 'F' }}&background=1e3a8a&color=ffffff&size=128&bold=true'">
-                                        <div>
-                                            <a href="{{ url_for('faculty.profile_view', faculty_id=f.id) }}" class="fw-bold text-dark text-decoration-none hover-text-primary">
-                                                {{ f.full_name }}
-                                            </a>
-                                            <div class="text-muted small">{{ f.qualification or 'Faculty Member' }}</div>
-                                        </div>
-                                    </div>
+                                    <img src="{{ f.profile_image_url }}" alt="{{ f.full_name }}" class="rounded-circle object-fit-cover shadow-xs border" width="42" height="42" style="aspect-ratio: 1/1;" onerror="this.src='https://ui-avatars.com/api/?name={{ f.first_name[0] if f.first_name else 'F' }}&background=1e3a8a&color=ffffff&size=128&bold=true'">
                                 </td>
                                 <td>
-                                    <div><span class="text-muted small">ID:</span> <code>{{ f.faculty_id }}</code></div>
-                                    <div class="text-muted" style="font-size: 0.75rem;">Emp: <strong>{{ f.employee_id }}</strong></div>
+                                    <a href="{{ url_for('faculty.profile_view', faculty_id=f.id) }}" class="fw-bold text-dark text-decoration-none hover-text-primary">
+                                        {{ f.full_name }}
+                                    </a>
+                                    <div class="text-muted small"><i class="fa-regular fa-envelope me-1"></i>{{ f.official_email or f.email }}</div>
                                 </td>
                                 <td>
-                                    <span class="badge badge-soft-primary mb-1 d-inline-block">{{ f.department.code if f.department else 'General' }}</span>
-                                    <div class="text-dark fw-medium small">{{ f.department.name if f.department else '-' }}</div>
+                                    <span class="badge bg-light text-dark border font-monospace">{{ f.faculty_id }}</span>
+                                    {% if f.employee_id and f.employee_id != f.faculty_id %}
+                                        <div class="text-muted small font-monospace">Emp: {{ f.employee_id }}</div>
+                                    {% endif %}
                                 </td>
                                 <td>
-                                    <div class="fw-semibold text-dark small">{{ f.designation }}</div>
-                                    <span class="badge badge-soft-secondary">{{ f.employment_type }}</span>
+                                    <span class="badge badge-soft-primary">{{ f.department.code if f.department else '-' }}</span>
+                                    <div class="text-muted small text-truncate" style="max-width: 150px;">{{ f.department.name if f.department else '' }}</div>
                                 </td>
                                 <td>
-                                    <div class="small"><i class="fa-regular fa-envelope text-muted me-1"></i>{{ f.official_email }}</div>
-                                    <div class="small text-muted"><i class="fa-solid fa-phone text-muted me-1"></i>{{ f.mobile }}</div>
+                                    <div class="fw-semibold text-dark small">{{ f.designation or 'Faculty Member' }}</div>
+                                    <span class="text-muted small">{{ f.employment_type or 'Full-time' }}</span>
                                 </td>
                                 <td>
                                     {% if f.status == 'Active' %}
                                         <span class="badge badge-soft-success"><i class="fa-solid fa-circle-check me-1"></i>Active</span>
                                     {% elif f.status == 'On Leave' %}
                                         <span class="badge badge-soft-warning"><i class="fa-solid fa-clock me-1"></i>On Leave</span>
-                                    {% elif f.status == 'Retired' %}
-                                        <span class="badge badge-soft-secondary"><i class="fa-solid fa-user-clock me-1"></i>Retired</span>
                                     {% else %}
                                         <span class="badge badge-soft-danger"><i class="fa-solid fa-circle-xmark me-1"></i>Inactive</span>
                                     {% endif %}
                                 </td>
-                                <td class="text-end pe-4">
-                                    <div class="dropdown">
-                                        <button class="btn btn-light btn-sm rounded-pill border shadow-xs dropdown-toggle px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Actions
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 py-2">
-                                            <li>
-                                                <a class="dropdown-item small py-2" href="{{ url_for('faculty.profile_view', faculty_id=f.id) }}">
-                                                    <i class="fa-solid fa-eye me-2 text-primary"></i> View Profile
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item small py-2" href="{{ url_for('faculty.faculty_documents', faculty_id=f.id) }}">
-                                                    <i class="fa-solid fa-folder-open me-2 text-success"></i> Documents
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item small py-2" href="{{ url_for('faculty.download_id_card', faculty_id=f.id) }}" target="_blank">
-                                                    <i class="fa-solid fa-id-card me-2 text-info"></i> Download ID Card
-                                                </a>
-                                            </li>
-                                            {% if current_user.role == 'ADMIN' %}
+                                <td class="text-end pe-4 text-nowrap">
+                                    <div class="d-inline-flex align-items-center gap-1">
+                                        <a href="{{ url_for('faculty.profile_view', faculty_id=f.id) }}" class="btn btn-outline-primary btn-sm rounded-pill px-2 py-1 shadow-xs" title="View Profile">
+                                            <i class="fa-solid fa-eye me-1"></i>View
+                                        </a>
+                                        {% if current_user.is_admin or current_user.role == 'ADMIN' %}
+                                            <a href="{{ url_for('faculty.edit', faculty_id=f.id) }}" class="btn btn-outline-warning btn-sm rounded-pill px-2 py-1 shadow-xs text-dark fw-medium" title="Edit Faculty">
+                                                <i class="fa-solid fa-pen-to-square me-1 text-warning"></i>Edit
+                                            </a>
+                                        {% endif %}
+                                        <a href="{{ url_for('faculty.faculty_documents', faculty_id=f.id) }}" class="btn btn-outline-success btn-sm rounded-pill px-2 py-1 shadow-xs" title="Faculty Documents">
+                                            <i class="fa-solid fa-folder-open me-1"></i>Documents
+                                        </a>
+                                        <div class="dropdown d-inline-block">
+                                            <button class="btn btn-light btn-sm rounded-circle border shadow-xs p-0" style="width: 28px; height: 28px;" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="More Actions">
+                                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 py-2">
                                                 <li>
-                                                    <a class="dropdown-item small py-2" href="{{ url_for('faculty.edit', faculty_id=f.id) }}">
-                                                        <i class="fa-solid fa-pen-to-square me-2 text-warning"></i> Edit Details
+                                                    <a class="dropdown-item small py-2" href="{{ url_for('faculty.download_id_card', faculty_id=f.id) }}" target="_blank">
+                                                        <i class="fa-solid fa-id-card me-2 text-info"></i> ID Card PDF
                                                     </a>
                                                 </li>
-                                                <li><hr class="dropdown-divider my-1"></li>
-                                                <li>
-                                                    <form method="POST" action="{{ url_for('faculty.toggle_status', faculty_id=f.id) }}" class="d-inline">
-                                                        <button type="submit" class="dropdown-item small py-2 text-secondary">
-                                                            <i class="fa-solid fa-power-off me-2"></i> {{ 'Deactivate' if f.status == 'Active' else 'Activate' }} Faculty
+                                                {% if current_user.is_admin or current_user.role == 'ADMIN' %}
+                                                    <li><hr class="dropdown-divider my-1"></li>
+                                                    <li>
+                                                        <form method="POST" action="{{ url_for('faculty.toggle_status', faculty_id=f.id) }}" class="d-inline">
+                                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                                            <button type="submit" class="dropdown-item small py-2 text-secondary">
+                                                                <i class="fa-solid fa-power-off me-2"></i> {{ 'Deactivate' if f.status == 'Active' else 'Activate' }} Faculty
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button" class="dropdown-item small py-2 text-danger" data-bs-toggle="modal" data-bs-target="#deleteFacultyModal{{ f.id }}">
+                                                            <i class="fa-solid fa-trash me-2"></i> Delete Faculty
                                                         </button>
-                                                    </form>
-                                                </li>
-                                                <li>
-                                                    <button type="button" class="dropdown-item small py-2 text-danger" data-bs-toggle="modal" data-bs-target="#deleteFacultyModal{{ f.id }}">
-                                                        <i class="fa-solid fa-trash me-2"></i> Delete Faculty
-                                                    </button>
-                                                </li>
-                                            {% endif %}
-                                        </ul>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
                                     </div>
-
-                                    {% if current_user.role == 'ADMIN' %}
+                                    {% if current_user.is_admin or current_user.role == 'ADMIN' %}
                                     <!-- Delete Modal -->
                                     <div class="modal fade text-start" id="deleteFacultyModal{{ f.id }}" tabindex="-1" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
@@ -187,14 +242,15 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body p-4">
-                                                    <p class="mb-2">Are you sure you want to permanently delete the faculty record for <strong>{{ f.full_name }}</strong> (<code>{{ f.faculty_id }}</code>)?</p>
-                                                    <p class="text-muted small mb-0">This will remove the faculty member's linked user account, document records, and course assignments.</p>
+                                                    <p class="mb-2">Are you sure you want to permanently delete faculty member <strong>{{ f.full_name }}</strong> (<code>{{ f.faculty_id }}</code>)?</p>
+                                                    <p class="text-danger small mb-0"><i class="fa-solid fa-circle-exclamation me-1"></i> This action will delete the faculty profile and its associated account.</p>
                                                 </div>
                                                 <div class="modal-footer border-top bg-light">
-                                                    <button type="button" class="btn btn-secondary btn-sm rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                                                    <form method="POST" action="{{ url_for('faculty.delete', faculty_id=f.id) }}">
-                                                        <button type="submit" class="btn btn-danger btn-sm rounded-pill px-3">
-                                                            <i class="fa-solid fa-trash me-1"></i> Delete Record
+                                                    <button type="button" class="btn btn-light btn-sm px-3" data-bs-dismiss="modal">Cancel</button>
+                                                    <form method="POST" action="{{ url_for('faculty.delete', faculty_id=f.id) }}" class="d-inline">
+                                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                                        <button type="submit" class="btn btn-danger btn-sm px-3">
+                                                            <i class="fa-solid fa-trash me-1"></i> Delete Faculty
                                                         </button>
                                                     </form>
                                                 </div>
@@ -206,19 +262,10 @@
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="7" class="text-center py-5">
-                                    <div class="empty-state">
-                                        <div class="empty-state-icon">
-                                            <i class="fa-solid fa-user-slash"></i>
-                                        </div>
-                                        <h5 class="fw-bold text-dark mb-1">No Faculty Members Found</h5>
-                                        <p class="text-muted small mb-3">No faculty records match your active search or filter criteria.</p>
-                                        {% if current_user.role == 'ADMIN' %}
-                                            <a href="{{ url_for('faculty.create') }}" class="btn btn-primary btn-sm rounded-pill px-4">
-                                                <i class="fa-solid fa-user-plus me-1"></i> Add Faculty
-                                            </a>
-                                        {% endif %}
-                                    </div>
+                                <td colspan="7" class="text-center py-5 text-muted">
+                                    <i class="fa-solid fa-user-xmark fs-1 text-muted opacity-50 mb-3 d-block"></i>
+                                    <h6 class="fw-semibold">No faculty members found</h6>
+                                    <p class="small text-muted mb-0">Try adjusting your filters or search query.</p>
                                 </td>
                             </tr>
                         {% endfor %}

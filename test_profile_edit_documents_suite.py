@@ -235,3 +235,137 @@ def test_api_photo_urls_and_documents(client):
     docs_resp = client.get('/api/v1/student/documents', headers=headers)
     assert docs_resp.status_code == 200
     assert docs_resp.get_json()['success'] is True
+
+
+def test_student_and_faculty_list_actions_visible_to_admin(client):
+    """Verify that Admin sees View, Edit, and Documents actions on Student and Faculty lists."""
+    client.post('/auth/login', data={'username': 'admin_test', 'password': 'Admin@123'}, follow_redirects=True)
+    std = Student.query.filter_by(student_id="STU2025001").first()
+    fac = Faculty.query.filter_by(faculty_id="FAC2025001").first()
+
+    # 1. Student List
+    std_list_resp = client.get('/student')
+    assert std_list_resp.status_code == 200
+    std_html = std_list_resp.data.decode('utf-8')
+    assert f"/student/{std.id}" in std_html
+    assert f"/student/{std.id}/edit" in std_html
+    assert f"/student/{std.id}/documents" in std_html
+
+    # 2. Faculty List
+    fac_list_resp = client.get('/faculty')
+    assert fac_list_resp.status_code == 200
+    fac_html = fac_list_resp.data.decode('utf-8')
+    assert f"/faculty/{fac.id}" in fac_html
+    assert f"/faculty/{fac.id}/edit" in fac_html
+    assert f"/faculty/{fac.id}/documents" in fac_html
+
+
+def test_student_edit_get_and_post_persistence(client):
+    """Verify that Admin can view student edit form and persist updates."""
+    client.post('/auth/login', data={'username': 'admin_test', 'password': 'Admin@123'}, follow_redirects=True)
+    std = Student.query.filter_by(student_id="STU2025001").first()
+
+    # 1. GET edit form
+    edit_get = client.get(f'/student/{std.id}/edit')
+    assert edit_get.status_code == 200
+    assert b"Rahul" in edit_get.data
+    assert b"Patil" in edit_get.data
+
+    # 2. POST updates
+    edit_data = {
+        'first_name': 'Rahul-Modified',
+        'middle_name': '',
+        'last_name': 'Patil',
+        'roll_no': 'CSE001-MOD',
+        'department_id': std.department_id,
+        'course_id': std.course_id,
+        'semester_id': std.semester_id,
+        'session_id': std.session_id,
+        'division_id': 0,
+        'mobile': '9988776655',
+        'personal_email': 'rahul.mod@example.com',
+        'status': 'Active',
+        'gender': 'Male',
+        'nationality': 'Indian',
+        'profile_photo': (io.BytesIO(b"\xff\xd8\xff\xe0\x00\x10JFIF updated photo content"), 'new_avatar.jpg')
+    }
+    edit_post = client.post(f'/student/{std.id}/edit', data=edit_data, content_type='multipart/form-data', follow_redirects=True)
+    assert edit_post.status_code == 200
+
+    # Verify persistence
+    updated_std = Student.query.get(std.id)
+    assert updated_std.first_name == 'Rahul-Modified'
+    assert updated_std.mobile == '9988776655'
+    assert updated_std.roll_no == 'CSE001-MOD'
+    assert updated_std.profile_photo is not None
+    assert 'photos/' in updated_std.profile_photo
+
+    # Verify User synchronization
+    assert updated_std.user.first_name == 'Rahul-Modified'
+    assert updated_std.user.phone == '9988776655'
+    assert updated_std.user.profile_image == updated_std.profile_photo
+
+
+def test_faculty_edit_get_and_post_persistence(client):
+    """Verify that Admin can view faculty edit form and persist updates."""
+    client.post('/auth/login', data={'username': 'admin_test', 'password': 'Admin@123'}, follow_redirects=True)
+    fac = Faculty.query.filter_by(faculty_id="FAC2025001").first()
+
+    # 1. GET edit form
+    edit_get = client.get(f'/faculty/{fac.id}/edit')
+    assert edit_get.status_code == 200
+    assert b"Amit" in edit_get.data
+    assert b"Kulkarni" in edit_get.data
+
+    # 2. POST updates
+    edit_data = {
+        'first_name': 'Amit-Updated',
+        'middle_name': '',
+        'last_name': 'Kulkarni',
+        'designation': 'Associate Professor',
+        'department_id': fac.department_id,
+        'employment_type': 'Permanent',
+        'qualification': 'Ph.D in Computer Science',
+        'specialization': 'Artificial Intelligence',
+        'experience_years': 8.5,
+        'mobile': '9988776644',
+        'personal_email': 'amit.ai@sitcoe.org.in',
+        'status': 'Active',
+        'gender': 'Male',
+        'profile_photo': (io.BytesIO(b"\xff\xd8\xff\xe0\x00\x10JFIF fac avatar"), 'fac_new.jpg')
+    }
+    edit_post = client.post(f'/faculty/{fac.id}/edit', data=edit_data, content_type='multipart/form-data', follow_redirects=True)
+    assert edit_post.status_code == 200
+
+    # Verify persistence
+    updated_fac = Faculty.query.get(fac.id)
+    assert updated_fac.first_name == 'Amit-Updated'
+    assert updated_fac.designation == 'Associate Professor'
+    assert updated_fac.mobile == '9988776644'
+    assert updated_fac.experience_years == 8.5
+    assert updated_fac.profile_photo is not None
+
+    # Verify User synchronization
+    assert updated_fac.user.first_name == 'Amit-Updated'
+    assert updated_fac.user.phone == '9988776644'
+    assert updated_fac.user.profile_image == updated_fac.profile_photo
+
+
+def test_edit_routes_security_for_unauthorized_users(client):
+    """Verify that Students and Faculty cannot access student/faculty edit endpoints."""
+    std = Student.query.filter_by(student_id="STU2025001").first()
+    fac = Faculty.query.filter_by(faculty_id="FAC2025001").first()
+
+    # 1. Student login attempt to edit
+    client.post('/auth/login', data={'username': 'std_test', 'password': 'Student@123'}, follow_redirects=True)
+    resp1 = client.get(f'/student/{std.id}/edit', follow_redirects=False)
+    assert resp1.status_code in (302, 403)
+
+    resp2 = client.get(f'/faculty/{fac.id}/edit', follow_redirects=False)
+    assert resp2.status_code in (302, 403)
+
+    # 2. Faculty login attempt to edit student
+    client.post('/auth/login', data={'username': 'fac_test', 'password': 'Faculty@123'}, follow_redirects=True)
+    resp3 = client.get(f'/student/{std.id}/edit', follow_redirects=False)
+    assert resp3.status_code in (302, 403)
+

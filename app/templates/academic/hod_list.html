@@ -28,9 +28,9 @@
                     <div class="text-muted small fw-semibold text-uppercase mb-2">Assigned HOD</div>
                     {% if dept.hod %}
                         <div class="d-flex align-items-center gap-3">
-                            <img src="{{ dept.hod.profile_image_url }}" alt="HOD" class="rounded-circle object-fit-cover shadow-xs" width="44" height="44">
+                            <img src="{{ dept.hod.profile_image_url }}" alt="{{ dept.hod.full_name }}" class="rounded-circle object-fit-cover shadow-xs border" width="44" height="44" style="aspect-ratio: 1/1;" onerror="this.src='https://ui-avatars.com/api/?name={{ dept.hod.first_name[0] if dept.hod.first_name else 'H' }}&background=1e3a8a&color=ffffff&size=128&bold=true'">
                             <div class="overflow-hidden">
-                                <div class="fw-bold text-dark text-truncate">{{ dept.hod.full_name }}</div>
+                                <a href="{{ url_for('faculty.profile_view', faculty_id=dept.hod.id) }}" class="fw-bold text-dark text-decoration-none hover-text-primary text-truncate d-block">{{ dept.hod.full_name }}</a>
                                 <div class="text-muted small text-truncate">{{ dept.hod.designation }}</div>
                             </div>
                         </div>

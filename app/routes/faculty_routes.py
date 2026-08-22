@@ -76,6 +76,8 @@ def my_profile():
     return redirect(url_for('auth.profile'))
 
 
+@faculty_bp.route('')
+@faculty_bp.route('/')
 @faculty_bp.route('/list')
 @login_required
 def index():
@@ -103,9 +105,24 @@ def index():
     faculty_list = query.order_by(Faculty.first_name.asc()).all()
     departments = Department.query.filter_by(is_active=True).all()
 
+    # Real Database Metrics
+    total_faculty_count = Faculty.query.count()
+    active_faculty_count = Faculty.query.filter_by(status='Active').count()
+    inactive_faculty_count = Faculty.query.filter_by(status='Inactive').count()
+    total_departments_count = Department.query.filter_by(is_active=True).count()
+    
+    # Distinct Designations from Database
+    raw_designations = db.session.query(Faculty.designation).distinct().all()
+    designations_list = sorted(list(set([d[0] for d in raw_designations if d and d[0]])))
+
     return render_template('faculty/list.html',
         faculty_list=faculty_list,
         departments=departments,
+        designations_list=designations_list,
+        total_faculty_count=total_faculty_count,
+        active_faculty_count=active_faculty_count,
+        inactive_faculty_count=inactive_faculty_count,
+        total_departments_count=total_departments_count,
         selected_dept=dept_id,
         selected_desig=designation,
         selected_status=status,
@@ -325,6 +342,7 @@ def profile_view(faculty_id):
     )
 
 
+@faculty_bp.route('/edit/<int:faculty_id>', methods=['GET', 'POST'])
 @faculty_bp.route('/<int:faculty_id>/edit', methods=['GET', 'POST'])
 @login_required
 @admin_required

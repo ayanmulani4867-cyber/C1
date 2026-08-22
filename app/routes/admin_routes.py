@@ -401,3 +401,36 @@ def delete_mobile_banner(banner_id):
     flash(f'Banner "{title}" deleted.', 'info')
     return redirect(url_for('admin.mobile_management'))
 
+
+@admin_bp.route('/students')
+@admin_bp.route('/students/')
+@login_required
+@admin_required
+def students_list():
+    return redirect(url_for('student.index'))
+
+
+@admin_bp.route('/faculty')
+@admin_bp.route('/faculty/')
+@login_required
+@admin_required
+def faculty_list():
+    return redirect(url_for('faculty.index'))
+
+
+@admin_bp.route('/students/<int:student_id>/edit', methods=['GET', 'POST'])
+@admin_bp.route('/student/<int:student_id>/edit', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def student_edit(student_id):
+    return redirect(url_for('student.edit', student_id=student_id))
+
+
+@admin_bp.route('/faculty/<int:faculty_id>/edit', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def faculty_edit(faculty_id):
+    return redirect(url_for('faculty.edit', faculty_id=faculty_id))
+
+
+
