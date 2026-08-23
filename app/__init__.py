@@ -11,30 +11,30 @@ def create_app(config_name=None):
     if config_name is None:
         config_name = os.environ.get('FLASK_ENV', 'default')
     
-    app = Flask(__name__)
+    flask_app = Flask(__name__)
     config_class = config.get(config_name, config['default'])
-    app.config.from_object(config_class)
+    flask_app.config.from_object(config_class)
     if hasattr(config_class, 'init_app'):
-        config_class.init_app(app)
+        config_class.init_app(flask_app)
     
     # Enable ProxyFix so Flask recognizes HTTPS and forwarded headers behind proxy
-    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+    flask_app.wsgi_app = ProxyFix(flask_app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
     
     # Ensure upload directory exists
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'photos'), exist_ok=True)
-    os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'documents'), exist_ok=True)
-    os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'assignments'), exist_ok=True)
-    os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'materials'), exist_ok=True)
-    os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'certificates'), exist_ok=True)
+    os.makedirs(flask_app.config['UPLOAD_FOLDER'], exist_ok=True)
+    os.makedirs(os.path.join(flask_app.config['UPLOAD_FOLDER'], 'photos'), exist_ok=True)
+    os.makedirs(os.path.join(flask_app.config['UPLOAD_FOLDER'], 'documents'), exist_ok=True)
+    os.makedirs(os.path.join(flask_app.config['UPLOAD_FOLDER'], 'assignments'), exist_ok=True)
+    os.makedirs(os.path.join(flask_app.config['UPLOAD_FOLDER'], 'materials'), exist_ok=True)
+    os.makedirs(os.path.join(flask_app.config['UPLOAD_FOLDER'], 'certificates'), exist_ok=True)
     
     # Initialize extensions
-    db.init_app(app)
-    login_manager.init_app(app)
-    migrate.init_app(app, db)
-    csrf.init_app(app)
+    db.init_app(flask_app)
+    login_manager.init_app(flask_app)
+    migrate.init_app(flask_app, db)
+    csrf.init_app(flask_app)
     socketio.init_app(
-        app,
+        flask_app,
         cors_allowed_origins='*',
         async_mode='eventlet',
         logger=False,
@@ -71,9 +71,9 @@ def create_app(config_name=None):
         return redirect(url_for('auth.login', next=request.url))
 
     # Configure CSRF protection using public Flask-WTF APIs
-    app.config.setdefault('WTF_CSRF_CHECK_DEFAULT', False)
+    flask_app.config.setdefault('WTF_CSRF_CHECK_DEFAULT', False)
 
-    @app.before_request
+    @flask_app.before_request
     def process_auth_and_csrf():
         # 1. Cryptographically verify Bearer token from Authorization header
         auth_header = request.headers.get('Authorization', '').strip()
@@ -118,7 +118,7 @@ def create_app(config_name=None):
             return
 
         # 6. Enforce CSRF protection for POST/PUT/PATCH/DELETE browser cookie-session requests
-        if not app.config.get('WTF_CSRF_ENABLED', True):
+        if not flask_app.config.get('WTF_CSRF_ENABLED', True):
             return
 
         try:
@@ -127,33 +127,33 @@ def create_app(config_name=None):
             csrf.protect()
     
     # Custom Jinja filters and helpers
-    @app.template_filter('currency')
+    @flask_app.template_filter('currency')
     def currency_filter(value):
         try:
             return f"₹{float(value):,.2f}"
         except (ValueError, TypeError):
             return f"₹{value}"
 
-    @app.template_filter('datetime_format')
+    @flask_app.template_filter('datetime_format')
     def datetime_format_filter(value, format='%b %d, %Y %I:%M %p'):
         if value is None:
             return '-'
         return value.strftime(format)
 
-    @app.template_filter('date_format')
+    @flask_app.template_filter('date_format')
     def date_format_filter(value, format='%b %d, %Y'):
         if value is None:
             return '-'
         return value.strftime(format)
 
-    @app.template_filter('time_format')
+    @flask_app.template_filter('time_format')
     def time_format_filter(value, format='%I:%M %p'):
         if value is None:
             return '-'
         return value.strftime(format)
 
     # Inject global context (institute details, app name, notifications)
-    @app.context_processor
+    @flask_app.context_processor
     def inject_global_context():
         from app.models.notice import Notice
         from app.models.notification import Notification
@@ -175,12 +175,12 @@ def create_app(config_name=None):
             pass
             
         return {
-            'APP_NAME': app.config.get('APP_NAME', 'Campus Connect'),
-            'COLLEGE_NAME': app.config.get('COLLEGE_NAME', 'Sharad Institute of Technology'),
-            'COLLEGE_SHORT_NAME': app.config.get('COLLEGE_SHORT_NAME', 'SITCOE'),
-            'COLLEGE_ADDRESS': app.config.get('COLLEGE_ADDRESS', 'Yadrav (Ichalkaranji), Maharashtra - 416145'),
-            'COLLEGE_EMAIL': app.config.get('COLLEGE_EMAIL', 'contact@sitcoe.org.in'),
-            'COLLEGE_PHONE': app.config.get('COLLEGE_PHONE', '+91 2322 253000'),
+            'APP_NAME': flask_app.config.get('APP_NAME', 'Campus Connect'),
+            'COLLEGE_NAME': flask_app.config.get('COLLEGE_NAME', 'Sharad Institute of Technology'),
+            'COLLEGE_SHORT_NAME': flask_app.config.get('COLLEGE_SHORT_NAME', 'SITCOE'),
+            'COLLEGE_ADDRESS': flask_app.config.get('COLLEGE_ADDRESS', 'Yadrav (Ichalkaranji), Maharashtra - 416145'),
+            'COLLEGE_EMAIL': flask_app.config.get('COLLEGE_EMAIL', 'contact@sitcoe.org.in'),
+            'COLLEGE_PHONE': flask_app.config.get('COLLEGE_PHONE', '+91 2322 253000'),
             'unread_notices_count': unread_notices_count,
             'unread_notifications_count': unread_notifications_count,
             'recent_notifications': recent_notifications,
@@ -208,36 +208,36 @@ def create_app(config_name=None):
     from app.routes.report_routes import report_bp
     from app.routes.api_routes import api_bp
 
-    app.register_blueprint(main_bp)
-    app.register_blueprint(auth_bp, url_prefix='/auth')
-    app.register_blueprint(admin_bp, url_prefix='/admin')
-    app.register_blueprint(student_bp, url_prefix='/student')
-    app.register_blueprint(faculty_bp, url_prefix='/faculty')
-    app.register_blueprint(academic_bp, url_prefix='/academic')
-    app.register_blueprint(attendance_bp, url_prefix='/attendance')
-    app.register_blueprint(timetable_bp, url_prefix='/timetable')
-    app.register_blueprint(assignment_bp, url_prefix='/assignments')
-    app.register_blueprint(exam_bp, url_prefix='/exams')
-    app.register_blueprint(fee_bp, url_prefix='/fees')
-    app.register_blueprint(leave_bp, url_prefix='/leaves')
-    app.register_blueprint(notice_bp, url_prefix='/notices')
-    app.register_blueprint(feedback_bp, url_prefix='/feedback')
-    app.register_blueprint(certificate_bp, url_prefix='/certificates')
-    app.register_blueprint(complaint_bp, url_prefix='/complaints')
-    app.register_blueprint(event_bp, url_prefix='/events')
-    app.register_blueprint(report_bp, url_prefix='/reports')
-    app.register_blueprint(api_bp, url_prefix='/api')
-    app.register_blueprint(api_bp, url_prefix='/api/v1', name='api_v1')
+    flask_app.register_blueprint(main_bp)
+    flask_app.register_blueprint(auth_bp, url_prefix='/auth')
+    flask_app.register_blueprint(admin_bp, url_prefix='/admin')
+    flask_app.register_blueprint(student_bp, url_prefix='/student')
+    flask_app.register_blueprint(faculty_bp, url_prefix='/faculty')
+    flask_app.register_blueprint(academic_bp, url_prefix='/academic')
+    flask_app.register_blueprint(attendance_bp, url_prefix='/attendance')
+    flask_app.register_blueprint(timetable_bp, url_prefix='/timetable')
+    flask_app.register_blueprint(assignment_bp, url_prefix='/assignments')
+    flask_app.register_blueprint(exam_bp, url_prefix='/exams')
+    flask_app.register_blueprint(fee_bp, url_prefix='/fees')
+    flask_app.register_blueprint(leave_bp, url_prefix='/leaves')
+    flask_app.register_blueprint(notice_bp, url_prefix='/notices')
+    flask_app.register_blueprint(feedback_bp, url_prefix='/feedback')
+    flask_app.register_blueprint(certificate_bp, url_prefix='/certificates')
+    flask_app.register_blueprint(complaint_bp, url_prefix='/complaints')
+    flask_app.register_blueprint(event_bp, url_prefix='/events')
+    flask_app.register_blueprint(report_bp, url_prefix='/reports')
+    flask_app.register_blueprint(api_bp, url_prefix='/api')
+    flask_app.register_blueprint(api_bp, url_prefix='/api/v1', name='api_v1')
 
     from app.routes.chat_routes import chat_bp
-    app.register_blueprint(chat_bp)
+    flask_app.register_blueprint(chat_bp)
     csrf.exempt(chat_bp)
 
-    # Register SocketIO event handlers
-    import app.chat  # noqa: F401
+    # Register SocketIO event handlers explicitly without shadowing local names
+    from app.chat import events as _chat_events  # noqa: F401
 
     # Root health endpoint
-    @app.route('/health')
+    @flask_app.route('/health')
     def root_health():
         from flask import jsonify
         return jsonify({"status": "ok"}), 200
@@ -247,7 +247,7 @@ def create_app(config_name=None):
     csrf.exempt(root_health)
 
     # Force password change for accounts requiring it on initial sign in
-    @app.before_request
+    @flask_app.before_request
     def check_must_change_password():
         if request.path.startswith('/api/'):
             return None
@@ -259,7 +259,7 @@ def create_app(config_name=None):
                 return redirect(url_for('auth.change_password'))
 
     # Error handlers
-    @app.errorhandler(CSRFError)
+    @flask_app.errorhandler(CSRFError)
     def handle_csrf_error(error):
         msg = error.description if hasattr(error, 'description') else str(error)
         if request.path.startswith('/api/') or request.is_json or 'application/json' in request.headers.get('Accept', ''):
@@ -267,21 +267,21 @@ def create_app(config_name=None):
             return jsonify({'success': False, 'error': 'CSRF Error', 'message': msg}), 400
         return f"400 Bad Request: {msg}", 400
 
-    @app.errorhandler(403)
+    @flask_app.errorhandler(403)
     def forbidden_error(error):
         if request.path.startswith('/api/'):
             from flask import jsonify
             return jsonify({'success': False, 'error': 'Forbidden', 'message': 'Access denied to this resource.'}), 403
         return render_template('errors/403.html'), 403
 
-    @app.errorhandler(404)
+    @flask_app.errorhandler(404)
     def not_found_error(error):
         if request.path.startswith('/api/'):
             from flask import jsonify
             return jsonify({'success': False, 'error': 'Not Found', 'message': 'Requested API endpoint was not found.'}), 404
         return render_template('errors/404.html'), 404
 
-    @app.errorhandler(500)
+    @flask_app.errorhandler(500)
     def internal_error(error):
         db.session.rollback()
         if request.path.startswith('/api/'):
@@ -289,18 +289,18 @@ def create_app(config_name=None):
             return jsonify({'success': False, 'error': 'Internal Server Error', 'message': 'An unexpected server error occurred.'}), 500
         return render_template('errors/500.html'), 500
 
-    @app.after_request
+    @flask_app.after_request
     def set_security_headers(response):
         # Allow embedding in AI Studio preview iframe
         response.headers.pop('X-Frame-Options', None)
         return response
 
     # Automatically ensure database tables & default admin exist on application startup
-    with app.app_context():
+    with flask_app.app_context():
         try:
             from app.utils.db_ops import initialize_database_schema
             initialize_database_schema()
         except Exception as e:
-            app.logger.warning(f"Startup database schema check notice: {e}")
+            flask_app.logger.warning(f"Startup database schema check notice: {e}")
 
-    return app
+    return flask_app
