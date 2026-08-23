@@ -16,6 +16,8 @@ from app.models.chat import ConversationMember, MessageRead, Message
 # ─── In-memory presence store ────────────────────────────────────────────────────
 # Maps user_id → set of socket session IDs (handles multiple tabs)
 _online_users: dict[int, set] = {}
+# Maps socket session ID → user_id
+_sid_to_user: dict[str, int] = {}
 
 
 def _get_auth_user(auth=None):
@@ -63,6 +65,7 @@ def handle_connect(auth=None):
 
     # Join a personal room so server can target this user specifically
     join_room(f'user_{user.id}')
+    _sid_to_user[request.sid] = user.id
 
     # Track presence
     if user.id not in _online_users:
@@ -77,17 +80,22 @@ def handle_connect(auth=None):
 
 @socketio.on('disconnect')
 def handle_disconnect():
-    user = _get_auth_user()
-    if not user:
+    user_id = _sid_to_user.pop(request.sid, None)
+    if not user_id:
+        user = _get_auth_user()
+        if user:
+            user_id = user.id
+
+    if not user_id:
         return
 
-    leave_room(f'user_{user.id}')
+    leave_room(f'user_{user_id}')
 
-    if user.id in _online_users:
-        _online_users[user.id].discard(request.sid)
-        if not _online_users[user.id]:
-            del _online_users[user.id]
-            _broadcast_presence(user.id, online=False)
+    if user_id in _online_users:
+        _online_users[user_id].discard(request.sid)
+        if not _online_users[user_id]:
+            del _online_users[user_id]
+            _broadcast_presence(user_id, online=False)
 
 
 # ─── Join / Leave conversation rooms ─────────────────────────────────────────────

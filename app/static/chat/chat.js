@@ -886,6 +886,21 @@ function openLightbox(src) {
 }
 
 // ── New Chat / Group modal ─────────────────────────────────────────────────────
+async function startPrivateChat(userId) {
+  closeModal();
+  const data = await apiFetch('/api/chat/conversations', {
+    method: 'POST',
+    body: JSON.stringify({ type: 'private', member_ids: [userId] }),
+  });
+  if (data.success && data.conversation) {
+    upsertConversation(data.conversation);
+    renderSidebar();
+    openConversation(data.conversation.id);
+  } else {
+    showErrorToast(data.message || 'Failed to start conversation');
+  }
+}
+
 function openNewChatModal() {
   state.modalSelectedUsers.clear();
   state.modalSearchResults = [];
@@ -895,17 +910,7 @@ function openNewChatModal() {
     onConfirm: async () => {
       const [uid] = [...state.modalSelectedUsers];
       if (!uid) return showErrorToast('Select a user first');
-      const data = await apiFetch('/api/chat/conversations', {
-        method: 'POST',
-        body: JSON.stringify({ type: 'private', member_ids: [uid] }),
-      });
-      if (data.success) {
-        upsertConversation(data.conversation);
-        renderSidebar();
-        openConversation(data.conversation.id);
-      } else {
-        showErrorToast(data.message);
-      }
+      startPrivateChat(uid);
     },
   });
 }
@@ -918,84 +923,118 @@ function openNewGroupModal() {
     isGroup: true,
     onConfirm: async () => {
       const members = [...state.modalSelectedUsers];
-      if (members.length < 1) return showErrorToast('Add at least one member');
+      if (members.length < 1) return showErrorToast('Select at least one member');
       const title = document.getElementById('modal-group-title')?.value.trim();
       if (!title) return showErrorToast('Group name required');
+      closeModal();
       const data = await apiFetch('/api/chat/conversations', {
         method: 'POST',
         body: JSON.stringify({ type: 'group', title, member_ids: members }),
       });
-      if (data.success) {
+      if (data.success && data.conversation) {
         upsertConversation(data.conversation);
         renderSidebar();
         openConversation(data.conversation.id);
       } else {
-        showErrorToast(data.message);
+        showErrorToast(data.message || 'Failed to create group');
       }
     },
   });
 }
 
 function showModal({ title, isGroup, onConfirm }) {
+  closeModal();
   const overlay = el('div', 'chat-modal-overlay');
   overlay.id = 'chat-modal';
   overlay.innerHTML = `
     <div class="chat-modal">
-      <div class="chat-modal-title">${esc(title)}</div>
-      ${isGroup ? `<input id="modal-group-title" class="chat-modal-search" placeholder="Group name…">` : ''}
-      <input id="modal-search" class="chat-modal-search" placeholder="Search users by name or email…">
-      <div id="modal-results" class="chat-modal-results"></div>
+      <div class="chat-modal-title">
+        <span>${esc(title)}</span>
+        <button class="chat-attach-thumb-rm" style="position:static;font-size:16px;background:none;color:#94a3b8;" onclick="closeModal()">✕</button>
+      </div>
+      ${isGroup ? `<input id="modal-group-title" class="chat-modal-search" placeholder="Group name (e.g. CSE Project Team)…" style="margin-bottom:10px;">` : ''}
+      <input id="modal-search" class="chat-modal-search" placeholder="Search by name, roll no, faculty ID, department…" autocomplete="off">
+      ${isGroup ? `<div id="modal-selected-strip" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;"></div>` : ''}
+      <div id="modal-results" class="chat-modal-results" style="margin-top:10px;">
+        <div class="chat-empty-state" style="padding:20px 10px;">
+          <div class="spinner-border text-primary" role="status" style="width:1.5rem;height:1.5rem;"></div>
+          <p style="color:#94a3b8;font-size:12px;margin-top:8px;">Loading contacts…</p>
+        </div>
+      </div>
       <div class="chat-modal-actions">
         <button class="chat-btn chat-btn-secondary" onclick="closeModal()">Cancel</button>
-        <button class="chat-btn chat-btn-primary" id="modal-confirm">Start Chat</button>
+        ${isGroup ? `<button class="chat-btn chat-btn-primary" id="modal-confirm">Create Group</button>` : ''}
       </div>
     </div>
   `;
   document.body.appendChild(overlay);
 
-  let searchTimer = null;
-  document.getElementById('modal-search').addEventListener('input', e => {
-    clearTimeout(searchTimer);
-    searchTimer = setTimeout(() => doModalSearch(e.target.value, isGroup), 300);
-  });
+  const searchInput = document.getElementById('modal-search');
+  if (searchInput) {
+    searchInput.focus();
+    let searchTimer = null;
+    searchInput.addEventListener('input', e => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => doModalSearch(e.target.value, isGroup), 250);
+    });
+  }
 
-  document.getElementById('modal-confirm').addEventListener('click', onConfirm);
+  const confirmBtn = document.getElementById('modal-confirm');
+  if (confirmBtn) confirmBtn.addEventListener('click', onConfirm);
   overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+
+  // Pre-load default suggestions
+  doModalSearch('', isGroup);
 }
 
 async function doModalSearch(q, isGroup) {
-  if (q.length < 1) { document.getElementById('modal-results').innerHTML = ''; return; }
-  const data = await apiFetch(`/api/chat/users/search?q=${encodeURIComponent(q)}`);
   const results = document.getElementById('modal-results');
+  if (!results) return;
+
+  const data = await apiFetch(`/api/chat/users/search?q=${encodeURIComponent(q)}`);
   if (!data.success || !data.users?.length) {
-    results.innerHTML = `<div class="text-muted" style="padding:12px">No users found</div>`;
+    results.innerHTML = `<div class="text-muted" style="padding:20px;text-align:center;font-size:13px;">No matching users found.</div>`;
     return;
   }
+
   results.innerHTML = data.users.map(u => {
     const sel = state.modalSelectedUsers.has(u.id);
+    const isOnline = u.is_online || state.onlineUsers.has(u.id);
+    const extraInfo = u.roll_no ? `Roll: ${esc(u.roll_no)}` : (u.faculty_id ? `ID: ${esc(u.faculty_id)}` : (u.student_id ? `ID: ${esc(u.student_id)}` : ''));
+    const deptInfo = u.department ? esc(u.department) : (u.email ? esc(u.email) : '');
+    
     return `
-      <div class="chat-user-result ${sel ? 'selected' : ''}" onclick="toggleModalUser(${u.id}, '${esc(u.name)}')">
-        ${avatarHtml(u.avatar, u.name, 38)}
-        <div class="chat-user-info">
-          <div class="chat-user-name">${esc(u.name)}</div>
-          <div class="chat-user-role">${esc(u.role)} ${u.department ? '• ' + esc(u.department) : ''}</div>
+      <div class="chat-user-result ${sel ? 'selected' : ''}" style="cursor:pointer;" onclick="${isGroup ? `toggleModalUser(${u.id}, '${esc(u.name)}', true)` : `startPrivateChat(${u.id})`}">
+        <div style="position:relative;">
+          ${avatarHtml(u.avatar, u.name, 40)}
+          <div class="online-dot${isOnline ? '' : ' offline'}" style="bottom:0;right:0;width:10px;height:10px;border-width:2px;"></div>
         </div>
-        ${sel ? '<span>✓</span>' : ''}
+        <div class="chat-user-info" style="flex:1;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div class="chat-user-name" style="font-size:13.5px;">${esc(u.name)}</div>
+            <span class="badge ${u.role === 'ADMIN' ? 'bg-danger' : (u.role === 'HOD' ? 'bg-warning text-dark' : (u.role === 'FACULTY' ? 'bg-success' : 'bg-primary'))}" style="font-size:9.5px;padding:2px 6px;">${esc(u.role)}</span>
+          </div>
+          <div class="chat-user-role" style="font-size:11.5px;color:#94a3b8;">
+            ${deptInfo} ${extraInfo ? `• ${extraInfo}` : ''}
+          </div>
+        </div>
+        <div>
+          ${isGroup ? (sel ? `<span style="color:#22c55e;font-weight:bold;font-size:16px;">✓</span>` : `<span style="color:#64748b;font-size:13px;">+ Add</span>`) : `<span style="color:#6366f1;font-size:12px;font-weight:600;">Message →</span>`}
+        </div>
       </div>
     `;
   }).join('');
 }
 
-function toggleModalUser(uid, name) {
-  const conv = getActiveConv();
+function toggleModalUser(uid, name, isGroup = true) {
   if (state.modalSelectedUsers.has(uid)) {
     state.modalSelectedUsers.delete(uid);
   } else {
     state.modalSelectedUsers.add(uid);
   }
-  // Re-render search
   const searchInput = document.getElementById('modal-search');
-  if (searchInput) doModalSearch(searchInput.value, false);
+  const q = searchInput ? searchInput.value : '';
+  doModalSearch(q, isGroup);
 }
 
 function closeModal() {
@@ -1227,6 +1266,7 @@ function bindGlobalEvents() {
 
 // ── Expose Global Handlers for Inline HTML onclick Events & SPA Engine ─────────
 window.initChat = init;
+window.startPrivateChat = startPrivateChat;
 window.openNewChatModal = openNewChatModal;
 window.openNewGroupModal = openNewGroupModal;
 window.closeModal = closeModal;

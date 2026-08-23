@@ -635,15 +635,12 @@ def search_users():
     me = g.me
     q_str = request.args.get('q', '').strip()
     role_filter = request.args.get('role', '').strip().upper()
-    if len(q_str) < 1:
-        return jsonify({'success': True, 'users': []})
 
     from app.models.student import Student
     from app.models.faculty import Faculty
     from app.models.department import Department
     from app.chat.events import is_user_online
 
-    pattern = f'%{q_str}%'
     query = (
         User.query
         .outerjoin(Student, Student.user_id == User.id)
@@ -652,6 +649,12 @@ def search_users():
         .filter(
             User.is_active == True,  # noqa: E712
             User.id != me.id,
+        )
+    )
+
+    if q_str:
+        pattern = f'%{q_str}%'
+        query = query.filter(
             or_(
                 User.username.ilike(pattern),
                 User.email.ilike(pattern),
@@ -669,11 +672,11 @@ def search_users():
                 Department.code.ilike(pattern),
             )
         )
-    )
+
     if role_filter in ('STUDENT', 'FACULTY', 'HOD', 'ADMIN'):
         query = query.filter(User.role == role_filter)
 
-    users = query.distinct().limit(25).all()
+    users = query.distinct().limit(30).all()
 
     result = []
     for u in users:
