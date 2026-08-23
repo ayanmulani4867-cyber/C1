@@ -17,6 +17,7 @@ config_name = 'production' if is_prod else os.environ.get('FLASK_ENV', 'developm
 app = create_app(config_name)
 
 if __name__ == '__main__':
+    from app.extensions import socketio
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    socketio.run(app, host='0.0.0.0', port=port, debug=False, use_reloader=False)
 

@@ -22,6 +22,7 @@ from app.models.complaint import Complaint
 from app.models.event import Event, EventRegistration
 from app.models.notification import Notification
 from app.models.audit_log import AuditLog
+from app.models.chat import Conversation, ConversationMember, Message, MessageRead, MessageReport
 from app.models.mobile_config import (
     MobileAppConfig,
     MobileHomeSection,
@@ -69,5 +70,10 @@ __all__ = [
     'MobileQuickAction',
     'MobileBanner',
     'MobileFeatureFlag',
+    'Conversation',
+    'ConversationMember',
+    'Message',
+    'MessageRead',
+    'MessageReport',
 ]
 

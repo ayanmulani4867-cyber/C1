@@ -498,6 +498,9 @@
                     <a href="{{ url_for('main.notifications') }}" class="nav-link {% if ep == 'main.notifications' %}active{% endif %}">
                         <i class="fa-solid fa-bell"></i> Notifications
                     </a>
+                    <a href="{{ url_for('chat.chat_page') }}" class="nav-link {% if 'chat.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-comments"></i> Chat
+                    </a>
 
                     <div class="sidebar-heading">Reports & Analytics</div>
                     <a href="{{ url_for('report.attendance_report') }}" class="nav-link {% if ep == 'report.attendance_report' %}active{% endif %}">
@@ -587,6 +590,9 @@
                     <a href="{{ url_for('complaint.index') }}" class="nav-link {% if 'complaint.' in ep %}active{% endif %}">
                         <i class="fa-solid fa-shield-halved"></i> Complaints
                     </a>
+                    <a href="{{ url_for('chat.chat_page') }}" class="nav-link {% if 'chat.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-comments"></i> Chat
+                    </a>
 
                     <div class="sidebar-heading">Analytics</div>
                     <a href="{{ url_for('report.attendance_report') }}" class="nav-link {% if ep == 'report.attendance_report' %}active{% endif %}">
@@ -643,6 +649,9 @@
                     <a href="{{ url_for('feedback.index') }}" class="nav-link {% if 'feedback.' in ep %}active{% endif %}">
                         <i class="fa-solid fa-star-half-stroke"></i> Student Feedback
                     </a>
+                    <a href="{{ url_for('chat.chat_page') }}" class="nav-link {% if 'chat.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-comments"></i> Chat
+                    </a>
 
                 {# ==================== 4. STUDENT SIDEBAR ==================== #}
                 {% elif current_user.role == 'STUDENT' %}
@@ -693,6 +702,9 @@
                     </a>
                     <a href="{{ url_for('event.index') }}" class="nav-link {% if 'event.' in ep %}active{% endif %}">
                         <i class="fa-solid fa-calendar-star"></i> Campus Events
+                    </a>
+                    <a href="{{ url_for('chat.chat_page') }}" class="nav-link {% if 'chat.' in ep %}active{% endif %}">
+                        <i class="fa-solid fa-comments"></i> Chat
                     </a>
                 {% endif %}
 

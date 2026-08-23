@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_wtf.csrf import CSRFError
 from config import config
-from app.extensions import db, login_manager, migrate, csrf
+from app.extensions import db, login_manager, migrate, csrf, socketio
 from app.models.user import User
 
 
@@ -33,6 +33,13 @@ def create_app(config_name=None):
     login_manager.init_app(app)
     migrate.init_app(app, db)
     csrf.init_app(app)
+    socketio.init_app(
+        app,
+        cors_allowed_origins='*',
+        async_mode='eventlet',
+        logger=False,
+        engineio_logger=False,
+    )
     
     # Configure login manager
     login_manager.login_view = 'auth.login'
@@ -221,6 +228,13 @@ def create_app(config_name=None):
     app.register_blueprint(report_bp, url_prefix='/reports')
     app.register_blueprint(api_bp, url_prefix='/api')
     app.register_blueprint(api_bp, url_prefix='/api/v1', name='api_v1')
+
+    from app.routes.chat_routes import chat_bp
+    app.register_blueprint(chat_bp)
+    csrf.exempt(chat_bp)
+
+    # Register SocketIO event handlers
+    import app.chat  # noqa: F401
 
     # Root health endpoint
     @app.route('/health')
