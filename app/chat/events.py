@@ -18,13 +18,20 @@ from app.models.chat import ConversationMember, MessageRead, Message
 _online_users: dict[int, set] = {}
 
 
-def _get_auth_user():
+def _get_auth_user(auth=None):
     """Resolve authenticated user for SocketIO connections."""
-    from flask_login import current_user
-    if current_user.is_authenticated and current_user.is_active:
-        return current_user
-    # Bearer token via query string (used by Android / API clients)
-    token = request.args.get('token') or request.headers.get('Authorization', '').replace('Bearer ', '').strip()
+    token = None
+    if auth and isinstance(auth, dict):
+        token = auth.get('token')
+    if not token and hasattr(request, 'auth') and isinstance(request.auth, dict):
+        token = request.auth.get('token')
+    if not token:
+        token = request.args.get('token')
+    if not token:
+        auth_hdr = request.headers.get('Authorization', '')
+        if auth_hdr.lower().startswith('bearer '):
+            token = auth_hdr.split(' ', 1)[1].strip()
+
     if token:
         try:
             from app.utils.api_auth import verify_api_token
@@ -33,14 +40,23 @@ def _get_auth_user():
                 return user
         except Exception:
             pass
+
+    # Fallback to Flask-Login session
+    try:
+        from flask_login import current_user
+        if current_user and current_user.is_authenticated and current_user.is_active:
+            return current_user
+    except Exception:
+        pass
+
     return None
 
 
 # ─── Connection ────────────────────────────────────────────────────────────────
 
 @socketio.on('connect')
-def handle_connect():
-    user = _get_auth_user()
+def handle_connect(auth=None):
+    user = _get_auth_user(auth)
     if not user:
         disconnect()
         return False  # Reject connection

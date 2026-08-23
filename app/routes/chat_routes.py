@@ -632,23 +632,46 @@ def upload_attachment(conv_id):
 def search_users():
     me = g.me
     q_str = request.args.get('q', '').strip()
+    role_filter = request.args.get('role', '').strip().upper()
     if len(q_str) < 1:
         return jsonify({'success': True, 'users': []})
 
-    # Search users by name, username, email
     from app.models.student import Student
     from app.models.faculty import Faculty
+    from app.models.department import Department
+    from app.chat.events import is_user_online
 
     pattern = f'%{q_str}%'
-    users = User.query.filter(
-        User.is_active == True,  # noqa: E712
-        User.id != me.id,
-        or_(
-            User.username.ilike(pattern),
-            User.email.ilike(pattern),
-            (User.first_name + ' ' + User.last_name).ilike(pattern),
+    query = (
+        User.query
+        .outerjoin(Student, Student.user_id == User.id)
+        .outerjoin(Faculty, Faculty.user_id == User.id)
+        .outerjoin(Department, (Department.id == Student.department_id) | (Department.id == Faculty.department_id))
+        .filter(
+            User.is_active == True,  # noqa: E712
+            User.id != me.id,
+            or_(
+                User.username.ilike(pattern),
+                User.email.ilike(pattern),
+                User.first_name.ilike(pattern),
+                User.last_name.ilike(pattern),
+                (User.first_name + ' ' + User.last_name).ilike(pattern),
+                Student.student_id.ilike(pattern),
+                Student.roll_no.ilike(pattern),
+                Student.admission_no.ilike(pattern),
+                Student.enrollment_no.ilike(pattern),
+                Faculty.faculty_id.ilike(pattern),
+                Faculty.employee_id.ilike(pattern),
+                Faculty.designation.ilike(pattern),
+                Department.name.ilike(pattern),
+                Department.code.ilike(pattern),
+            )
         )
-    ).limit(20).all()
+    )
+    if role_filter in ('STUDENT', 'FACULTY', 'HOD', 'ADMIN'):
+        query = query.filter(User.role == role_filter)
+
+    users = query.distinct().limit(25).all()
 
     result = []
     for u in users:
@@ -656,24 +679,33 @@ def search_users():
             'id': u.id,
             'name': u.full_name,
             'username': u.username,
+            'email': u.email,
             'role': u.role,
             'avatar': u.profile_image_url,
+            'is_online': is_user_online(u.id),
             'department': None,
+            'department_code': None,
             'designation': None,
             'semester': None,
             'student_id': None,
             'roll_no': None,
+            'faculty_id': None,
+            'employee_id': None,
         }
         if u.student_profile:
             sp = u.student_profile
-            entry['department'] = sp.department.name if hasattr(sp, 'department') and sp.department else None
-            entry['semester'] = str(sp.semester.number) if hasattr(sp, 'semester') and sp.semester else None
+            entry['department'] = sp.department.name if sp.department else None
+            entry['department_code'] = sp.department.code if sp.department else None
+            entry['semester'] = f"Sem {sp.semester.number}" if sp.semester else None
             entry['student_id'] = sp.student_id
             entry['roll_no'] = sp.roll_no
         elif u.faculty_profile:
             fp = u.faculty_profile
-            entry['department'] = fp.department.name if hasattr(fp, 'department') and fp.department else None
-            entry['designation'] = fp.designation
+            entry['department'] = fp.department.name if fp.department else None
+            entry['department_code'] = fp.department.code if fp.department else None
+            entry['designation'] = fp.designation or ('Head of Department' if u.role == 'HOD' else 'Faculty')
+            entry['faculty_id'] = fp.faculty_id
+            entry['employee_id'] = fp.employee_id
         result.append(entry)
 
     return jsonify({'success': True, 'users': result})

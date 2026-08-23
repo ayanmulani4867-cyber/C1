@@ -103,6 +103,16 @@ const AppContent: React.FC = () => {
         return <NoticesView />;
       case 'events':
         return <EventsView />;
+      case 'chat':
+        window.location.href = '/chat';
+        return (
+          <div className="flex-1 flex items-center justify-center bg-slate-900 text-white min-h-[500px]">
+            <div className="text-center">
+              <div className="w-10 h-10 border-3 border-blue-500/20 border-t-blue-500 rounded-full animate-spin mx-auto mb-4" />
+              <p className="text-sm text-slate-300 font-semibold">Opening Campus Connect Chat...</p>
+            </div>
+          </div>
+        );
 
       // Faculty Views
       case 'faculty-dashboard':

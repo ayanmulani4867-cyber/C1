@@ -20,6 +20,7 @@ import {
   Layers,
   ClipboardList,
   UserSquare2,
+  MessageSquare,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -95,6 +96,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView: propCurrentView, 
           items: [
             { id: 'notices', label: 'Notices & Circulars', icon: Megaphone },
             { id: 'events', label: 'Campus Events', icon: PartyPopper },
+            { id: 'chat', label: 'Campus Chat', icon: MessageSquare },
           ],
         },
       ];
@@ -132,6 +134,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView: propCurrentView, 
             { id: 'faculty-id', label: 'Digital Faculty Badge', icon: UserSquare2 },
             { id: 'notices', label: 'Campus Circulars', icon: Megaphone },
             { id: 'events', label: 'Events & Workshops', icon: PartyPopper },
+            { id: 'chat', label: 'Campus Chat', icon: MessageSquare },
           ],
         },
       ];
@@ -164,6 +167,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView: propCurrentView, 
         items: [
           { id: 'notices', label: 'Notice Board', icon: Megaphone },
           { id: 'events', label: 'College Events & Fests', icon: PartyPopper },
+          { id: 'chat', label: 'Campus Chat', icon: MessageSquare },
         ],
       },
     ];

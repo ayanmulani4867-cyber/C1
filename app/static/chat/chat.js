@@ -80,10 +80,24 @@ function fileIcon(mime) {
   return '📄';
 }
 
+// ── Auth helpers ──────────────────────────────────────────────────────────────
+function getAuthToken() {
+  try {
+    return sessionStorage.getItem('CAMPUS_CONNECT_ERP_token') || window._appAuthToken || '';
+  } catch (e) {
+    return window._appAuthToken || '';
+  }
+}
+
 // ── API helpers ───────────────────────────────────────────────────────────────
 async function apiFetch(url, opts = {}) {
+  const token = getAuthToken();
+  const headers = { 'Content-Type': 'application/json', ...(opts.headers || {}) };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
   const resp = await fetch(url, {
-    headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
+    headers,
     ...opts,
   });
   return resp.json();
@@ -110,8 +124,15 @@ async function init() {
 
 // ── Socket.IO ────────────────────────────────────────────────────────────────
 function initSocket() {
-  // Dynamically load socket.io client if not already loaded
-  const s = state.socket = io({ transports: ['websocket', 'polling'] });
+  const token = getAuthToken();
+  const socketOpts = {
+    transports: ['websocket', 'polling'],
+  };
+  if (token) {
+    socketOpts.auth = { token };
+    socketOpts.query = { token };
+  }
+  const s = state.socket = io(socketOpts);
 
   s.on('connect', () => {
     showBanner('');
@@ -583,6 +604,11 @@ async function sendMessage() {
 }
 
 async function sendFiles(convId) {
+  const token = getAuthToken();
+  const headers = {};
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
   for (const file of state.pendingFiles) {
     const formData = new FormData();
     formData.append('file', file);
@@ -591,6 +617,7 @@ async function sendFiles(convId) {
     }
     const resp = await fetch(`/api/chat/conversations/${convId}/upload`, {
       method: 'POST',
+      headers,
       body: formData,
     });
     const data = await resp.json();
