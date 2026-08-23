@@ -79,11 +79,13 @@ def _assert_member(conversation_id, user_id):
 
 # ─── Web page ───────────────────────────────────────────────────────────────────
 
-@chat_bp.route('/')
+@chat_bp.route('/chat', methods=['GET'])
+@chat_bp.route('/chat/', methods=['GET'])
+@chat_bp.route('/chat/<int:conversation_id>', methods=['GET'])
 @login_required
-def chat_page():
+def chat_page(conversation_id=None):
     """Render the main chat page (SPA shell)."""
-    return render_template('chat/chat.html')
+    return render_template('chat/chat.html', initial_conversation_id=conversation_id)
 
 
 # ─── Conversation listing ───────────────────────────────────────────────────────

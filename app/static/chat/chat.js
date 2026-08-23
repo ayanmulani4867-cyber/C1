@@ -107,23 +107,36 @@ async function apiFetch(url, opts = {}) {
 async function init() {
   // Fetch current user info from meta tags embedded by server
   const meta = document.getElementById('chat-meta');
-  if (!meta) return;
-  state.currentUser = {
-    id: parseInt(meta.dataset.userId),
-    name: meta.dataset.userName,
-    avatar: meta.dataset.userAvatar,
-    role: meta.dataset.userRole,
-  };
+  if (meta) {
+    state.currentUser = {
+      id: parseInt(meta.dataset.userId) || 0,
+      name: meta.dataset.userName || 'User',
+      avatar: meta.dataset.userAvatar || '',
+      role: meta.dataset.userRole || '',
+    };
+  }
 
   await loadConversations();
   initSocket();
   renderSidebar();
   bindGlobalEvents();
   renderEmptyState();
+
+  const initialConvId = meta?.dataset?.initialConvId;
+  if (initialConvId) {
+    const id = parseInt(initialConvId);
+    if (!isNaN(id)) {
+      openConversation(id);
+    }
+  }
 }
 
 // ── Socket.IO ────────────────────────────────────────────────────────────────
 function initSocket() {
+  if (typeof io === 'undefined') {
+    console.warn('[Chat] Socket.IO client library not loaded yet; running in REST mode');
+    return;
+  }
   const token = getAuthToken();
   const socketOpts = {
     transports: ['websocket', 'polling'],
@@ -132,61 +145,65 @@ function initSocket() {
     socketOpts.auth = { token };
     socketOpts.query = { token };
   }
-  const s = state.socket = io(socketOpts);
+  try {
+    const s = state.socket = io(socketOpts);
 
-  s.on('connect', () => {
-    showBanner('');
-    console.log('[Chat] Connected', s.id);
-  });
+    s.on('connect', () => {
+      showBanner('');
+      console.log('[Chat] Connected', s.id);
+    });
 
-  s.on('disconnect', () => {
-    showBanner('disconnected', '⚡ Disconnected — reconnecting…');
-  });
+    s.on('disconnect', () => {
+      showBanner('disconnected', '⚡ Disconnected — reconnecting…');
+    });
 
-  s.on('connect_error', () => {
-    showBanner('reconnecting', '⏳ Reconnecting to chat server…');
-  });
+    s.on('connect_error', () => {
+      showBanner('reconnecting', '⏳ Reconnecting to chat server…');
+    });
 
-  s.on('new_message', ({ message }) => {
-    handleNewMessage(message);
-  });
+    s.on('new_message', ({ message }) => {
+      handleNewMessage(message);
+    });
 
-  s.on('message_deleted', ({ message_id }) => {
-    handleMessageDeleted(message_id);
-  });
+    s.on('message_deleted', ({ message_id }) => {
+      handleMessageDeleted(message_id);
+    });
 
-  s.on('message_read', ({ conversation_id, reader_id, last_read_message_id }) => {
-    handleReadReceipt(conversation_id, reader_id, last_read_message_id);
-  });
+    s.on('message_read', ({ conversation_id, reader_id, last_read_message_id }) => {
+      handleReadReceipt(conversation_id, reader_id, last_read_message_id);
+    });
 
-  s.on('typing_start', ({ conversation_id, user_id, user_name }) => {
-    handleTypingStart(conversation_id, user_id, user_name);
-  });
+    s.on('typing_start', ({ conversation_id, user_id, user_name }) => {
+      handleTypingStart(conversation_id, user_id, user_name);
+    });
 
-  s.on('typing_stop', ({ conversation_id, user_id }) => {
-    handleTypingStop(conversation_id, user_id);
-  });
+    s.on('typing_stop', ({ conversation_id, user_id }) => {
+      handleTypingStop(conversation_id, user_id);
+    });
 
-  s.on('user_online', ({ user_id }) => {
-    state.onlineUsers.add(user_id);
-    updatePresenceUI(user_id, true);
-  });
+    s.on('user_online', ({ user_id }) => {
+      state.onlineUsers.add(user_id);
+      updatePresenceUI(user_id, true);
+    });
 
-  s.on('user_offline', ({ user_id }) => {
-    state.onlineUsers.delete(user_id);
-    updatePresenceUI(user_id, false);
-  });
+    s.on('user_offline', ({ user_id }) => {
+      state.onlineUsers.delete(user_id);
+      updatePresenceUI(user_id, false);
+    });
 
-  s.on('conversation_updated', ({ action, conversation, user_id }) => {
-    if (action === 'new_group' && conversation) {
-      upsertConversation(conversation);
-      renderSidebar();
-    }
-  });
+    s.on('conversation_updated', ({ action, conversation }) => {
+      if (action === 'new_group' && conversation) {
+        upsertConversation(conversation);
+        renderSidebar();
+      }
+    });
 
-  s.on('unread_count_updated', ({ conversation_id, unread_count }) => {
-    updateUnreadBadge(conversation_id, unread_count);
-  });
+    s.on('unread_count_updated', ({ conversation_id, unread_count }) => {
+      updateUnreadBadge(conversation_id, unread_count);
+    });
+  } catch (err) {
+    console.warn('[Chat] Socket.IO initialization error:', err);
+  }
 }
 
 // ── Conversations ─────────────────────────────────────────────────────────────
@@ -229,7 +246,7 @@ function renderSidebar() {
   if (!list) return;
 
   const q = state.searchQuery.toLowerCase();
-  let convs = state.conversations;
+  let convs = state.conversations || [];
   if (q) {
     convs = convs.filter(c => getDisplayName(c).toLowerCase().includes(q));
   }
@@ -242,7 +259,15 @@ function renderSidebar() {
   });
 
   if (convs.length === 0) {
-    list.innerHTML = `<div class="chat-empty-state" style="padding:30px 20px"><p>No conversations yet. Start a new chat!</p></div>`;
+    list.innerHTML = `
+      <div class="chat-empty-state" style="padding:32px 16px; text-align:center;">
+        <p style="color:#94a3b8; font-size:13px; margin-bottom:12px;">No conversations yet</p>
+        <button class="chat-new-btn" onclick="openNewChatModal()" style="font-size:12px; padding:6px 14px; margin:0 auto; display:inline-flex;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          Start a Chat
+        </button>
+      </div>
+    `;
     return;
   }
 
@@ -291,6 +316,15 @@ async function openConversation(convId) {
   // On mobile: show main, hide sidebar
   document.querySelector('.chat-sidebar')?.classList.add('hidden');
   document.querySelector('.chat-main')?.classList.add('active');
+
+  const header = document.getElementById('chat-header');
+  const messages = document.getElementById('chat-messages');
+  const composer = document.getElementById('chat-composer');
+  const emptyState = document.getElementById('main-empty-state');
+  if (header) header.style.display = 'flex';
+  if (messages) messages.style.display = 'flex';
+  if (composer) composer.style.display = 'flex';
+  if (emptyState) emptyState.style.display = 'none';
 
   renderSidebar();
   renderChatHeader();
@@ -1191,5 +1225,35 @@ function bindGlobalEvents() {
   }
 }
 
-// ── Init on DOMContentLoaded ──────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', init);
+// ── Expose Global Handlers for Inline HTML onclick Events & SPA Engine ─────────
+window.initChat = init;
+window.openNewChatModal = openNewChatModal;
+window.openNewGroupModal = openNewGroupModal;
+window.closeModal = closeModal;
+window.toggleModalUser = toggleModalUser;
+window.openConversation = openConversation;
+window.sendMessage = sendMessage;
+window.handleFileSelect = handleFileSelect;
+window.removePendingFile = removePendingFile;
+window.loadOlderMessages = loadOlderMessages;
+window.openLightbox = openLightbox;
+window.backToList = backToList;
+window.openSearchPanel = openSearchPanel;
+window.openGroupInfo = openGroupInfo;
+window.openConvSettings = openConvSettings;
+window.toggleSetting = toggleSetting;
+window.replyToMessage = replyToMessage;
+window.clearReply = clearReply;
+window.copyMessage = copyMessage;
+window.deleteMessage = deleteMessage;
+window.reportMessage = reportMessage;
+window.selectReport = selectReport;
+window.submitReport = submitReport;
+window.showContextMenu = showContextMenu;
+
+// ── Auto-initialize (works for full page load and SPA navigation) ──────────────
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
