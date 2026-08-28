@@ -2113,29 +2113,49 @@ def student_assignments():
             if status_filter == 'overdue' and subm_status != 'Overdue':
                 continue
 
-        results.append({
-            'id': a.id,
-            'title': a.title,
-            'description': a.description,
-            'subject_id': a.subject_id,
-            'subject_code': a.subject.code if a.subject else '',
-            'subject_name': a.subject.name if a.subject else 'Subject',
-            'faculty_name': a.faculty.full_name if a.faculty else None,
-            'due_date': a.due_date.strftime('%Y-%m-%d %H:%M:%S'),
-            'due_date_formatted': a.due_date.strftime('%b %d, %Y %I:%M %p'),
-            'max_marks': a.max_marks,
-            'file_attachment': a.file_path,
-            'status': subm_status,
-            'is_submitted': bool(subm),
-            'submission': {
+        subm_dict = None
+        if subm:
+            subm_dict = {
                 'id': subm.id,
+                'is_submitted': True,
+                'status': subm.status,
                 'submitted_at': subm.submitted_at.strftime('%Y-%m-%d %H:%M:%S'),
                 'submission_text': subm.submission_text,
                 'submission_file': subm.submission_file,
                 'marks_obtained': subm.marks_obtained,
                 'feedback': subm.feedback,
-                'status': subm.status
-            } if subm else None
+                'evaluated_at': subm.evaluated_at.strftime('%Y-%m-%d %H:%M:%S') if subm.evaluated_at else None
+            }
+        else:
+            subm_dict = {
+                'id': None,
+                'is_submitted': False,
+                'status': subm_status,
+                'submitted_at': None,
+                'submission_text': None,
+                'submission_file': None,
+                'marks_obtained': None,
+                'feedback': None,
+                'evaluated_at': None
+            }
+
+        results.append({
+            'id': a.id,
+            'title': a.title,
+            'description': a.description or '',
+            'subject_id': a.subject_id,
+            'subject_code': a.subject.code if a.subject else '',
+            'subject_name': a.subject.name if a.subject else 'Subject',
+            'faculty_name': a.faculty.full_name if a.faculty else 'Faculty',
+            'due_date': a.due_date.strftime('%Y-%m-%d %H:%M:%S'),
+            'due_date_formatted': a.due_date.strftime('%b %d, %Y %I:%M %p'),
+            'max_marks': a.max_marks,
+            'file_attachment': a.file_path,
+            'attachment_url': a.file_path,
+            'file_path': a.file_path,
+            'status': subm_status,
+            'is_submitted': bool(subm),
+            'submission': subm_dict
         })
 
     return jsonify({
@@ -2168,14 +2188,16 @@ def student_assignment_detail(assignment_id):
             'description': a.description,
             'subject_code': a.subject.code if a.subject else '',
             'subject_name': a.subject.name if a.subject else 'Subject',
-            'faculty_name': a.faculty.full_name if a.faculty else None,
+            'faculty_name': a.faculty.full_name if a.faculty else 'Faculty',
             'assigned_date': a.created_at.strftime('%Y-%m-%d'),
             'due_date': a.due_date.strftime('%Y-%m-%d %H:%M:%S'),
             'max_marks': a.max_marks,
             'file_path': a.file_path,
+            'attachment_url': a.file_path,
             'status': subm_status,
             'submission': {
                 'id': subm.id,
+                'is_submitted': True,
                 'submitted_at': subm.submitted_at.strftime('%Y-%m-%d %H:%M:%S'),
                 'submission_text': subm.submission_text,
                 'submission_file': subm.submission_file,
@@ -2205,10 +2227,9 @@ def submit_assignment(assignment_id):
     
     # Handle file upload if present
     file_path = None
-    if 'submission_file' in request.files:
-        file = request.files['submission_file']
-        if file and file.filename:
-            file_path = save_uploaded_file(file, subfolder='assignments')
+    upload_file = request.files.get('submission_file') or request.files.get('file') or request.files.get('attachment')
+    if upload_file and upload_file.filename:
+        file_path = save_uploaded_file(upload_file, subfolder='assignments')
 
     if not submission_text and not file_path:
         return jsonify({
@@ -2229,13 +2250,28 @@ def submit_assignment(assignment_id):
         )
         db.session.add(subm)
     else:
-        subm.submission_text = submission_text
+        if submission_text:
+            subm.submission_text = submission_text
         if file_path:
             subm.submission_file = file_path
         subm.submitted_at = datetime.utcnow()
         subm.status = 'Submitted'
 
     db.session.commit()
+
+    # Notify subject faculty
+    try:
+        from app.utils.helpers import create_notification
+        if a.faculty and a.faculty.user_id:
+            create_notification(
+                user_id=a.faculty.user_id,
+                title=f"Submission: {std.full_name}",
+                message=f"{std.full_name} submitted assignment '{a.title}'",
+                link=f"/assignments/{a.id}",
+                notification_type='Assignment'
+            )
+    except Exception:
+        pass
 
     return jsonify({
         'success': True,

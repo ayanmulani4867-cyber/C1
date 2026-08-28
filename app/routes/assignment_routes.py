@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, send_from_directory, current_app
 from flask_login import login_required, current_user
-from datetime import datetime
+from datetime import datetime, timedelta
 from app.extensions import db
 from app.utils.decorators import role_required
 from app.utils.uploads import save_uploaded_file
@@ -11,6 +11,7 @@ from app.models.subject import Subject
 from app.models.academic import ClassDivision
 from app.models.assignment import Assignment, AssignmentSubmission, StudyMaterial
 from app.forms.assignment_forms import AssignmentForm, AssignmentSubmissionForm, GradeSubmissionForm, StudyMaterialForm
+from app.utils.helpers import create_notification
 
 assignment_bp = Blueprint('assignment', __name__)
 
@@ -64,53 +65,61 @@ def create():
     form.class_division_id.choices = [(d.id, f"{d.name} ({d.course.code} - Sem {d.semester.number})") for d in ClassDivision.query.all()]
     form.subject_id.choices = [(s.id, f"{s.name} ({s.code})") for s in Subject.query.all()]
 
-    if request.method == 'POST' and not form.validate():
-        title = request.form.get('title')
-        class_div_id = request.form.get('class_division_id', type=int)
-        subject_id = request.form.get('subject_id', type=int)
-        due_date_str = request.form.get('due_date')
-        if title and class_div_id and subject_id:
-            try:
-                due_date = datetime.strptime(due_date_str, '%Y-%m-%dT%H:%M') if due_date_str else (datetime.utcnow() + timedelta(days=7))
-            except Exception:
-                due_date = datetime.utcnow() + timedelta(days=7)
-            faculty = Faculty.query.filter_by(user_id=current_user.id).first()
-            faculty_id = faculty.id if faculty else (Faculty.query.first().id if Faculty.query.first() else None)
-            assignment = Assignment(
-                title=title.strip(),
-                description=request.form.get('description'),
-                class_division_id=class_div_id,
-                subject_id=subject_id,
-                faculty_id=faculty_id,
-                due_date=due_date,
-                max_marks=float(request.form.get('max_marks', 20.0)),
-                attachment_path=None
-            )
-            db.session.add(assignment)
-            db.session.commit()
-            flash(f'Assignment "{assignment.title}" published successfully.', 'success')
-            return redirect(url_for('assignment.detail', assignment_id=assignment.id))
+    if request.method == 'POST' and (form.validate_on_submit() or request.form.get('title')):
+        title = (form.title.data or request.form.get('title', '')).strip()
+        class_div_id = form.class_division_id.data or request.form.get('class_division_id', type=int)
+        subject_id = form.subject_id.data or request.form.get('subject_id', type=int)
+        due_date = form.due_date.data
 
-    if form.validate_on_submit():
+        if not due_date:
+            due_date_str = request.form.get('due_date', '').strip()
+            if due_date_str:
+                for fmt in ('%Y-%m-%dT%H:%M', '%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M:%S', '%Y-%m-%d'):
+                    try:
+                        due_date = datetime.strptime(due_date_str, fmt)
+                        break
+                    except ValueError:
+                        continue
+            if not due_date:
+                due_date = datetime.utcnow() + timedelta(days=7)
+
         attachment_filename = None
-        if form.attachment_file.data:
-            attachment_filename = save_uploaded_file(form.attachment_file.data, subfolder='assignments')
+        upload_obj = form.attachment_file.data or request.files.get('attachment_file') or request.files.get('file')
+        if upload_obj and hasattr(upload_obj, 'filename') and upload_obj.filename:
+            attachment_filename = save_uploaded_file(upload_obj, subfolder='assignments')
 
         faculty = Faculty.query.filter_by(user_id=current_user.id).first()
         faculty_id = faculty.id if faculty else (Faculty.query.first().id if Faculty.query.first() else None)
 
         assignment = Assignment(
-            title=form.title.data.strip(),
-            description=form.description.data.strip() if form.description.data else None,
-            class_division_id=form.class_division_id.data,
-            subject_id=form.subject_id.data,
+            title=title,
+            description=(form.description.data or request.form.get('description', '')).strip() or None,
+            class_division_id=class_div_id,
+            subject_id=subject_id,
             faculty_id=faculty_id,
-            due_date=form.due_date.data,
-            max_marks=form.max_marks.data,
+            due_date=due_date,
+            max_marks=float(form.max_marks.data or request.form.get('max_marks', 20.0)),
             attachment_path=attachment_filename
         )
         db.session.add(assignment)
         db.session.commit()
+
+        # Notify enrolled students
+        try:
+            if assignment.class_division_id:
+                students = Student.query.filter_by(class_division_id=assignment.class_division_id).all()
+                for s in students:
+                    if s.user_id:
+                        create_notification(
+                            user_id=s.user_id,
+                            title=f"New Assignment: {assignment.title}",
+                            message=f"Due on {assignment.due_date.strftime('%b %d, %Y')}. Max marks: {assignment.max_marks}",
+                            link=f"/assignments/{assignment.id}",
+                            notification_type='Assignment'
+                        )
+        except Exception:
+            pass
+
         flash(f'Assignment "{assignment.title}" published successfully.', 'success')
         return redirect(url_for('assignment.detail', assignment_id=assignment.id))
 
@@ -130,31 +139,48 @@ def detail(assignment_id):
         if std:
             my_submission = AssignmentSubmission.query.filter_by(assignment_id=assignment.id, student_id=std.id).first()
 
-            if request.method == 'POST' and (submission_form.validate_on_submit() or request.form.get('submission_text') is not None):
-                sub_text = submission_form.submission_text.data or request.form.get('submission_text', '')
+            if request.method == 'POST':
+                sub_text = (submission_form.submission_text.data or request.form.get('submission_text') or '').strip()
                 sub_file = None
-                if submission_form.submission_file.data:
-                    sub_file = save_uploaded_file(submission_form.submission_file.data, subfolder='assignments')
+                upload_obj = submission_form.submission_file.data or request.files.get('submission_file') or request.files.get('file')
+                if upload_obj and hasattr(upload_obj, 'filename') and upload_obj.filename:
+                    sub_file = save_uploaded_file(upload_obj, subfolder='assignments')
 
-                if not my_submission:
-                    my_submission = AssignmentSubmission(
-                        assignment_id=assignment.id,
-                        student_id=std.id,
-                        submission_text=sub_text,
-                        submission_file=sub_file,
-                        status='Submitted'
-                    )
-                    db.session.add(my_submission)
-                else:
-                    my_submission.submission_text = sub_text
-                    if sub_file:
-                        my_submission.submission_file = sub_file
-                    my_submission.submitted_at = datetime.utcnow()
-                    my_submission.status = 'Submitted'
+                if sub_text or sub_file or my_submission:
+                    if not my_submission:
+                        my_submission = AssignmentSubmission(
+                            assignment_id=assignment.id,
+                            student_id=std.id,
+                            submission_text=sub_text,
+                            submission_file=sub_file,
+                            submitted_at=datetime.utcnow(),
+                            status='Submitted'
+                        )
+                        db.session.add(my_submission)
+                    else:
+                        if sub_text:
+                            my_submission.submission_text = sub_text
+                        if sub_file:
+                            my_submission.submission_file = sub_file
+                        my_submission.submitted_at = datetime.utcnow()
+                        my_submission.status = 'Submitted'
 
-                db.session.commit()
-                flash('Your assignment submission has been saved.', 'success')
-                return redirect(url_for('assignment.detail', assignment_id=assignment.id))
+                    db.session.commit()
+
+                    try:
+                        if assignment.faculty and assignment.faculty.user_id:
+                            create_notification(
+                                user_id=assignment.faculty.user_id,
+                                title=f"Submission: {std.full_name}",
+                                message=f"{std.full_name} submitted assignment '{assignment.title}'",
+                                link=f"/assignments/{assignment.id}",
+                                notification_type='Assignment'
+                            )
+                    except Exception:
+                        pass
+
+                    flash('Your assignment submission has been saved.', 'success')
+                    return redirect(url_for('assignment.detail', assignment_id=assignment.id))
 
     submissions = AssignmentSubmission.query.filter_by(assignment_id=assignment.id).all() if current_user.role in [Role.ADMIN, Role.FACULTY] else []
 
