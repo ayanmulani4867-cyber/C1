@@ -57,7 +57,7 @@ class Config:
     WTF_CSRF_CHECK_DEFAULT = True
     
     # Application settings
-    APP_NAME = "Campus Connect"
+    APP_NAME = "SITCOE"
     COLLEGE_NAME = "Sharad Institute of Technology"
     COLLEGE_SHORT_NAME = "SITCOE"
     COLLEGE_ADDRESS = "Yadrav (Ichalkaranji), Maharashtra - 416145"

@@ -175,7 +175,7 @@ def create_app(config_name=None):
             pass
             
         return {
-            'APP_NAME': flask_app.config.get('APP_NAME', 'Campus Connect'),
+            'APP_NAME': flask_app.config.get('APP_NAME', 'SITCOE'),
             'COLLEGE_NAME': flask_app.config.get('COLLEGE_NAME', 'Sharad Institute of Technology'),
             'COLLEGE_SHORT_NAME': flask_app.config.get('COLLEGE_SHORT_NAME', 'SITCOE'),
             'COLLEGE_ADDRESS': flask_app.config.get('COLLEGE_ADDRESS', 'Yadrav (Ichalkaranji), Maharashtra - 416145'),

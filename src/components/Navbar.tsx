@@ -79,12 +79,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView: propCurrentView, se
               </div>
               <div>
                 <div className="flex items-center space-x-2">
-                  <span className="font-extrabold text-lg text-slate-900 tracking-tight">Campus Connect</span>
+                  <span className="font-extrabold text-lg text-slate-900 tracking-tight">SITCOE</span>
                   <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200/60">
                     ERP Production
                   </span>
                 </div>
-                <p className="text-xs text-slate-500 hidden sm:block font-medium">Sharad Institute of Technology (SITCOE)</p>
+                <p className="text-xs text-slate-500 hidden sm:block font-medium">Sharad Institute of Technology</p>
               </div>
             </div>
 
