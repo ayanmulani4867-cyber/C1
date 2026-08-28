@@ -194,6 +194,7 @@ class Message(db.Model):
             'is_deleted': self.is_deleted,
             'read_by': read_by,
             'is_read_by_me': (current_user_id in read_by) if current_user_id else False,
+            'is_mine': (self.sender_id == current_user_id) if current_user_id else False,
         }
 
     def __repr__(self):

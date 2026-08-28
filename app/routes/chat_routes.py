@@ -140,7 +140,13 @@ def create_conversation():
     data = request.get_json(force=True, silent=True) or {}
 
     conv_type = data.get('type', 'private')
-    member_ids = data.get('member_ids', [])  # list of user IDs to add
+    member_ids = data.get('member_ids') or data.get('memberIds') or []
+    if not member_ids:
+        single_uid = data.get('user_id') or data.get('userId') or data.get('target_user_id')
+        if single_uid is not None:
+            member_ids = [int(single_uid)]
+    if isinstance(member_ids, (int, str)):
+        member_ids = [int(member_ids)]
 
     if conv_type not in ('private', 'group'):
         return jsonify({'success': False, 'error': 'Invalid type', 'message': "type must be 'private' or 'group'"}), 400
@@ -353,7 +359,8 @@ def mark_read(conv_id):
 
 # ─── Delete message (soft) ────────────────────────────────────────────────────────
 
-@chat_bp.route('/api/chat/messages/<int:msg_id>/delete', methods=['POST'])
+@chat_bp.route('/api/chat/messages/<int:msg_id>', methods=['DELETE'])
+@chat_bp.route('/api/chat/messages/<int:msg_id>/delete', methods=['POST', 'DELETE'])
 @chat_auth_required
 def delete_message(msg_id):
     me = g.me
