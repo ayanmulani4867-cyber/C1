@@ -636,6 +636,9 @@ def search_users():
     q_str = request.args.get('q', '').strip()
     role_filter = request.args.get('role', '').strip().upper()
 
+    if not q_str and not role_filter:
+        return jsonify({'success': True, 'users': []}), 200
+
     from app.models.student import Student
     from app.models.faculty import Faculty
     from app.models.department import Department

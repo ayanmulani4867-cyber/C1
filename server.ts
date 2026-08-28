@@ -11,12 +11,12 @@ async function startServer() {
 
   // Proxy /api and /static/uploads requests to the Flask backend without stripping prefixes
   app.use(
+    ["/api", "/static/uploads"],
     createProxyMiddleware({
-      filter: (pathname, req) => pathname.startsWith("/api") || pathname.startsWith("/static/uploads"),
       target: FLASK_URL,
       changeOrigin: true,
       ws: true,
-    })
+    } as any)
   );
 
   app.use(express.json());

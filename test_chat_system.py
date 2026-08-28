@@ -37,20 +37,30 @@ def _seed_test_data():
     if User.query.filter_by(username='test_student_a').first():
         return
 
-    # Minimal academic records
-    dept = Department(name='Test Dept', code='TDT', description='Test')
-    db.session.add(dept)
-    db.session.flush()
+    # Use seeded academic records
+    dept = Department.query.first()
+    if not dept:
+        dept = Department(name='Test Dept', code='TDT', description='Test')
+        db.session.add(dept)
+        db.session.flush()
 
-    course = Course(name='B.Tech Test', code='BT-TDT', department_id=dept.id, duration_years=4, total_semesters=8)
-    db.session.add(course)
+    course = Course.query.filter_by(department_id=dept.id).first()
+    if not course:
+        course = Course(name='B.Tech Test', code='BT-TDT', department_id=dept.id, duration_years=4, total_semesters=8)
+        db.session.add(course)
+        db.session.flush()
 
-    sem = Semester(number=4, name='Semester 4', is_active=True)
-    db.session.add(sem)
+    sem = Semester.query.first()
+    if not sem:
+        sem = Semester(number=4, name='Semester 4', is_active=True)
+        db.session.add(sem)
+        db.session.flush()
 
-    session = AcademicSession(name='2025-26', start_year=2025, end_year=2026, is_current=True)
-    db.session.add(session)
-    db.session.flush()
+    session = AcademicSession.query.first()
+    if not session:
+        session = AcademicSession(name='2025-26', start_year=2025, end_year=2026, is_current=True)
+        db.session.add(session)
+        db.session.flush()
 
     # Student A
     ua = User(username='test_student_a', email='stuA@test.edu', role=Role.STUDENT,
@@ -104,7 +114,7 @@ def _seed_test_data():
 
 # ── Auth helpers ───────────────────────────────────────────────────────────────
 def get_token(client, username, password='pass123'):
-    resp = client.post('/api/android/login',
+    resp = client.post('/api/login',
                        json={'identifier': username, 'password': password},
                        content_type='application/json')
     data = resp.get_json()

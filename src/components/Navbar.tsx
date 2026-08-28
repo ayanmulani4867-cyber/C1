@@ -84,7 +84,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView: propCurrentView, se
                     ERP Production
                   </span>
                 </div>
-                <p className="text-xs text-slate-500 hidden sm:block font-medium">Apex Institute of Technology & Science (AITS)</p>
+                <p className="text-xs text-slate-500 hidden sm:block font-medium">Sharad Institute of Technology (SITCOE)</p>
               </div>
             </div>
 

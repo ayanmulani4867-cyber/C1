@@ -11,3 +11,4 @@ __pycache__/
 *.pyc
 *.bak
 *.sqlite3
+scratch/
