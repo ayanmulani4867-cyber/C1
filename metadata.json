@@ -1,7 +1,0 @@
-{
-  "name": "Campus Connect",
-  "description": "Enterprise College Management and Campus ERP System featuring multi-role portals for Students, Faculty, HODs, and Administrators.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
-

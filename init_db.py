@@ -12,8 +12,8 @@ def init_database():
     """Initializes database tables and seeds baseline institutional data safely."""
     is_prod = (
         os.environ.get('FLASK_ENV') == 'production' or
-        os.environ.get('RENDER') is not None or
-        (os.environ.get('DATABASE_URL') is not None and os.environ.get('FLASK_ENV') != 'development')
+        os.environ.get('VERCEL') is not None or
+        os.environ.get('RENDER') is not None
     )
     config_name = 'production' if is_prod else os.environ.get('FLASK_ENV', 'development')
     app = create_app(config_name)

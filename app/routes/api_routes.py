@@ -597,7 +597,7 @@ def create_admin_faculty():
 
         return jsonify({
             'success': True,
-            'message': f'Faculty member {full_name} created and stored successfully in PostgreSQL.',
+            'message': f'Faculty member {full_name} created and stored successfully.',
             'credentials': {
                 'email': email,
                 'username': email,
@@ -746,6 +746,15 @@ def login():
     student = Student.query.filter_by(user_id=user.id).first() if user.role == Role.STUDENT else None
     faculty = Faculty.query.filter_by(user_id=user.id).first() if user.role in (Role.FACULTY, Role.HOD) or user.faculty_profile else None
     token = generate_api_token(user, student=student)
+
+    # Establish Flask-Login session for browser clients
+    try:
+        from flask_login import login_user
+        login_user(user, remember=True)
+        user.last_login = datetime.utcnow()
+        db.session.commit()
+    except Exception as e:
+        current_app.logger.warning(f"Notice during login_user session establish: {e}")
 
     # Format student payload if student with both snake_case and camelCase support
     student_payload = None
@@ -1426,7 +1435,7 @@ def api_register_faculty():
     """
     Automated faculty registration API endpoint.
     Accepts faculty info and generates unique Employee ID (EMP{YEAR}{0001}).
-    Creates User (login = official_email, password = mobile) and Faculty record in PostgreSQL.
+    Creates User (login = official_email, password = mobile) and Faculty record in database.
     """
     try:
         data = request.get_json(silent=True) or request.form.to_dict()

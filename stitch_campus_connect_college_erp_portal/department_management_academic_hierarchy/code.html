@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "error": "#ba1a1a",
+          "on-primary": "#ffffff",
+          "surface-container-lowest": "#ffffff",
+          "error-container": "#ffdad6",
+          "on-primary-fixed-variant": "#0039b5",
+          "on-tertiary-fixed-variant": "#005137",
+          "surface-container": "#e5eeff",
+          "tertiary-fixed-dim": "#68dba9",
+          "on-secondary-fixed-variant": "#3f465c",
+          "surface-container-highest": "#d3e4fe",
+          "surface-tint": "#2151da",
+          "surface-container-low": "#eff4ff",
+          "on-secondary-container": "#5c647a",
+          "inverse-on-surface": "#eaf1ff",
+          "surface-container-high": "#dce9ff",
+          "primary": "#0037b0",
+          "surface": "#f8f9ff",
+          "secondary-fixed": "#dae2fd",
+          "tertiary-fixed": "#85f8c4",
+          "on-tertiary-container": "#76eab6",
+          "on-background": "#0b1c30",
+          "primary-fixed": "#dce1ff",
+          "tertiary": "#004f35",
+          "surface-variant": "#d3e4fe",
+          "on-surface-variant": "#434655",
+          "tertiary-container": "#006948",
+          "on-error-container": "#93000a",
+          "on-primary-fixed": "#001551",
+          "outline-variant": "#c4c5d7",
+          "surface-dim": "#cbdbf5",
+          "inverse-primary": "#b7c4ff",
+          "on-error": "#ffffff",
+          "outline": "#747686",
+          "secondary-container": "#dae2fd",
+          "on-secondary-fixed": "#131b2e",
+          "on-secondary": "#ffffff",
+          "surface-bright": "#f8f9ff",
+          "primary-fixed-dim": "#b7c4ff",
+          "on-primary-container": "#cad3ff",
+          "background": "#f8f9ff",
+          "secondary": "#565e74",
+          "secondary-fixed-dim": "#bec6e0",
+          "primary-container": "#1d4ed8",
+          "inverse-surface": "#213145",
+          "on-surface": "#0b1c30",
+          "on-tertiary-fixed": "#002114",
+          "on-tertiary": "#ffffff"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.125rem",
+          "lg": "0.25rem",
+          "xl": "0.5rem",
+          "full": "0.75rem"
+        },
+        "spacing": {
+          "gutter": "1rem",
+          "space-sm": "0.5rem",
+          "space-md": "0.75rem",
+          "margin": "1.5rem",
+          "margin-mobile": "1rem",
+          "space-xs": "0.25rem",
+          "space-xl": "1.5rem",
+          "gutter-compact": "0.5rem",
+          "space-lg": "1rem"
+        },
+        "fontFamily": {
+          "headline-md": [
+            "Inter"
+          ],
+          "tabular-numeric-sm": [
+            "JetBrains Mono"
+          ],
+          "body-lg": [
+            "Inter"
+          ],
+          "tabular-numeric": [
+            "JetBrains Mono"
+          ],
+          "body-sm": [
+            "Inter"
+          ],
+          "label-md": [
+            "Inter"
+          ],
+          "body-md": [
+            "Inter"
+          ],
+          "display-lg": [
+            "Inter"
+          ],
+          "headline-lg": [
+            "Inter"
+          ],
+          "headline-sm": [
+            "Inter"
+          ],
+          "label-sm": [
+            "Inter"
+          ],
+          "headline-xl": [
+            "Inter"
+          ]
+        },
+        "fontSize": {
+          "headline-md": [
+            "16px",
+            {
+              "lineHeight": "24px",
+              "letterSpacing": "-0.005em",
+              "fontWeight": "600"
+            }
+          ],
+          "tabular-numeric-sm": [
+            "11px",
+            {
+              "lineHeight": "14px",
+              "fontWeight": "500"
+            }
+          ],
+          "body-lg": [
+            "15px",
+            {
+              "lineHeight": "22px",
+              "fontWeight": "400"
+            }
+          ],
+          "tabular-numeric": [
+            "13px",
+            {
+              "lineHeight": "18px",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "500"
+            }
+          ],
+          "body-sm": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "fontWeight": "400"
+            }
+          ],
+          "label-md": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "letterSpacing": "0.04em",
+              "fontWeight": "600"
+            }
+          ],
+          "body-md": [
+            "13px",
+            {
+              "lineHeight": "18px",
+              "fontWeight": "400"
+            }
+          ],
+          "display-lg": [
+            "32px",
+            {
+              "lineHeight": "40px",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "700"
+            }
+          ],
+          "headline-lg": [
+            "20px",
+            {
+              "lineHeight": "28px",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "600"
+            }
+          ],
+          "headline-sm": [
+            "14px",
+            {
+              "lineHeight": "20px",
+              "fontWeight": "600"
+            }
+          ],
+          "label-sm": [
+            "11px",
+            {
+              "lineHeight": "14px",
+              "letterSpacing": "0.05em",
+              "fontWeight": "600"
+            }
+          ],
+          "headline-xl": [
+            "24px",
+            {
+              "lineHeight": "32px",
+              "letterSpacing": "-0.015em",
+              "fontWeight": "700"
+            }
+          ]
+        }
+      },
+    },
+  }</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-64 bg-surface-container-lowest border-r border-outline-variant/40 z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="h-14 px-space-lg flex items-center justify-between border-b border-outline-variant/30"><div class="flex items-center gap-space-sm"><div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary font-headline-md text-headline-md">S</div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">Campus Connect</span><span class="font-label-sm text-label-sm text-secondary leading-tight">SIT COE Yadrav</span></div></div><span class="px-1.5 py-0.5 rounded-sm bg-primary/10 text-primary font-tabular-numeric-sm text-tabular-numeric-sm">v2.4</span></div><div class="p-space-md border-b border-outline-variant/30"><label class="font-label-sm text-label-sm text-secondary uppercase block mb-1">Active Portal Role</label><div class="relative"><select class="w-full appearance-none bg-surface-container-low border border-outline-variant/60 rounded-lg px-space-sm py-1.5 font-label-md text-label-md text-on-surface focus:outline-none focus:border-primary pr-8"><option selected="" value="admin">Admin Console (Institutional)</option><option value="hod">Head of Department (HOD)</option><option value="faculty">Faculty Member</option><option value="student">Student Portal</option></select><span class="material-symbols-outlined absolute right-2 top-2 text-on-surface-variant pointer-events-none text-[16px]">unfold_more</span></div></div><nav class="px-space-md py-space-sm flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary font-headline-sm rounded-lg"><span class="px-space-sm pt-2 pb-1 font-label-sm text-label-sm text-secondary uppercase tracking-wider">Core</span><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span class="font-body-md text-body-md">Dashboard</span></a><a class="flex items-center justify-between px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="notifications" href="#"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[18px]">notifications</span><span class="font-body-md text-body-md">Notifications</span></div><span class="px-1.5 py-0.2 rounded-full bg-error text-on-error font-tabular-numeric-sm text-tabular-numeric-sm">4</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="global-search" href="#"><span class="material-symbols-outlined text-[18px]">manage_search</span><span class="font-body-md text-body-md">Global Search</span></a><span class="px-space-sm pt-3 pb-1 font-label-sm text-label-sm text-secondary uppercase tracking-wider">Academic Management</span><a aria-current="page" class="flex items-center gap-2.5 px-space-sm py-1.5 transition-colors bg-primary-container text-on-primary font-headline-sm rounded-lg" data-path="departments" href="#"><span class="material-symbols-outlined text-[18px]">domain</span><span class="font-body-md text-body-md">Departments</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="courses-and-curriculum" href="#"><span class="material-symbols-outlined text-[18px]">menu_book</span><span class="font-body-md text-body-md">Courses &amp; Curriculum</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="subjects" href="#"><span class="material-symbols-outlined text-[18px]">auto_stories</span><span class="font-body-md text-body-md">Subjects</span></a><span class="px-space-sm pt-3 pb-1 font-label-sm text-label-sm text-secondary uppercase tracking-wider">People</span><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="students-directory" href="#"><span class="material-symbols-outlined text-[18px]">school</span><span class="font-body-md text-body-md">Students Directory</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="faculty-and-staff" href="#"><span class="material-symbols-outlined text-[18px]">badge</span><span class="font-body-md text-body-md">Faculty &amp; Staff</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="hod-management" href="#"><span class="material-symbols-outlined text-[18px]">supervisor_account</span><span class="font-body-md text-body-md">HOD Management</span></a><span class="px-space-sm pt-3 pb-1 font-label-sm text-label-sm text-secondary uppercase tracking-wider">Operations</span><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="attendance-register" href="#"><span class="material-symbols-outlined text-[18px]">fact_check</span><span class="font-body-md text-body-md">Attendance Register</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="marks-and-results" href="#"><span class="material-symbols-outlined text-[18px]">grade</span><span class="font-body-md text-body-md">Marks &amp; Results</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="study-materials" href="#"><span class="material-symbols-outlined text-[18px]">folder_shared</span><span class="font-body-md text-body-md">Study Materials</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="campus-notices" href="#"><span class="material-symbols-outlined text-[18px]">campaign</span><span class="font-body-md text-body-md">Campus Notices</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="events-calendar" href="#"><span class="material-symbols-outlined text-[18px]">calendar_month</span><span class="font-body-md text-body-md">Events Calendar</span></a><span class="px-space-sm pt-3 pb-1 font-label-sm text-label-sm text-secondary uppercase tracking-wider">System</span><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="user-profile" href="#"><span class="material-symbols-outlined text-[18px]">account_circle</span><span class="font-body-md text-body-md">User Profile</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[18px]">settings</span><span class="font-body-md text-body-md">Settings</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-error hover:bg-error-container hover:text-on-error-container transition-colors" data-path="login" href="#"><span class="material-symbols-outlined text-[18px]">logout</span><span class="font-body-md text-body-md">Logout</span></a></nav></div><div class="p-space-md border-t border-outline-variant/30 bg-surface-container-low/50"><div class="flex items-center gap-space-sm"><div class="w-9 h-9 rounded-full bg-primary/20 text-primary flex items-center justify-center font-headline-sm text-headline-sm font-semibold">SP</div><div class="flex flex-col min-w-0 flex-1"><span class="font-label-md text-label-md text-on-surface truncate">Dr. S. Patil</span><span class="font-label-sm text-label-sm text-secondary truncate">System Admin • sit.coe</span></div><span class="material-symbols-outlined text-secondary text-[18px]">more_vert</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-14 bg-surface-container-lowest border-b border-outline-variant/40 z-40 px-space-xl flex items-center justify-between shadow-[0_1px_4px_rgba(15,23,42,0.04)]"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-2 font-body-sm text-body-sm text-secondary"><span class="hover:text-primary cursor-pointer">Sharad Institute</span><span class="text-outline-variant">/</span><span class="hover:text-primary cursor-pointer">Administration</span><span class="text-outline-variant">/</span><span class="text-on-surface font-headline-sm text-headline-sm">Workspace</span></div><div class="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-fixed font-tabular-numeric-sm text-tabular-numeric-sm font-medium"><span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>AY 2024-25 • Even Semester</div></div><div class="flex items-center gap-space-md"><div class="relative w-64"><input class="w-full bg-surface-container-low border border-outline-variant/50 rounded-lg pl-8 pr-12 py-1 font-body-sm text-body-sm text-on-surface placeholder:text-secondary focus:outline-none focus:border-primary" placeholder="Global search (Ctrl+K)..." type="text"/><span class="material-symbols-outlined absolute left-2.5 top-1.5 text-secondary text-[16px]">search</span><kbd class="absolute right-2 top-1 px-1.5 py-0.2 text-[10px] font-tabular-numeric-sm text-secondary bg-surface-container rounded border border-outline-variant/40">Ctrl+K</kbd></div><button class="flex items-center gap-1.5 bg-primary-container text-on-primary px-space-md py-1.5 rounded-lg font-label-md text-label-md hover:bg-primary transition-colors shadow-sm" type="button"><span class="material-symbols-outlined text-[16px]">add</span><span>New Action</span></button><div class="h-4 w-px bg-outline-variant/40"></div><div class="flex items-center gap-1"><button class="p-1.5 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="Academic Calendar" type="button"><span class="material-symbols-outlined text-[20px]">calendar_today</span></button><button class="relative p-1.5 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="Alerts" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-error"></span></button><button class="p-1.5 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="Documentation &amp; Help" type="button"><span class="material-symbols-outlined text-[20px]">help</span></button></div><div class="flex items-center gap-2 pl-1 cursor-pointer"><div class="w-7 h-7 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center font-label-md text-label-md text-primary font-semibold">SP</div><span class="material-symbols-outlined text-secondary text-[16px]">expand_more</span></div></div></header><main class="w-full pt-14 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<!-- Sub-Header / Department Command Header -->
+<div class="w-full bg-surface-container-lowest px-margin py-space-md shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Academic Departments</span>
+<span class="px-2 py-0.5 rounded bg-tertiary/10 text-tertiary font-tabular-numeric-sm text-tabular-numeric-sm font-semibold">AICTE &amp; DTE Approved</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5">Sharad Institute of Technology College of Engineering (SITCOE) • Institutional Governance Council</p>
+</div>
+<!-- Actions & Academic Year Selector -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="flex items-center bg-surface-container-low px-space-sm py-1 rounded-lg shadow-sm">
+<span class="material-symbols-outlined text-secondary text-[16px] mr-1.5">calendar_month</span>
+<span class="font-label-sm text-label-sm text-secondary uppercase mr-2">AY:</span>
+<select class="bg-transparent font-label-md text-label-md text-on-surface focus:outline-none cursor-pointer" id="academicYearFilter">
+<option selected="" value="2024-25">2024 - 2025 (Active)</option>
+<option value="2023-24">2023 - 2024</option>
+<option value="2022-23">2022 - 2023</option>
+</select>
+</div>
+<button class="flex items-center gap-1.5 bg-surface-container hover:bg-surface-container-high text-on-surface px-space-md py-1.5 rounded font-label-md text-label-md transition-colors shadow-sm" id="exportReportBtn" onclick="triggerReportExport()">
+<span class="material-symbols-outlined text-[18px] text-secondary">file_download</span>
+<span>Export Roster</span>
+</button>
+<button class="flex items-center gap-1.5 bg-primary-container hover:bg-primary text-on-primary px-space-md py-1.5 rounded font-label-md text-label-md transition-colors shadow-sm" onclick="openAddModal()">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>Add Department</span>
+</button>
+</div>
+</div>
+<!-- Main Canvas -->
+<div class="p-margin flex flex-col gap-margin">
+<!-- Quick Stats Grid (KPIs) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Total Departments -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Total Departments</span>
+<div class="font-tabular-numeric text-display-lg text-on-surface mt-1 leading-none font-bold">8</div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">domain</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 mt-space-md text-tertiary font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>All Accredited by NBA</span>
+</div>
+</div>
+<!-- Approved Intake -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Approved Intake</span>
+<div class="font-tabular-numeric text-display-lg text-on-surface mt-1 leading-none font-bold">1,440</div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[22px]">event_seat</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-space-md font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">
+<span class="text-tertiary font-semibold">UG: 1,260</span>
+<span>•</span>
+<span class="text-primary font-semibold">PG: 180</span>
+</div>
+</div>
+<!-- Total Enrolled -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Enrolled Scholars</span>
+<div class="font-tabular-numeric text-display-lg text-on-surface mt-1 leading-none font-bold">4,820</div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[22px]">groups</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 mt-space-md">
+<div class="w-full bg-surface-container-high rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary-container h-1.5 rounded-full" style="width: 94%"></div>
+</div>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary font-medium">94.2%</span>
+</div>
+</div>
+<!-- Faculty Members -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Full-Time Faculty</span>
+<div class="font-tabular-numeric text-display-lg text-on-surface mt-1 leading-none font-bold">248</div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-tertiary/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[22px]">supervisor_account</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 mt-space-md text-secondary font-body-sm text-body-sm">
+<span class="font-tabular-numeric font-medium text-on-surface">1:19.4</span>
+<span>Staff to Student Ratio (Cadre)</span>
+</div>
+</div>
+</div>
+<!-- Operational Banner / Institutional Highlight -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md shadow-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-primary-container text-on-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[22px]">verified</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">NAAC ‘A’ Grade Audit Cycle Active</span>
+<span class="font-body-sm text-body-sm text-secondary">HODs are advised to verify lab inventory registers and load allotment forms for the upcoming academic cycle.</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0">
+<span class="font-label-sm text-label-sm bg-surface-container-lowest px-2.5 py-1 rounded text-on-surface font-medium">Status: In Progress (6/8 Verified)</span>
+</div>
+</div>
+<!-- Filter & Search Controls Bar -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-space-md">
+<div class="flex flex-1 items-center gap-space-md">
+<!-- Search -->
+<div class="relative flex-1 max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-2 text-secondary text-[18px]">search</span>
+<input class="w-full bg-surface-container-low rounded-lg pl-9 pr-4 py-1.5 font-body-sm text-body-sm text-on-surface placeholder:text-secondary focus:outline-none focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary shadow-sm" id="tableSearchInput" onkeyup="filterTable()" placeholder="Search department, HOD name, or code..." type="text"/>
+</div>
+<!-- Level Filter Tabs -->
+<div class="flex items-center bg-surface-container-low p-0.5 rounded-lg">
+<button class="filter-tab px-3 py-1 rounded text-on-primary bg-primary font-label-sm text-label-sm shadow-sm transition-all" id="filterBtn-ALL" onclick="setDegreeFilter('ALL')">All (8)</button>
+<button class="filter-tab px-3 py-1 rounded text-secondary hover:text-on-surface font-label-sm text-label-sm transition-all" id="filterBtn-UG_PG" onclick="setDegreeFilter('UG_PG')">UG + PG (4)</button>
+<button class="filter-tab px-3 py-1 rounded text-secondary hover:text-on-surface font-label-sm text-label-sm transition-all" id="filterBtn-UG_ONLY" onclick="setDegreeFilter('UG_ONLY')">UG Only (4)</button>
+</div>
+</div>
+<!-- Right Alignment View Toggles & Count -->
+<div class="flex items-center justify-between md:justify-end gap-space-md">
+<span class="font-label-sm text-label-sm text-secondary font-medium" id="activeCountDisplay">Showing 8 Departments</span>
+<div class="flex items-center bg-surface-container-low rounded-lg p-0.5">
+<button class="p-1.5 rounded bg-surface-container-lowest text-primary shadow-sm" id="viewBtn-table" onclick="toggleView('table')" title="Dense Table View">
+<span class="material-symbols-outlined text-[18px]">table_rows</span>
+</button>
+<button class="p-1.5 rounded text-secondary hover:text-on-surface" id="viewBtn-cards" onclick="toggleView('cards')" title="Department Cards View">
+<span class="material-symbols-outlined text-[18px]">grid_view</span>
+</button>
+</div>
+</div>
+</div>
+<!-- 1. DATA TABLE VIEW (Primary View) -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden" id="tableViewContainer">
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-secondary font-label-sm text-label-sm">
+<th class="py-space-md px-space-lg cursor-pointer select-none" onclick="sortTable(0)">
+<div class="flex items-center gap-1">
+<span>DEPARTMENT &amp; CODE</span>
+<span class="material-symbols-outlined text-[14px]">unfold_more</span>
+</div>
+</th>
+<th class="py-space-md px-space-md">HEAD OF DEPARTMENT (HOD)</th>
+<th class="py-space-md px-space-md">OFFERED PROGRAMS</th>
+<th class="py-space-md px-space-md text-right cursor-pointer select-none" onclick="sortTable(3)">
+<div class="flex items-center justify-end gap-1">
+<span>FACULTY</span>
+<span class="material-symbols-outlined text-[14px]">unfold_more</span>
+</div>
+</th>
+<th class="py-space-md px-space-md text-right cursor-pointer select-none" onclick="sortTable(4)">
+<div class="flex items-center justify-end gap-1">
+<span>STUDENTS</span>
+<span class="material-symbols-outlined text-[14px]">unfold_more</span>
+</div>
+</th>
+<th class="py-space-md px-space-md text-center">LABS</th>
+<th class="py-space-md px-space-md text-center">STATUS</th>
+<th class="py-space-md px-space-lg text-right">ACTIONS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-low text-body-md font-body-md" id="deptTableBody">
+<!-- Item 1: CSE -->
+<tr class="dept-row hover:bg-surface-container-low/60 transition-colors" data-degree="UG_PG" data-id="cse">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded bg-primary/10 text-primary flex items-center justify-center shrink-0 font-headline-sm text-headline-sm font-bold">
+                    CS
+                  </div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface dept-name">Computer Science &amp; Engineering</div>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">CODE: 631524210</span>
+<span class="w-1 h-1 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-secondary">Est. 2008</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-7 h-7 rounded-full bg-surface-container text-primary flex items-center justify-center font-label-md text-label-md font-bold">MK</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface dept-hod">Dr. M. R. Kulkarni</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">Ph.D (IITB), M.Tech</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-primary">B.Tech (180)</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high font-label-sm text-label-sm text-on-surface">M.Tech (18)</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right font-tabular-numeric text-tabular-numeric text-on-surface font-semibold">38</td>
+<td class="py-space-md px-space-md text-right font-tabular-numeric text-tabular-numeric text-on-surface font-semibold">720</td>
+<td class="py-space-md px-space-md text-center">
+<span class="px-2 py-0.5 rounded-full bg-surface-container font-tabular-numeric-sm text-tabular-numeric-sm font-medium">12 Labs</span>
+</td>
+<td class="py-space-md px-space-md text-center">
+<span class="px-2 py-0.5 rounded text-tertiary bg-tertiary/10 font-label-sm text-label-sm font-semibold">NBA Tier-I</span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded text-primary hover:bg-surface-container transition-colors" onclick="openDrawer('cse')" title="View Department Intelligence">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="openEditModal('cse')" title="Edit Structure">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded text-error hover:bg-error-container hover:text-on-error-container transition-colors" onclick="confirmDelete('Computer Science &amp; Engineering')" title="Decommission Department">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 2: AI & DS -->
+<tr class="dept-row hover:bg-surface-container-low/60 transition-colors" data-degree="UG_ONLY" data-id="aids">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded bg-tertiary-container/10 text-tertiary-container flex items-center justify-center shrink-0 font-headline-sm text-headline-sm font-bold">
+                    AI
+                  </div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface dept-name">Artificial Intelligence &amp; Data Science</div>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">CODE: 631526310</span>
+<span class="w-1 h-1 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-secondary">Est. 2020</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-7 h-7 rounded-full bg-tertiary/10 text-tertiary flex items-center justify-center font-label-md text-label-md font-bold">SP</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface dept-hod">Dr. S. N. Patil</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">Ph.D (COEP)</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-primary">B.Tech (120)</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right font-tabular-numeric text-tabular-numeric text-on-surface font-semibold">26</td>
+<td class="py-space-md px-space-md text-right font-tabular-numeric text-tabular-numeric text-on-surface font-semibold">480</td>
+<td class="py-space-md px-space-md text-center">
+<span class="px-2 py-0.5 rounded-full bg-surface-container font-tabular-numeric-sm text-tabular-numeric-sm font-medium">8 Labs</span>
+</td>
+<td class="py-space-md px-space-md text-center">
+<span class="px-2 py-0.5 rounded text-tertiary bg-tertiary/10 font-label-sm text-label-sm font-semibold">Approved</span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded text-primary hover:bg-surface-container transition-colors" onclick="openDrawer('aids')" title="View Department Intelligence">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="openEditModal('aids')" title="Edit Structure">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded text-error hover:bg-error-container hover:text-on-error-container transition-colors" onclick="confirmDelete('Artificial Intelligence &amp; Data Science')" title="Decommission Department">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 3: ME -->
+<tr class="dept-row hover:bg-surface-container-low/60 transition-colors" data-degree="UG_PG" data-id="me">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded bg-secondary/10 text-secondary flex items-center justify-center shrink-0 font-headline-sm text-headline-sm font-bold">
+                    ME
+                  </div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface dept-name">Mechanical Engineering</div>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">CODE: 631561210</span>
+<span class="w-1 h-1 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-secondary">Est. 2008</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-7 h-7 rounded-full bg-surface-container text-secondary flex items-center justify-center font-label-md text-label-md font-bold">AD</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface dept-hod">Prof. A. V. Deshmukh</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">M.E., Ph.D Reg.</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-primary">B.Tech (120)</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high font-label-sm text-label-sm text-on-surface">M.Tech Thermal (18)</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right font-tabular-numeric text-tabular-numeric text-on-surface font-semibold">42</td>
+<td class="py-space-md px-space-md text-right font-tabular-numeric text-tabular-numeric text-on-surface font-semibold">640</td>
+<td class="py-space-md px-space-md text-center">
+<span class="px-2 py-0.5 rounded-full bg-surface-container font-tabular-numeric-sm text-tabular-numeric-sm font-medium">14 Labs</span>
+</td>
+<td class="py-space-md px-space-md text-center">
+<span class="px-2 py-0.5 rounded text-tertiary bg-tertiary/10 font-label-sm text-label-sm font-semibold">NBA Tier-I</span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded text-primary hover:bg-surface-container transition-colors" onclick="openDrawer('me')" title="View Department Intelligence">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="openEditModal('me')" title="Edit Structure">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded text-error hover:bg-error-container hover:text-on-error-container transition-colors" onclick="confirmDelete('Mechanical Engineering')" title="Decommission Department">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 4: ENTC -->
+<tr class="dept-row hover:bg-surface-container-low/60 transition-colors" data-degree="UG_PG" data-id="entc">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded bg-primary-container/10 text-primary flex items-center justify-center shrink-0 font-headline-sm text-headline-sm font-bold">
+                    ET
+                  </div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface dept-name">Electronics &amp; Telecommunication</div>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">CODE: 631537210</span>
+<span class="w-1 h-1 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-secondary">Est. 2008</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-7 h-7 rounded-full bg-primary/15 text-primary flex items-center justify-center font-label-md text-label-md font-bold">PJ</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface dept-hod">Dr. P. R. Jadhav</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">Ph.D (VNIT), PostDoc</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-primary">B.Tech (120)</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high font-label-sm text-label-sm text-on-surface">M.Tech Embedded (18)</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right font-tabular-numeric text-tabular-numeric text-on-surface font-semibold">32</td>
+<td class="py-space-md px-space-md text-right font-tabular-numeric text-tabular-numeric text-on-surface font-semibold">560</td>
+<td class="py-space-md px-space-md text-center">
+<span class="px-2 py-0.5 rounded-full bg-surface-container font-tabular-numeric-sm text-tabular-numeric-sm font-medium">10 Labs</span>
+</td>
+<td class="py-space-md px-space-md text-center">
+<span class="px-2 py-0.5 rounded text-tertiary bg-tertiary/10 font-label-sm text-label-sm font-semibold">NBA Tier-I</span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded text-primary hover:bg-surface-container transition-colors" onclick="openDrawer('entc')" title="View Department Intelligence">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="openEditModal('entc')" title="Edit Structure">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded text-error hover:bg-error-container hover:text-on-error-container transition-colors" onclick="confirmDelete('Electronics &amp; Telecommunication')" title="Decommission Department">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 5: Civil -->
+<tr class="dept-row hover:bg-surface-container-low/60 transition-colors" data-degree="UG_PG" data-id="civil">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded bg-secondary-container text-on-secondary-fixed flex items-center justify-center shrink-0 font-headline-sm text-headline-sm font-bold">
+                    CE
+                  </div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface dept-name">Civil Engineering</div>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">CODE: 631519110</span>
+<span class="w-1 h-1 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-secondary">Est. 2010</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-7 h-7 rounded-full bg-surface-container-high text-secondary flex items-center justify-center font-label-md text-label-md font-bold">KG</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface dept-hod">Dr. K. G. Ghorpade</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">Ph.D (Structures)</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-primary">B.Tech (120)</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high font-label-sm text-label-sm text-on-surface">M.Tech Structures (18)</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right font-tabular-numeric text-tabular-numeric text-on-surface font-semibold">28</td>
+<td class="py-space-md px-space-md text-right font-tabular-numeric text-tabular-numeric text-on-surface font-semibold">520</td>
+<td class="py-space-md px-space-md text-center">
+<span class="px-2 py-0.5 rounded-full bg-surface-container font-tabular-numeric-sm text-tabular-numeric-sm font-medium">9 Labs</span>
+</td>
+<td class="py-space-md px-space-md text-center">
+<span class="px-2 py-0.5 rounded text-tertiary bg-tertiary/10 font-label-sm text-label-sm font-semibold">NBA Tier-I</span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded text-primary hover:bg-surface-container transition-colors" onclick="openDrawer('civil')" title="View Department Intelligence">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="openEditModal('civil')" title="Edit Structure">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded text-error hover:bg-error-container hover:text-on-error-container transition-colors" onclick="confirmDelete('Civil Engineering')" title="Decommission Department">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 6: Electrical -->
+<tr class="dept-row hover:bg-surface-container-low/60 transition-colors" data-degree="UG_ONLY" data-id="ee">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded bg-primary/10 text-primary flex items-center justify-center shrink-0 font-headline-sm text-headline-sm font-bold">
+                    EE
+                  </div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface dept-name">Electrical Engineering</div>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">CODE: 631529310</span>
+<span class="w-1 h-1 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-secondary">Est. 2009</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-7 h-7 rounded-full bg-surface-container text-primary flex items-center justify-center font-label-md text-label-md font-bold">VM</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface dept-hod">Dr. V. M. Mane</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">Ph.D (Power Systems)</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-primary">B.Tech (60)</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right font-tabular-numeric text-tabular-numeric text-on-surface font-semibold">22</td>
+<td class="py-space-md px-space-md text-right font-tabular-numeric text-tabular-numeric text-on-surface font-semibold">410</td>
+<td class="py-space-md px-space-md text-center">
+<span class="px-2 py-0.5 rounded-full bg-surface-container font-tabular-numeric-sm text-tabular-numeric-sm font-medium">8 Labs</span>
+</td>
+<td class="py-space-md px-space-md text-center">
+<span class="px-2 py-0.5 rounded text-tertiary bg-tertiary/10 font-label-sm text-label-sm font-semibold">Accredited</span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded text-primary hover:bg-surface-container transition-colors" onclick="openDrawer('ee')" title="View Department Intelligence">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="openEditModal('ee')" title="Edit Structure">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded text-error hover:bg-error-container hover:text-on-error-container transition-colors" onclick="confirmDelete('Electrical Engineering')" title="Decommission Department">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 7: Basic Sciences & Humanities (General Science) -->
+<tr class="dept-row hover:bg-surface-container-low/60 transition-colors" data-degree="UG_ONLY" data-id="bsh">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded bg-tertiary/10 text-tertiary flex items-center justify-center shrink-0 font-headline-sm text-headline-sm font-bold">
+                    BS
+                  </div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface dept-name">Basic Sciences &amp; Humanities (FE)</div>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">CODE: 631500010</span>
+<span class="w-1 h-1 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-secondary">First Year Board</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-7 h-7 rounded-full bg-surface-container text-tertiary flex items-center justify-center font-label-md text-label-md font-bold">NB</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface dept-hod">Dr. N. B. Bhosle</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">Ph.D (Applied Physics)</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-secondary">Common FY (780)</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right font-tabular-numeric text-tabular-numeric text-on-surface font-semibold">34</td>
+<td class="py-space-md px-space-md text-right font-tabular-numeric text-tabular-numeric text-on-surface font-semibold">1,020</td>
+<td class="py-space-md px-space-md text-center">
+<span class="px-2 py-0.5 rounded-full bg-surface-container font-tabular-numeric-sm text-tabular-numeric-sm font-medium">6 Labs</span>
+</td>
+<td class="py-space-md px-space-md text-center">
+<span class="px-2 py-0.5 rounded text-tertiary bg-tertiary/10 font-label-sm text-label-sm font-semibold">Autonomous</span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded text-primary hover:bg-surface-container transition-colors" onclick="openDrawer('bsh')" title="View Department Intelligence">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="openEditModal('bsh')" title="Edit Structure">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded text-error hover:bg-error-container hover:text-on-error-container transition-colors" onclick="confirmDelete('Basic Sciences &amp; Humanities')" title="Decommission Department">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 8: Mechatronics -->
+<tr class="dept-row hover:bg-surface-container-low/60 transition-colors" data-degree="UG_ONLY" data-id="mct">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded bg-surface-container-high text-primary flex items-center justify-center shrink-0 font-headline-sm text-headline-sm font-bold">
+                    MT
+                  </div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface dept-name">Mechatronics Engineering</div>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">CODE: 631562410</span>
+<span class="w-1 h-1 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-secondary">Est. 2021</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-7 h-7 rounded-full bg-surface-container text-primary flex items-center justify-center font-label-md text-label-md font-bold">RT</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface dept-hod">Dr. R. T. Thorat</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">Ph.D (Robotics)</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-primary">B.Tech (60)</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right font-tabular-numeric text-tabular-numeric text-on-surface font-semibold">18</td>
+<td class="py-space-md px-space-md text-right font-tabular-numeric text-tabular-numeric text-on-surface font-semibold">470</td>
+<td class="py-space-md px-space-md text-center">
+<span class="px-2 py-0.5 rounded-full bg-surface-container font-tabular-numeric-sm text-tabular-numeric-sm font-medium">5 Labs</span>
+</td>
+<td class="py-space-md px-space-md text-center">
+<span class="px-2 py-0.5 rounded text-tertiary bg-tertiary/10 font-label-sm text-label-sm font-semibold">Approved</span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded text-primary hover:bg-surface-container transition-colors" onclick="openDrawer('mct')" title="View Department Intelligence">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="openEditModal('mct')" title="Edit Structure">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded text-error hover:bg-error-container hover:text-on-error-container transition-colors" onclick="confirmDelete('Mechatronics Engineering')" title="Decommission Department">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="px-space-lg py-space-sm bg-surface-container-lowest flex items-center justify-between">
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">Showing 1 to 8 of 8 total academic units</span>
+<div class="flex items-center gap-1">
+<button class="px-2 py-1 rounded bg-surface-container-low text-secondary text-label-sm font-label-sm hover:bg-surface-container transition-colors cursor-not-allowed" disabled="">Previous</button>
+<button class="px-2 py-1 rounded bg-primary-container text-on-primary text-label-sm font-label-sm">1</button>
+<button class="px-2 py-1 rounded bg-surface-container-low text-secondary text-label-sm font-label-sm hover:bg-surface-container transition-colors cursor-not-allowed" disabled="">Next</button>
+</div>
+</div>
+</div>
+<!-- 2. CARDS VIEW (Alternate Bento-Style Visual Presentation) -->
+<div class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter" id="cardsViewContainer">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="px-2 py-0.5 rounded bg-primary/10 text-primary font-tabular-numeric-sm text-tabular-numeric-sm font-semibold">CODE 631524210</span>
+<span class="text-tertiary font-label-sm text-label-sm font-medium">NBA Tier-I</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Computer Science &amp; Engineering</h3>
+<p class="font-body-sm text-body-sm text-secondary mt-1">Autonomous curriculum aligned with Industry 4.0 standards.</p>
+<div class="mt-space-md p-space-sm rounded-lg bg-surface-container-low flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-primary/20 text-primary font-bold flex items-center justify-center">MK</div>
+<div>
+<div class="font-label-md text-label-md text-on-surface">Dr. M. R. Kulkarni</div>
+<div class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">hod.cse@sitcoe.ac.in</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 mt-space-md text-center">
+<div class="p-2 rounded bg-surface-container-low">
+<div class="font-tabular-numeric text-headline-sm text-on-surface font-bold">38</div>
+<div class="font-label-sm text-[10px] text-secondary uppercase">Faculty</div>
+</div>
+<div class="p-2 rounded bg-surface-container-low">
+<div class="font-tabular-numeric text-headline-sm text-on-surface font-bold">720</div>
+<div class="font-label-sm text-[10px] text-secondary uppercase">Students</div>
+</div>
+<div class="p-2 rounded bg-surface-container-low">
+<div class="font-tabular-numeric text-headline-sm text-on-surface font-bold">12</div>
+<div class="font-label-sm text-[10px] text-secondary uppercase">Laboratories</div>
+</div>
+</div>
+</div>
+<div class="mt-space-lg flex items-center justify-between pt-space-sm">
+<button class="text-primary font-label-md text-label-md flex items-center gap-1 hover:underline" onclick="openDrawer('cse')">
+<span>View Governance</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary" onclick="openEditModal('cse')">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="px-2 py-0.5 rounded bg-tertiary/10 text-tertiary font-tabular-numeric-sm text-tabular-numeric-sm font-semibold">CODE 631526310</span>
+<span class="text-tertiary font-label-sm text-label-sm font-medium">Approved</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">AI &amp; Data Science</h3>
+<p class="font-body-sm text-body-sm text-secondary mt-1">Advanced computing research, High Performance GPUs &amp; LLM Labs.</p>
+<div class="mt-space-md p-space-sm rounded-lg bg-surface-container-low flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-tertiary/20 text-tertiary font-bold flex items-center justify-center">SP</div>
+<div>
+<div class="font-label-md text-label-md text-on-surface">Dr. S. N. Patil</div>
+<div class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">hod.aids@sitcoe.ac.in</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 mt-space-md text-center">
+<div class="p-2 rounded bg-surface-container-low">
+<div class="font-tabular-numeric text-headline-sm text-on-surface font-bold">26</div>
+<div class="font-label-sm text-[10px] text-secondary uppercase">Faculty</div>
+</div>
+<div class="p-2 rounded bg-surface-container-low">
+<div class="font-tabular-numeric text-headline-sm text-on-surface font-bold">480</div>
+<div class="font-label-sm text-[10px] text-secondary uppercase">Students</div>
+</div>
+<div class="p-2 rounded bg-surface-container-low">
+<div class="font-tabular-numeric text-headline-sm text-on-surface font-bold">8</div>
+<div class="font-label-sm text-[10px] text-secondary uppercase">Laboratories</div>
+</div>
+</div>
+</div>
+<div class="mt-space-lg flex items-center justify-between pt-space-sm">
+<button class="text-primary font-label-md text-label-md flex items-center gap-1 hover:underline" onclick="openDrawer('aids')">
+<span>View Governance</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary" onclick="openEditModal('aids')">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="px-2 py-0.5 rounded bg-secondary/10 text-secondary font-tabular-numeric-sm text-tabular-numeric-sm font-semibold">CODE 631561210</span>
+<span class="text-tertiary font-label-sm text-label-sm font-medium">NBA Tier-I</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Mechanical Engineering</h3>
+<p class="font-body-sm text-body-sm text-secondary mt-1">Mechatronics, CNC Robotics Center, and Thermal research suites.</p>
+<div class="mt-space-md p-space-sm rounded-lg bg-surface-container-low flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-secondary/20 text-secondary font-bold flex items-center justify-center">AD</div>
+<div>
+<div class="font-label-md text-label-md text-on-surface">Prof. A. V. Deshmukh</div>
+<div class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">hod.mech@sitcoe.ac.in</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 mt-space-md text-center">
+<div class="p-2 rounded bg-surface-container-low">
+<div class="font-tabular-numeric text-headline-sm text-on-surface font-bold">42</div>
+<div class="font-label-sm text-[10px] text-secondary uppercase">Faculty</div>
+</div>
+<div class="p-2 rounded bg-surface-container-low">
+<div class="font-tabular-numeric text-headline-sm text-on-surface font-bold">640</div>
+<div class="font-label-sm text-[10px] text-secondary uppercase">Students</div>
+</div>
+<div class="p-2 rounded bg-surface-container-low">
+<div class="font-tabular-numeric text-headline-sm text-on-surface font-bold">14</div>
+<div class="font-label-sm text-[10px] text-secondary uppercase">Laboratories</div>
+</div>
+</div>
+</div>
+<div class="mt-space-lg flex items-center justify-between pt-space-sm">
+<button class="text-primary font-label-md text-label-md flex items-center gap-1 hover:underline" onclick="openDrawer('me')">
+<span>View Governance</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary" onclick="openEditModal('me')">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- SLIDE-OVER DRAWER: Department Details & Head Information -->
+<div class="fixed inset-0 bg-inverse-surface/40 z-50 transition-opacity opacity-0 pointer-events-none duration-200" id="deptDrawerBackdrop" onclick="closeDrawer()"></div>
+<div class="fixed right-0 top-0 h-screen w-full max-w-xl bg-surface-container-lowest shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col" id="deptDrawer">
+<!-- Drawer Header -->
+<div class="p-space-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-primary text-on-primary font-headline-md text-headline-md font-bold flex items-center justify-center" id="drawerAvatar">
+          CS
+        </div>
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface" id="drawerDeptName">Computer Science &amp; Engineering</h2>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary" id="drawerDeptCode">DTE INST ID: 631524210</span>
+</div>
+</div>
+<button class="p-1.5 rounded-lg text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="closeDrawer()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Drawer Body (Scrollable) -->
+<div class="p-space-lg overflow-y-auto flex-1 flex flex-col gap-space-lg">
+<!-- Head of Department Dossier Card -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">HOD Administration Dossier</span>
+<span class="px-2 py-0.5 rounded bg-tertiary/10 text-tertiary font-label-sm text-label-sm font-semibold">Approved Signatory</span>
+</div>
+<div class="flex items-start gap-space-md mt-1">
+<div class="w-12 h-12 rounded-full bg-primary/20 text-primary flex items-center justify-center font-headline-md text-headline-md font-bold shrink-0">
+<span id="drawerHodInitials">MK</span>
+</div>
+<div class="flex-1">
+<h4 class="font-headline-sm text-headline-sm text-on-surface" id="drawerHodName">Dr. M. R. Kulkarni</h4>
+<p class="font-body-sm text-body-sm text-secondary" id="drawerHodQual">Ph.D in High-Performance Computing (IIT Bombay), M.Tech CSE</p>
+<div class="flex flex-col gap-1 mt-2 text-body-sm text-body-sm">
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-secondary">mail</span>
+<span class="font-tabular-numeric-sm" id="drawerHodEmail">hod.cse@sitcoe.ac.in</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-secondary">call</span>
+<span class="font-tabular-numeric-sm" id="drawerHodPhone">+91 (02322) 253000 Ext. 214</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Metrics Summary -->
+<div class="grid grid-cols-3 gap-space-sm">
+<div class="p-space-md rounded-lg bg-surface-container text-center">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Sanctioned Intake</span>
+<div class="font-tabular-numeric text-headline-lg text-primary font-bold mt-1" id="drawerMetricIntake">198</div>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container text-center">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Faculty Roll</span>
+<div class="font-tabular-numeric text-headline-lg text-primary font-bold mt-1" id="drawerMetricFaculty">38</div>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container text-center">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Active Scholars</span>
+<div class="font-tabular-numeric text-headline-lg text-primary font-bold mt-1" id="drawerMetricStudents">720</div>
+</div>
+</div>
+<!-- Affiliated Laboratories -->
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-md text-label-md text-on-surface uppercase">Recognized Laboratories</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary" id="drawerLabCount">12 Available</span>
+</div>
+<div class="flex flex-col gap-1.5" id="drawerLabList">
+<div class="p-2.5 rounded bg-surface-container-low flex items-center justify-between text-body-sm text-body-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary">computer</span>
+<span class="font-medium text-on-surface">Nvidia GPU Deep Learning Lab</span>
+</div>
+<span class="font-tabular-numeric-sm text-secondary">Room 304 • 40 Terminals</span>
+</div>
+<div class="p-2.5 rounded bg-surface-container-low flex items-center justify-between text-body-sm text-body-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary">cloud</span>
+<span class="font-medium text-on-surface">Cloud &amp; Virtualization Suite</span>
+</div>
+<span class="font-tabular-numeric-sm text-secondary">Room 306 • 35 Terminals</span>
+</div>
+<div class="p-2.5 rounded bg-surface-container-low flex items-center justify-between text-body-sm text-body-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary">terminal</span>
+<span class="font-medium text-on-surface">Open Source Kernel Architecture Lab</span>
+</div>
+<span class="font-tabular-numeric-sm text-secondary">Room 308 • 40 Terminals</span>
+</div>
+</div>
+</div>
+<!-- Recent Department Notices & Board -->
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-md text-label-md text-on-surface uppercase">Department Notices &amp; Circulars</span>
+<a class="font-label-sm text-label-sm text-primary hover:underline" href="#">Post Notice</a>
+</div>
+<div class="flex flex-col gap-2">
+<div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col gap-0.5">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Mid-Semester Syllabus Completion Audit</span>
+<span class="font-tabular-numeric-sm text-[11px] text-secondary">Yesterday</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary">All course files and CO-PO attainment registers must be submitted to the Academic Dean by Friday.</p>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col gap-0.5">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">B.Tech Final Year Capstone Project Defense</span>
+<span class="font-tabular-numeric-sm text-[11px] text-secondary">3 days ago</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary">External evaluators from TCS &amp; Infosys confirmed for Phase-II assessment panels.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Drawer Footer Actions -->
+<div class="p-space-md bg-surface-container-low flex items-center justify-end gap-space-sm">
+<button class="px-space-md py-1.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors" onclick="closeDrawer()">Close</button>
+<button class="px-space-md py-1.5 rounded bg-primary-container text-on-primary hover:bg-primary font-label-md text-label-md transition-colors shadow-sm" onclick="alert('Navigating to Faculty roster for ' + document.getElementById('drawerDeptName').innerText)">View Faculty Roster</button>
+</div>
+</div>
+<!-- MODAL: Add / Edit Department -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-inverse-surface/50 opacity-0 pointer-events-none transition-opacity duration-200" id="deptModal">
+<div class="bg-surface-container-lowest rounded-xl max-w-lg w-full mx-4 shadow-2xl overflow-hidden transform scale-95 transition-transform duration-200" id="modalDialog">
+<div class="p-space-lg bg-surface-container-low flex items-center justify-between">
+<h3 class="font-headline-lg text-headline-lg text-on-surface" id="modalTitle">Add New Department</h3>
+<button class="text-secondary hover:text-on-surface" onclick="closeModal()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<form class="p-space-lg flex flex-col gap-space-md" onsubmit="handleFormSubmit(event)">
+<div>
+<label class="font-label-sm text-label-sm text-secondary uppercase block mb-1">Department Full Name</label>
+<input class="w-full bg-surface-container-low rounded px-space-sm py-1.5 font-body-sm text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-sm" id="formDeptName" placeholder="e.g. Information Technology" required="" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div>
+<label class="font-label-sm text-label-sm text-secondary uppercase block mb-1">DTE / AICTE Code</label>
+<input class="w-full bg-surface-container-low rounded px-space-sm py-1.5 font-body-sm text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-sm" id="formDeptCode" placeholder="e.g. 631524510" required="" type="text"/>
+</div>
+<div>
+<label class="font-label-sm text-label-sm text-secondary uppercase block mb-1">Degree Level</label>
+<select class="w-full bg-surface-container-low rounded px-space-sm py-1.5 font-body-sm text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-sm" id="formDeptDegree">
+<option value="UG_ONLY">UG Program Only</option>
+<option value="UG_PG">UG + PG Programs</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div>
+<label class="font-label-sm text-label-sm text-secondary uppercase block mb-1">Head of Department (HOD)</label>
+<input class="w-full bg-surface-container-low rounded px-space-sm py-1.5 font-body-sm text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-sm" id="formDeptHod" placeholder="e.g. Dr. A. P. Sharma" required="" type="text"/>
+</div>
+<div>
+<label class="font-label-sm text-label-sm text-secondary uppercase block mb-1">HOD Email</label>
+<input class="w-full bg-surface-container-low rounded px-space-sm py-1.5 font-body-sm text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-sm" id="formDeptEmail" placeholder="e.g. hod.it@sitcoe.ac.in" required="" type="email"/>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-space-sm">
+<div>
+<label class="font-label-sm text-label-sm text-secondary uppercase block mb-1">Approved Intake</label>
+<input class="w-full bg-surface-container-low rounded px-space-sm py-1.5 font-body-sm text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-sm" id="formDeptIntake" placeholder="120" required="" type="number"/>
+</div>
+<div>
+<label class="font-label-sm text-label-sm text-secondary uppercase block mb-1">Faculty Count</label>
+<input class="w-full bg-surface-container-low rounded px-space-sm py-1.5 font-body-sm text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-sm" id="formDeptFaculty" placeholder="24" required="" type="number"/>
+</div>
+<div>
+<label class="font-label-sm text-label-sm text-secondary uppercase block mb-1">Lab Count</label>
+<input class="w-full bg-surface-container-low rounded px-space-sm py-1.5 font-body-sm text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-sm" id="formDeptLabs" placeholder="8" required="" type="number"/>
+</div>
+</div>
+<div class="mt-space-md flex items-center justify-end gap-space-sm">
+<button class="px-space-md py-1.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors" onclick="closeModal()" type="button">Cancel</button>
+<button class="px-space-md py-1.5 rounded bg-primary-container text-on-primary hover:bg-primary font-label-md text-label-md transition-colors shadow-sm" type="submit">Save Department Unit</button>
+</div>
+</form>
+</div>
+</div>
+<!-- MODAL: Confirmation Banner (Delete) -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-inverse-surface/50 opacity-0 pointer-events-none transition-opacity duration-200" id="confirmModal">
+<div class="bg-surface-container-lowest rounded-xl max-w-md w-full mx-4 p-space-lg shadow-2xl flex flex-col gap-space-md">
+<div class="flex items-center gap-space-sm text-error">
+<div class="w-10 h-10 rounded-full bg-error-container flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[24px]">warning</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Decommission Department?</h4>
+<span class="font-body-sm text-body-sm text-secondary">Statutory Compliance Warning</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface" id="confirmDeleteMessage">
+        Are you sure you want to deactivate this department? This will archive all subject mappings and student rosters for the selected academic cycle.
+      </p>
+<div class="flex items-center justify-end gap-space-sm mt-2">
+<button class="px-space-md py-1.5 rounded bg-surface-container text-on-surface font-label-md text-label-md" onclick="closeConfirmModal()">Cancel</button>
+<button class="px-space-md py-1.5 rounded bg-error text-on-error font-label-md text-label-md shadow-sm" onclick="executeDelete()">Confirm Archival</button>
+</div>
+</div>
+</div>
+<!-- Toast Notification Alert -->
+<div class="fixed bottom-6 right-6 z-50 bg-inverse-surface text-inverse-on-surface px-space-lg py-space-sm rounded-lg shadow-xl flex items-center gap-space-sm transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none" id="toastAlert">
+<span class="material-symbols-outlined text-[20px] text-tertiary-fixed">check_circle</span>
+<span class="font-label-md text-label-md" id="toastMessage">Action successful</span>
+</div>
+</div>
+<script>
+  // Department database for interactive slide-over and previews
+  const departmentCatalog = {
+    cse: {
+      name: "Computer Science & Engineering",
+      code: "631524210",
+      hod: "Dr. M. R. Kulkarni",
+      hodInitials: "MK",
+      qualification: "Ph.D in High-Performance Computing (IIT Bombay)",
+      email: "hod.cse@sitcoe.ac.in",
+      phone: "+91 (02322) 253000 Ext. 214",
+      intake: "198",
+      faculty: "38",
+      students: "720",
+      labCount: "12 Available",
+      labs: [
+        { name: "Nvidia GPU Deep Learning Lab", info: "Room 304 • 40 Terminals", icon: "computer" },
+        { name: "Cloud & Virtualization Suite", info: "Room 306 • 35 Terminals", icon: "cloud" },
+        { name: "Open Source Kernel Architecture Lab", info: "Room 308 • 40 Terminals", icon: "terminal" },
+        { name: "IoT & Embedded Systems Lab", info: "Room 310 • 30 Workbenches", icon: "memory" }
+      ]
+    },
+    aids: {
+      name: "Artificial Intelligence & Data Science",
+      code: "631526310",
+      hod: "Dr. S. N. Patil",
+      hodInitials: "SP",
+      qualification: "Ph.D (COEP Pune), M.Tech AI",
+      email: "hod.aids@sitcoe.ac.in",
+      phone: "+91 (02322) 253000 Ext. 218",
+      intake: "120",
+      faculty: "26",
+      students: "480",
+      labCount: "8 Available",
+      labs: [
+        { name: "Generative AI & LLM Cluster", info: "Room 401 • 35 DGX Workstations", icon: "psychology" },
+        { name: "Big Data Hadoop Cluster", info: "Room 403 • 40 High-Density Nodes", icon: "dataset" },
+        { name: "Computer Vision & Robotics Lab", info: "Room 405 • Industrial Arm Setup", icon: "visibility" }
+      ]
+    },
+    me: {
+      name: "Mechanical Engineering",
+      code: "631561210",
+      hod: "Prof. A. V. Deshmukh",
+      hodInitials: "AD",
+      qualification: "M.E. Heat Power, Ph.D Reg.",
+      email: "hod.mech@sitcoe.ac.in",
+      phone: "+91 (02322) 253000 Ext. 210",
+      intake: "138",
+      faculty: "42",
+      students: "640",
+      labCount: "14 Available",
+      labs: [
+        { name: "CAD / CAM / CAE Center of Excellence", info: "Mech Block 101 • 45 Ansys/SolidWorks", icon: "precision_manufacturing" },
+        { name: "Advanced IC Engines & EV Testing", info: "Mech Workshop • Dynamometer Rig", icon: "electric_car" },
+        { name: "Robotics & Automation Suite", info: "Automation Bay • Kuka 6-Axis", icon: "smart_toy" }
+      ]
+    },
+    entc: {
+      name: "Electronics & Telecommunication",
+      code: "631537210",
+      hod: "Dr. P. R. Jadhav",
+      hodInitials: "PJ",
+      qualification: "Ph.D (VNIT Nagpur), PostDoc Telecom",
+      email: "hod.entc@sitcoe.ac.in",
+      phone: "+91 (02322) 253000 Ext. 212",
+      intake: "138",
+      faculty: "32",
+      students: "560",
+      labCount: "10 Available",
+      labs: [
+        { name: "RF & Microwave Engineering Lab", info: "Room 202 • Spectrum Analyzers", icon: "cell_tower" },
+        { name: "VLSI Circuit Design Studio", info: "Room 204 • Cadence Suite", icon: "developer_board" }
+      ]
+    },
+    civil: {
+      name: "Civil Engineering",
+      code: "631519110",
+      hod: "Dr. K. G. Ghorpade",
+      hodInitials: "KG",
+      qualification: "Ph.D in Structural Dynamics (VJTI)",
+      email: "hod.civil@sitcoe.ac.in",
+      phone: "+91 (02322) 253000 Ext. 206",
+      intake: "138",
+      faculty: "28",
+      students: "520",
+      labCount: "9 Available",
+      labs: [
+        { name: "Concrete Technology & Heavy Testing", info: "Ground Yard • 200T UTM", icon: "foundation" },
+        { name: "Geotechnical & Soil Mechanics", info: "Civil Wing 104 • Triaxial Cell", icon: "terrain" }
+      ]
+    },
+    ee: {
+      name: "Electrical Engineering",
+      code: "631529310",
+      hod: "Dr. V. M. Mane",
+      hodInitials: "VM",
+      qualification: "Ph.D (Power Systems & Smart Grids)",
+      email: "hod.electrical@sitcoe.ac.in",
+      phone: "+91 (02322) 253000 Ext. 208",
+      intake: "60",
+      faculty: "22",
+      students: "410",
+      labCount: "8 Available",
+      labs: [
+        { name: "High Voltage Engineering & Switchgear", info: "EE Bay 1 • 100kV Test Transformer", icon: "bolt" },
+        { name: "Renewable Energy & Microgrid Lab", info: "Rooftop Integration Unit", icon: "solar_power" }
+      ]
+    },
+    bsh: {
+      name: "Basic Sciences & Humanities (FE)",
+      code: "631500010",
+      hod: "Dr. N. B. Bhosle",
+      hodInitials: "NB",
+      qualification: "Ph.D (Applied Physics & Thin Films)",
+      email: "hod.fe@sitcoe.ac.in",
+      phone: "+91 (02322) 253000 Ext. 201",
+      intake: "780",
+      faculty: "34",
+      students: "1020",
+      labCount: "6 Available",
+      labs: [
+        { name: "Applied Physics Photonics Lab", info: "FE 101 • Laser Interferometer", icon: "science" },
+        { name: "Language Communication Lab", info: "FE 202 • Sanako Audio Studio", icon: "record_voice_over" }
+      ]
+    },
+    mct: {
+      name: "Mechatronics Engineering",
+      code: "631562410",
+      hod: "Dr. R. T. Thorat",
+      hodInitials: "RT",
+      qualification: "Ph.D (Robotics & Cyber-Physical Systems)",
+      email: "hod.mechatronics@sitcoe.ac.in",
+      phone: "+91 (02322) 253000 Ext. 216",
+      intake: "60",
+      faculty: "18",
+      students: "470",
+      labCount: "5 Available",
+      labs: [
+        { name: "Pneumatics & Hydraulic Actuation Lab", info: "Workshop 3 • Festo Didactic", icon: "valve" },
+        { name: "MEMS & Sensor Calibration Facility", info: "Room 112 • Cleanhood Setup", icon: "sensors" }
+      ]
+    }
+  };
+
+  let currentTargetDeptForDelete = null;
+  let activeDegreeFilter = 'ALL';
+
+  // Open Slide-over Drawer
+  function openDrawer(deptId) {
+    const data = departmentCatalog[deptId];
+    if (!data) return;
+
+    document.getElementById('drawerDeptName').innerText = data.name;
+    document.getElementById('drawerDeptCode').innerText = "DTE CODE: " + data.code;
+    document.getElementById('drawerAvatar').innerText = data.name.substring(0, 2).toUpperCase();
+    document.getElementById('drawerHodName').innerText = data.hod;
+    document.getElementById('drawerHodInitials').innerText = data.hodInitials;
+    document.getElementById('drawerHodQual').innerText = data.qualification;
+    document.getElementById('drawerHodEmail').innerText = data.email;
+    document.getElementById('drawerHodPhone').innerText = data.phone;
+    document.getElementById('drawerMetricIntake').innerText = data.intake;
+    document.getElementById('drawerMetricFaculty').innerText = data.faculty;
+    document.getElementById('drawerMetricStudents').innerText = data.students;
+    document.getElementById('drawerLabCount').innerText = data.labCount;
+
+    // Render Labs
+    const labListContainer = document.getElementById('drawerLabList');
+    labListContainer.innerHTML = '';
+    data.labs.forEach(lab => {
+      const el = document.createElement('div');
+      el.className = 'p-2.5 rounded bg-surface-container-low flex items-center justify-between text-body-sm text-body-sm';
+      el.innerHTML = `
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[16px] text-primary">${lab.icon}</span>
+          <span class="font-medium text-on-surface">${lab.name}</span>
+        </div>
+        <span class="font-tabular-numeric-sm text-secondary">${lab.info}</span>
+      `;
+      labListContainer.appendChild(el);
+    });
+
+    const backdrop = document.getElementById('deptDrawerBackdrop');
+    const drawer = document.getElementById('deptDrawer');
+    backdrop.classList.remove('opacity-0', 'pointer-events-none');
+    drawer.classList.remove('translate-x-full');
+  }
+
+  function closeDrawer() {
+    const backdrop = document.getElementById('deptDrawerBackdrop');
+    const drawer = document.getElementById('deptDrawer');
+    backdrop.classList.add('opacity-0', 'pointer-events-none');
+    drawer.classList.add('translate-x-full');
+  }
+
+  // Toggle Table vs Bento Cards view
+  function toggleView(viewType) {
+    const table = document.getElementById('tableViewContainer');
+    const cards = document.getElementById('cardsViewContainer');
+    const btnTable = document.getElementById('viewBtn-table');
+    const btnCards = document.getElementById('viewBtn-cards');
+
+    if (viewType === 'table') {
+      table.classList.remove('hidden');
+      cards.classList.add('hidden');
+      btnTable.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+      btnTable.classList.remove('text-secondary');
+      btnCards.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+      btnCards.classList.add('text-secondary');
+    } else {
+      table.classList.add('hidden');
+      cards.classList.remove('hidden');
+      btnCards.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+      btnCards.classList.remove('text-secondary');
+      btnTable.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+      btnTable.classList.add('text-secondary');
+    }
+  }
+
+  // Filter Table by Search and Degree Level
+  function filterTable() {
+    const query = document.getElementById('tableSearchInput').value.toLowerCase().trim();
+    const rows = document.querySelectorAll('#deptTableBody tr.dept-row');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+      const name = row.querySelector('.dept-name').innerText.toLowerCase();
+      const hod = row.querySelector('.dept-hod').innerText.toLowerCase();
+      const degree = row.getAttribute('data-degree');
+      
+      const matchesSearch = name.includes(query) || hod.includes(query);
+      const matchesDegree = (activeDegreeFilter === 'ALL') || (degree === activeDegreeFilter);
+
+      if (matchesSearch && matchesDegree) {
+        row.style.display = '';
+        visibleCount++;
+      } else {
+        row.style.display = 'none';
+      }
+    });
+
+    document.getElementById('activeCountDisplay').innerText = `Showing ${visibleCount} Department${visibleCount === 1 ? '' : 's'}`;
+  }
+
+  function setDegreeFilter(level) {
+    activeDegreeFilter = level;
+    
+    // Update tab styling
+    document.querySelectorAll('.filter-tab').forEach(btn => {
+      btn.className = 'filter-tab px-3 py-1 rounded text-secondary hover:text-on-surface font-label-sm text-label-sm transition-all';
+    });
+    
+    const activeBtn = document.getElementById(`filterBtn-${level}`);
+    if (activeBtn) {
+      activeBtn.className = 'filter-tab px-3 py-1 rounded text-on-primary bg-primary font-label-sm text-label-sm shadow-sm transition-all';
+    }
+
+    filterTable();
+  }
+
+  // Sort Table Columns
+  let sortDirection = true;
+  function sortTable(columnIndex) {
+    const table = document.querySelector('#deptTableBody');
+    const rows = Array.from(table.querySelectorAll('tr.dept-row'));
+
+    rows.sort((a, b) => {
+      let cellA, cellB;
+      if (columnIndex === 0) {
+        cellA = a.querySelector('.dept-name').innerText;
+        cellB = b.querySelector('.dept-name').innerText;
+      } else if (columnIndex === 3 || columnIndex === 4) {
+        cellA = parseInt(a.cells[columnIndex].innerText.replace(/,/g, ''), 10);
+        cellB = parseInt(b.cells[columnIndex].innerText.replace(/,/g, ''), 10);
+      }
+
+      if (cellA < cellB) return sortDirection ? -1 : 1;
+      if (cellA > cellB) return sortDirection ? 1 : -1;
+      return 0;
+    });
+
+    sortDirection = !sortDirection;
+    rows.forEach(row => table.appendChild(row));
+  }
+
+  // Modals management
+  function openAddModal() {
+    document.getElementById('modalTitle').innerText = "Add New Department";
+    document.getElementById('formDeptName').value = '';
+    document.getElementById('formDeptCode').value = '';
+    document.getElementById('formDeptHod').value = '';
+    document.getElementById('formDeptEmail').value = '';
+    document.getElementById('formDeptIntake').value = '';
+    document.getElementById('formDeptFaculty').value = '';
+    document.getElementById('formDeptLabs').value = '';
+
+    const modal = document.getElementById('deptModal');
+    const dialog = document.getElementById('modalDialog');
+    modal.classList.remove('opacity-0', 'pointer-events-none');
+    dialog.classList.remove('scale-95');
+    dialog.classList.add('scale-100');
+  }
+
+  function openEditModal(deptId) {
+    const data = departmentCatalog[deptId];
+    if (!data) return;
+
+    document.getElementById('modalTitle').innerText = `Edit: ${data.name}`;
+    document.getElementById('formDeptName').value = data.name;
+    document.getElementById('formDeptCode').value = data.code;
+    document.getElementById('formDeptHod').value = data.hod;
+    document.getElementById('formDeptEmail').value = data.email;
+    document.getElementById('formDeptIntake').value = data.intake;
+    document.getElementById('formDeptFaculty').value = data.faculty;
+    document.getElementById('formDeptLabs').value = parseInt(data.labCount, 10);
+
+    const modal = document.getElementById('deptModal');
+    const dialog = document.getElementById('modalDialog');
+    modal.classList.remove('opacity-0', 'pointer-events-none');
+    dialog.classList.remove('scale-95');
+    dialog.classList.add('scale-100');
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('deptModal');
+    const dialog = document.getElementById('modalDialog');
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    dialog.classList.remove('scale-100');
+    dialog.classList.add('scale-95');
+  }
+
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    closeModal();
+    showToast("Department record updated and synced with AICTE ledger.");
+  }
+
+  // Confirmation Delete Banner
+  function confirmDelete(deptName) {
+    currentTargetDeptForDelete = deptName;
+    document.getElementById('confirmDeleteMessage').innerText = 
+      `Are you sure you want to deactivate ${deptName}? This statutory action will archive student course registrations and curriculum credits for AY 2024-25.`;
+    const modal = document.getElementById('confirmModal');
+    modal.classList.remove('opacity-0', 'pointer-events-none');
+  }
+
+  function closeConfirmModal() {
+    const modal = document.getElementById('confirmModal');
+    modal.classList.add('opacity-0', 'pointer-events-none');
+  }
+
+  function executeDelete() {
+    closeConfirmModal();
+    showToast(`Department record archived for ${currentTargetDeptForDelete}`);
+  }
+
+  function triggerReportExport() {
+    showToast("Generating official Institutional Department Matrix PDF/XLSX...");
+  }
+
+  // Generic Toast Notification
+  function showToast(text) {
+    const toast = document.getElementById('toastAlert');
+    const toastMsg = document.getElementById('toastMessage');
+    toastMsg.innerText = text;
+    toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-20');
+    toast.classList.add('translate-y-0');
+
+    setTimeout(() => {
+      toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-20');
+      toast.classList.remove('translate-y-0');
+    }, 3200);
+  }
+</script></main></div></body></html>

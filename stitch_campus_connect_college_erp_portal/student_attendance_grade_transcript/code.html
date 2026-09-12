@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface-tint":"#2151da","on-surface-variant":"#434655","surface-dim":"#cbdbf5","on-error":"#ffffff","on-primary":"#ffffff","primary-fixed":"#dce1ff","on-primary-fixed-variant":"#0039b5","secondary-fixed":"#dae2fd","surface-container-high":"#dce9ff","surface-container":"#e5eeff","surface-container-lowest":"#ffffff","primary-container":"#1d4ed8","inverse-primary":"#b7c4ff","outline-variant":"#c4c5d7","tertiary-fixed-dim":"#68dba9","tertiary-container":"#006948","on-tertiary-container":"#76eab6","secondary":"#565e74","on-secondary-container":"#5c647a","surface-container-highest":"#d3e4fe","primary":"#0037b0","surface-bright":"#f8f9ff","outline":"#747686","tertiary":"#004f35","on-secondary":"#ffffff","error-container":"#ffdad6","background":"#f8f9ff","on-tertiary":"#ffffff","on-background":"#0b1c30","on-surface":"#0b1c30","error":"#ba1a1a","on-primary-fixed":"#001551","secondary-container":"#dae2fd","inverse-on-surface":"#eaf1ff","on-secondary-fixed-variant":"#3f465c","primary-fixed-dim":"#b7c4ff","on-error-container":"#93000a","inverse-surface":"#213145","surface":"#f8f9ff","secondary-fixed-dim":"#bec6e0","tertiary-fixed":"#85f8c4","on-tertiary-fixed":"#002114","on-secondary-fixed":"#131b2e","surface-variant":"#d3e4fe","on-primary-container":"#cad3ff","on-tertiary-fixed-variant":"#005137","surface-container-low":"#eff4ff"},borderRadius:{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},spacing:{"space-xl":"1.5rem","margin-mobile":"1rem","space-sm":"0.5rem","space-lg":"1rem","gutter":"1rem","space-xs":"0.25rem","margin":"1.5rem","gutter-compact":"0.5rem","space-md":"0.75rem"},fontFamily:{"display-lg":["Inter"],"headline-sm":["Inter"],"body-md":["Inter"],"body-sm":["Inter"],"headline-md":["Inter"],"headline-lg":["Inter"],"body-lg":["Inter"],"tabular-numeric-sm":["JetBrains Mono"],"label-md":["Inter"],"tabular-numeric":["JetBrains Mono"],"headline-xl":["Inter"],"label-sm":["Inter"]},fontSize:{"display-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-sm":["14px",{"lineHeight":"20px","fontWeight":"600"}],"body-md":["13px",{"lineHeight":"18px","fontWeight":"400"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"headline-md":["16px",{"lineHeight":"24px","letterSpacing":"-0.005em","fontWeight":"600"}],"headline-lg":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-lg":["15px",{"lineHeight":"22px","fontWeight":"400"}],"tabular-numeric-sm":["11px",{"lineHeight":"14px","fontWeight":"500"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.04em","fontWeight":"600"}],"tabular-numeric":["13px",{"lineHeight":"18px","letterSpacing":"-0.02em","fontWeight":"500"}],"headline-xl":["24px",{"lineHeight":"32px","letterSpacing":"-0.015em","fontWeight":"700"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.05em","fontWeight":"600"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-72 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="px-space-xl pt-space-lg pb-space-md flex items-center gap-space-md"><img alt="Campus Connect SIT Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1ULElvCIlshpn8u0OlNNbpTdHgYzarbUQ3sSlGU4g8QOj6hpy1V-6PR_1lBLK_usMdThUroWygsgfAL6qGee_P-8XSuwbSpiEyVuwD8_tzy9aVSF7xX5A7FPSpkXX2CouF8RzIGkG17Zc7CqaMiWTNxAR_2mxLNiWyi0MgueaGFHXpkIoiOHIkZqddOoFrABD3Rj0t-GOByaBf-AgLPJXyr8yD8lO5rCFLtsPpG4ec1JEDQU_XA0eA-NGg"/><div class="flex flex-col min-w-0"><span class="font-headline-sm text-headline-sm text-on-surface truncate leading-tight">Sharad Institute of Technology</span><span class="font-label-sm text-label-sm text-secondary tracking-wider truncate">CAMPUS CONNECT ERP</span></div></div><div class="px-space-md pb-space-sm"><div class="bg-surface-container-high rounded-xl p-space-xs flex items-center justify-between"><div class="flex items-center gap-space-xs pl-space-xs"><span class="w-2 h-2 rounded-full bg-tertiary"></span><select class="bg-transparent font-label-sm text-label-sm text-on-surface font-semibold outline-none cursor-pointer pr-space-xs"><option value="super-admin">Super Admin Portal</option><option value="student-portal">Student Portal</option><option value="faculty-portal">Faculty Portal</option><option value="hod-portal">HOD Management Portal</option></select></div><span class="material-symbols-outlined text-secondary text-[18px] pr-space-xs pointer-events-none">unfold_more</span></div></div><nav class="px-space-md space-y-space-md pb-space-xl" data-active-classes="bg-primary-container text-on-primary font-semibold shadow-sm"><div class="space-y-space-xs"><span class="px-space-sm font-label-sm text-label-sm text-secondary uppercase tracking-wider block">Administration Core</span><a class="block px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="dashboard" href="#">Admin Dashboard</a><a class="block px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="analytics-and-reports" href="#">Analytics &amp; Reports</a><a class="block px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="departments" href="#">Departments</a><a class="block px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="students-directory" href="#">Students Directory</a><a class="block px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="faculty-and-staff" href="#">Faculty &amp; Staff</a><a class="block px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="hod-management" href="#">HOD Management</a></div><div class="space-y-space-xs"><span class="px-space-sm font-label-sm text-label-sm text-secondary uppercase tracking-wider block">Student Hub</span><a class="block px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="student-dashboard" href="#">Student Dashboard</a><a class="block px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="student-courses" href="#">My Courses</a><a aria-current="page" class="block px-space-md py-space-sm rounded-lg transition-all bg-primary-container text-on-primary font-semibold shadow-sm" data-path="student-attendance" href="#">My Attendance</a><a class="block px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="student-results" href="#">My Results</a><a class="block px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="student-materials" href="#">Student Study Materials</a></div><div class="space-y-space-xs"><span class="px-space-sm font-label-sm text-label-sm text-secondary uppercase tracking-wider block">Faculty Hub</span><a class="block px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="faculty-dashboard" href="#">Faculty Dashboard</a><a class="block px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="faculty-subjects" href="#">My Subjects</a><a class="block px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="faculty-attendance" href="#">Mark Attendance</a><a class="block px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="faculty-results" href="#">Results Entry</a><a class="block px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="faculty-materials" href="#">Faculty Study Materials</a></div><div class="space-y-space-xs"><span class="px-space-sm font-label-sm text-label-sm text-secondary uppercase tracking-wider block">Campus Communication</span><a class="block px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="notices" href="#">Notices &amp; Bulletins</a><a class="block px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="events" href="#">Events &amp; Calendar</a></div></nav></div><div class="p-space-md bg-surface-container-high m-space-md rounded-xl flex items-center justify-between"><div class="flex items-center gap-space-md min-w-0"><img alt="Profile" class="w-8 h-8 rounded-full object-cover shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhYl6gFQnAnK_u1QI4I6kpgTUBz8zkz4S0iTSMOfteQuGNFH8wcQ786hcaha3Lvwql-gun7Ii-twZwnY_0xsvc5TeO2YwbFj3lUFwZthKaL9aBhsFOzfWQoP1BNup3YW-w_1PJivK7Fw_NgrnFRgPewtJ6MQezgPl1mqG_glViYBC6CJhrz4i5J1f3NUEu1mpC6Xn5Ma068gy3BMqa3iSiNSs-T_YfDGMd88RMTJLQoh5vRgTFsdjMqg"/><div class="flex flex-col min-w-0"><span class="font-headline-sm text-headline-sm text-on-surface truncate">Dr. S. Patil</span><span class="font-label-sm text-label-sm text-secondary truncate">SIT-EMP-001</span></div></div><div class="flex items-center gap-space-xs shrink-0"><button class="p-space-xs text-secondary hover:text-on-surface rounded transition-colors" title="Toggle Sidebar"><span class="material-symbols-outlined text-[18px]">dock_to_left</span></button><button class="p-space-xs text-error hover:bg-error-container hover:text-on-error-container rounded transition-colors" title="Sign Out"><span class="material-symbols-outlined text-[18px]">logout</span></button></div></div></aside><div class="pl-72 flex flex-col min-h-screen"><header class="fixed top-0 left-72 right-0 h-14 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs text-secondary font-label-md text-label-md"><span class="hover:text-on-surface cursor-pointer">SIT Core</span><span class="material-symbols-outlined text-[14px]">chevron_right</span><span class="text-on-surface font-semibold">Console</span></div><div class="inline-flex items-center px-space-sm py-space-xs rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm"><span class="w-1.5 h-1.5 rounded-full bg-primary mr-1.5"></span>AY 2024-25 • Even Semester</div></div><div class="flex-1 max-w-lg mx-space-xl"><div class="relative flex items-center"><span class="material-symbols-outlined absolute left-3 text-secondary text-[18px]">search</span><input class="w-full bg-surface-container-lowest text-on-surface placeholder:text-secondary rounded-lg pl-9 pr-12 py-1.5 font-body-sm text-body-sm shadow-[0_1px_4px_rgba(0,0,0,0.04)] outline-none focus:ring-2 focus:ring-primary/20" placeholder="Search students, faculty, PRN, subjects, notices..." type="text"/><kbd class="absolute right-3 px-1.5 py-0.5 rounded bg-surface-container-high font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">⌘K</kbd></div></div><div class="flex items-center gap-space-sm"><button class="flex items-center gap-space-xs px-space-md py-1.5 bg-primary-container text-on-primary rounded-lg font-headline-sm text-headline-sm shadow-sm hover:opacity-95 transition-opacity"><span class="material-symbols-outlined text-[16px]">add</span><span>Quick Action</span></button><button class="relative p-space-sm text-secondary hover:text-on-surface rounded-lg hover:bg-surface-container transition-colors" title="Academic Calendar"><span class="material-symbols-outlined text-[20px]">calendar_today</span></button><button class="relative p-space-sm text-secondary hover:text-on-surface rounded-lg hover:bg-surface-container transition-colors" title="Notifications"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1 right-1 w-4 h-4 rounded-full bg-error text-on-error font-tabular-numeric-sm text-[10px] flex items-center justify-center font-bold">4</span></button><button class="p-space-sm text-secondary hover:text-on-surface rounded-lg hover:bg-surface-container transition-colors" title="Help Desk"><span class="material-symbols-outlined text-[20px]">help</span></button><div class="h-6 w-px bg-surface-container-highest mx-space-xs"></div><div class="flex items-center gap-space-xs cursor-pointer"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhYl6gFQnAnK_u1QI4I6kpgTUBz8zkz4S0iTSMOfteQuGNFH8wcQ786hcaha3Lvwql-gun7Ii-twZwnY_0xsvc5TeO2YwbFj3lUFwZthKaL9aBhsFOzfWQoP1BNup3YW-w_1PJivK7Fw_NgrnFRgPewtJ6MQezgPl1mqG_glViYBC6CJhrz4i5J1f3NUEu1mpC6Xn5Ma068gy3BMqa3iSiNSs-T_YfDGMd88RMTJLQoh5vRgTFsdjMqg"/><span class="material-symbols-outlined text-secondary text-[18px]">expand_more</span></div></div></header><main class="w-full pt-14 px-space-xl pb-space-xl flex-1"><div class="flex flex-col w-full">
+<!-- Top Context Ribbon & Status Bar -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm mb-space-md bg-surface-container-lowest p-space-md rounded-xl shadow-sm">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs font-tabular-numeric text-tabular-numeric text-secondary bg-surface-container-high px-space-sm py-1 rounded">
+<span class="material-symbols-outlined text-[15px] text-primary">verified</span>
+<span>AUTONOMOUS ACADEMIC RECORD SYSTEM</span>
+</div>
+<span class="text-outline-variant">•</span>
+<span class="font-label-sm text-label-sm text-secondary tracking-wide uppercase">ERP Node: MH-SIT-PUN-04</span>
+<span class="text-outline-variant hidden md:inline">•</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-tertiary hidden md:inline font-semibold">Biometric Sync: 09:41:22 AM IST (Active)</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="inline-flex items-center gap-1.5 px-space-md py-1 bg-surface-container hover:bg-surface-container-high text-on-surface rounded font-label-sm text-label-sm transition-colors">
+<span class="material-symbols-outlined text-[16px]">print</span>
+<span>Print Summary</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-space-md py-1 bg-primary-container text-on-primary rounded font-label-sm text-label-sm shadow-sm hover:opacity-95 transition-opacity">
+<span class="material-symbols-outlined text-[16px]">verified_user</span>
+<span>CoE Digital Verification</span>
+</button>
+</div>
+</div>
+<!-- Student Master Hero Dossier -->
+<div class="relative overflow-hidden bg-surface-container-lowest rounded-xl p-space-lg shadow-sm mb-space-lg">
+<div class="absolute -right-16 -top-16 w-80 h-80 bg-primary/5 rounded-full pointer-events-none blur-2xl"></div>
+<div class="relative flex flex-col xl:flex-row xl:items-center justify-between gap-space-lg">
+<!-- Identity & Portrait -->
+<div class="flex items-start sm:items-center gap-space-lg">
+<div class="relative shrink-0">
+<img class="w-20 h-24 object-cover rounded-lg shadow-sm" data-alt="A clean, direct passport studio headshot of an 21-year-old male Indian computer science engineering student named Aditya with short neat dark hair and a navy blue collegiate blazer in soft diffused studio lighting, sharp focus, professional institutional dossier style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZKRoFdpOkBikBRdgz-tdO-ORqFSH6E-xtix0mSt3IvdKHxDmqfyh0FxT_SfdexAm4yQ4XP8rKF12pRWrIEwd5SsjBpi595C0UxX2ah-MfkaP8Z51FbOhrHzeBVJ-q-wNkKeZFr8fBOADMgiAVW3od6u9Al9jMzmXkq3g4Ldfqs-R1p1znMdKrFOcU53W8DJgwDesoiGjT1jDUtRQ1uSsUKlg803-9BSZg_dN1oUhCYvkFQmy_Hx_Dqw"/>
+<span class="absolute -bottom-2 -right-2 px-1.5 py-0.5 rounded bg-tertiary text-on-tertiary font-tabular-numeric-sm text-tabular-numeric-sm font-bold tracking-tight shadow-sm">SEM VI</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex flex-wrap items-center gap-x-space-md gap-y-1">
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight font-bold">Aditya Suresh Patil</h1>
+<span class="inline-flex items-center px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-semibold rounded">REGULAR - DIRECT ADMIT</span>
+</div>
+<p class="font-body-md text-body-md text-secondary mt-0.5">Department of Computer Science &amp; Engineering • Faculty of Technology</p>
+<div class="flex flex-wrap items-center gap-x-space-lg gap-y-1 mt-2 text-on-surface-variant font-tabular-numeric text-tabular-numeric">
+<span><span class="text-secondary font-label-sm text-label-sm uppercase font-sans">PRN:</span> <strong class="font-semibold text-on-surface">SIT2022CSE042</strong></span>
+<span><span class="text-secondary font-label-sm text-label-sm uppercase font-sans">Roll No:</span> <strong class="font-semibold text-on-surface">6042</strong></span>
+<span><span class="text-secondary font-label-sm text-label-sm uppercase font-sans">Eligibility:</span> <strong class="font-semibold text-on-surface">202201640192</strong></span>
+<span><span class="text-secondary font-label-sm text-label-sm uppercase font-sans">Mentor:</span> Dr. V. K. Deshmukh</span>
+</div>
+</div>
+</div>
+<!-- Quick KPI Chips Matrix -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-md shrink-0 bg-surface-container-low p-space-md rounded-lg">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-semibold">Cumulative Attendance</span>
+<div class="flex items-baseline gap-1 mt-0.5">
+<span class="font-headline-xl text-headline-xl text-on-surface font-tabular-numeric font-bold">91.4%</span>
+<span class="material-symbols-outlined text-[16px] text-tertiary">check_circle</span>
+</div>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-tertiary font-medium">222 / 243 Delivered Hrs</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-semibold">Sem V SGPA</span>
+<div class="flex items-baseline gap-1 mt-0.5">
+<span class="font-headline-xl text-headline-xl text-primary font-tabular-numeric font-bold">8.90</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold">/ 10</span>
+</div>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">24 Earned Credits</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-semibold">Cumulative CGPA</span>
+<div class="flex items-baseline gap-1 mt-0.5">
+<span class="font-headline-xl text-headline-xl text-on-surface font-tabular-numeric font-bold">8.86</span>
+<span class="material-symbols-outlined text-[16px] text-tertiary">trending_up</span>
+</div>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary font-medium">Class Rank: #04 of 142</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-semibold">Exam Eligibility</span>
+<div class="flex items-baseline gap-1 mt-0.5">
+<span class="font-headline-md text-headline-md text-tertiary font-bold uppercase tracking-tight">Cleared</span>
+</div>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-tertiary font-semibold">No Hall Ticket Holds</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Primary Interactive Segmented Control Tabs -->
+<div class="flex items-center gap-space-xs p-1 bg-surface-container-high rounded-xl mb-space-lg w-fit shadow-inner">
+<button class="flex items-center gap-space-xs px-space-lg py-2 rounded-lg bg-surface-container-lowest text-on-surface font-headline-sm text-headline-sm shadow-sm transition-all">
+<span class="material-symbols-outlined text-[18px] text-primary">fingerprint</span>
+<span>Attendance Matrix &amp; Biometric Logs</span>
+<span class="px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed font-tabular-numeric-sm text-tabular-numeric-sm rounded font-bold">91.4% Overall</span>
+</button>
+<a class="flex items-center gap-space-xs px-space-lg py-2 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container font-headline-sm text-headline-sm transition-all" href="#sem-results-section">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span>Semester Results &amp; Autonomous Grade Cards</span>
+</a>
+<button class="flex items-center gap-space-xs px-space-lg py-2 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container font-headline-sm text-headline-sm transition-all">
+<span class="material-symbols-outlined text-[18px]">confirmation_number</span>
+<span>Hall Tickets &amp; Examination Forms</span>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</button>
+</div>
+<!-- SECTION 1: Subject-wise Detailed Attendance Matrix -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm mb-space-lg">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-bold">Course-wise Attendance Breakdown</h2>
+<p class="font-body-sm text-body-sm text-secondary">Minimum statutory threshold: 75.0% aggregate per course as per DTE Maharashtra Academic Regulations.</p>
+</div>
+<div class="flex items-center gap-space-sm">
+<div class="flex items-center gap-2 text-label-sm font-label-sm text-secondary">
+<span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span> ≥85% Safe</span>
+<span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-secondary"></span> 75-84% Warning</span>
+<span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-error"></span> &lt;75% Defaulter</span>
+</div>
+<button class="inline-flex items-center gap-1 px-space-md py-1 bg-surface-container text-on-surface rounded font-label-sm text-label-sm hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+<span>Export CSV</span>
+</button>
+</div>
+</div>
+<!-- Attendance Table -->
+<div class="overflow-x-auto rounded-lg bg-surface-container-lowest">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="bg-surface-container text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-2.5 px-space-md font-semibold">Course Code &amp; Title</th>
+<th class="py-2.5 px-space-md font-semibold">Faculty In-charge</th>
+<th class="py-2.5 px-space-md font-semibold text-right font-tabular-numeric">Conducted</th>
+<th class="py-2.5 px-space-md font-semibold text-right font-tabular-numeric">Attended</th>
+<th class="py-2.5 px-space-md font-semibold text-right font-tabular-numeric">Absent</th>
+<th class="py-2.5 px-space-md font-semibold text-right font-tabular-numeric">OD / Approved</th>
+<th class="py-2.5 px-space-md font-semibold text-center">Progress Gauge</th>
+<th class="py-2.5 px-space-md font-semibold text-right font-tabular-numeric">Percentage</th>
+<th class="py-2.5 px-space-md font-semibold text-center">Status</th>
+<th class="py-2.5 px-space-md font-semibold text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y-0">
+<!-- Row 1: CS601 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">CS601: Distributed Systems &amp; Cloud</span>
+<span class="font-label-sm text-label-sm text-secondary font-tabular-numeric">Theory • 4 Credits • Room CC-302</span>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-tabular-numeric-sm text-[10px] font-bold">AP</div>
+<span class="text-on-surface font-medium">Prof. A. R. Phalke</span>
+</div>
+</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-on-surface font-medium">51</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-tertiary font-semibold">48</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-error font-medium">3</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-secondary">0</td>
+<td class="py-3 px-space-md">
+<div class="w-32 bg-surface-container-high rounded-full h-2 mx-auto overflow-hidden">
+<div class="bg-tertiary h-2 rounded-full" style="width: 94.1%;"></div>
+</div>
+</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-bold text-on-surface">94.1%</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-label-sm font-label-sm font-semibold bg-tertiary-fixed text-on-tertiary-fixed">Compliant</span>
+</td>
+<td class="py-3 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1 text-secondary hover:text-primary rounded hover:bg-surface-container" title="View Slot Timestamps"><span class="material-symbols-outlined text-[18px]">visibility</span></button>
+<button class="p-1 text-secondary hover:text-on-surface rounded hover:bg-surface-container" title="Claim Duty Leave"><span class="material-symbols-outlined text-[18px]">add_task</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2: CS602 -->
+<tr class="bg-surface-container-low/40 hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">CS602: Compiler Design &amp; Automata</span>
+<span class="font-label-sm text-label-sm text-secondary font-tabular-numeric">Theory • 4 Credits • Room CC-304</span>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-tabular-numeric-sm text-[10px] font-bold">MK</div>
+<span class="text-on-surface font-medium">Dr. M. S. Kadam</span>
+</div>
+</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-on-surface font-medium">48</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-tertiary font-semibold">44</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-error font-medium">4</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-secondary">2</td>
+<td class="py-3 px-space-md">
+<div class="w-32 bg-surface-container-high rounded-full h-2 mx-auto overflow-hidden">
+<div class="bg-tertiary h-2 rounded-full" style="width: 91.6%;"></div>
+</div>
+</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-bold text-on-surface">91.6%</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-label-sm font-label-sm font-semibold bg-tertiary-fixed text-on-tertiary-fixed">Compliant</span>
+</td>
+<td class="py-3 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1 text-secondary hover:text-primary rounded hover:bg-surface-container" title="View Slot Timestamps"><span class="material-symbols-outlined text-[18px]">visibility</span></button>
+<button class="p-1 text-secondary hover:text-on-surface rounded hover:bg-surface-container" title="Claim Duty Leave"><span class="material-symbols-outlined text-[18px]">add_task</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3: CS603 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">CS603: Machine Learning &amp; Deep Networks</span>
+<span class="font-label-sm text-label-sm text-secondary font-tabular-numeric">Theory • 3 Credits • Hall B</span>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center font-tabular-numeric-sm text-[10px] font-bold">SP</div>
+<span class="text-on-surface font-medium">Dr. S. Patil (HOD)</span>
+</div>
+</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-on-surface font-medium">48</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-tertiary font-semibold">42</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-error font-medium">6</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-secondary">1</td>
+<td class="py-3 px-space-md">
+<div class="w-32 bg-surface-container-high rounded-full h-2 mx-auto overflow-hidden">
+<div class="bg-tertiary h-2 rounded-full" style="width: 87.5%;"></div>
+</div>
+</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-bold text-on-surface">87.5%</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-label-sm font-label-sm font-semibold bg-tertiary-fixed text-on-tertiary-fixed">Compliant</span>
+</td>
+<td class="py-3 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1 text-secondary hover:text-primary rounded hover:bg-surface-container" title="View Slot Timestamps"><span class="material-symbols-outlined text-[18px]">visibility</span></button>
+<button class="p-1 text-secondary hover:text-on-surface rounded hover:bg-surface-container" title="Claim Duty Leave"><span class="material-symbols-outlined text-[18px]">add_task</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 4: CS604 -->
+<tr class="bg-surface-container-low/40 hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">CS604: Cryptography &amp; Information Assurance</span>
+<span class="font-label-sm text-label-sm text-secondary font-tabular-numeric">Theory • 3 Credits • Room CC-201</span>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-tabular-numeric-sm text-[10px] font-bold">VJ</div>
+<span class="text-on-surface font-medium">Prof. V. J. Jadhav</span>
+</div>
+</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-on-surface font-medium">42</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-tertiary font-semibold">38</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-error font-medium">4</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-secondary">0</td>
+<td class="py-3 px-space-md">
+<div class="w-32 bg-surface-container-high rounded-full h-2 mx-auto overflow-hidden">
+<div class="bg-tertiary h-2 rounded-full" style="width: 90.4%;"></div>
+</div>
+</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-bold text-on-surface">90.4%</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-label-sm font-label-sm font-semibold bg-tertiary-fixed text-on-tertiary-fixed">Compliant</span>
+</td>
+<td class="py-3 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1 text-secondary hover:text-primary rounded hover:bg-surface-container" title="View Slot Timestamps"><span class="material-symbols-outlined text-[18px]">visibility</span></button>
+<button class="p-1 text-secondary hover:text-on-surface rounded hover:bg-surface-container" title="Claim Duty Leave"><span class="material-symbols-outlined text-[18px]">add_task</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 5: CS605 Lab -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">CS605: Cloud &amp; Distributed Systems Lab</span>
+<span class="font-label-sm text-label-sm text-secondary font-tabular-numeric">Laboratory • 2 Credits • Lab SIT-306</span>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-tabular-numeric-sm text-[10px] font-bold">AP</div>
+<span class="text-on-surface font-medium">Prof. A. R. Phalke</span>
+</div>
+</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-on-surface font-medium">30</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-tertiary font-semibold">28</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-error font-medium">2</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-secondary">0</td>
+<td class="py-3 px-space-md">
+<div class="w-32 bg-surface-container-high rounded-full h-2 mx-auto overflow-hidden">
+<div class="bg-tertiary h-2 rounded-full" style="width: 93.3%;"></div>
+</div>
+</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-bold text-on-surface">93.3%</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-label-sm font-label-sm font-semibold bg-tertiary-fixed text-on-tertiary-fixed">Compliant</span>
+</td>
+<td class="py-3 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1 text-secondary hover:text-primary rounded hover:bg-surface-container" title="View Slot Timestamps"><span class="material-symbols-outlined text-[18px]">visibility</span></button>
+<button class="p-1 text-secondary hover:text-on-surface rounded hover:bg-surface-container" title="Claim Duty Leave"><span class="material-symbols-outlined text-[18px]">add_task</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 6: CS606 Mini Project -->
+<tr class="bg-surface-container-low/40 hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">CS606: Industry Oriented Mini Project 2B</span>
+<span class="font-label-sm text-label-sm text-secondary font-tabular-numeric">Project Work • 2 Credits • Project Innovation Center</span>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-tertiary text-on-tertiary flex items-center justify-center font-tabular-numeric-sm text-[10px] font-bold">SS</div>
+<span class="text-on-surface font-medium">Prof. S. S. Shinde</span>
+</div>
+</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-on-surface font-medium">24</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-tertiary font-semibold">22</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-error font-medium">2</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-secondary">0</td>
+<td class="py-3 px-space-md">
+<div class="w-32 bg-surface-container-high rounded-full h-2 mx-auto overflow-hidden">
+<div class="bg-tertiary h-2 rounded-full" style="width: 91.6%;"></div>
+</div>
+</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-bold text-on-surface">91.6%</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-label-sm font-label-sm font-semibold bg-tertiary-fixed text-on-tertiary-fixed">Compliant</span>
+</td>
+<td class="py-3 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1 text-secondary hover:text-primary rounded hover:bg-surface-container" title="View Slot Timestamps"><span class="material-symbols-outlined text-[18px]">visibility</span></button>
+<button class="p-1 text-secondary hover:text-on-surface rounded hover:bg-surface-container" title="Claim Duty Leave"><span class="material-symbols-outlined text-[18px]">add_task</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Attendance Bottom Legend & Duty Claim Note -->
+<div class="mt-space-md p-space-sm rounded-lg bg-surface-container flex flex-col md:flex-row items-start md:items-center justify-between gap-space-sm text-secondary font-body-sm text-body-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">info</span>
+<span>Shortage notification triggered if attendance falls below 75%. Medical certificates must be submitted to HOD within 7 days of absence.</span>
+</div>
+<button class="text-primary font-headline-sm text-headline-sm hover:underline flex items-center gap-1">
+<span>Request Condonation / Submit Medical Claim</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- SECTION 2: Biometric Turnstile Check-in Stream & Daily Logs -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-lg mb-space-lg">
+<!-- Stream Card (2 cols) -->
+<div class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="p-2 rounded-lg bg-primary-container text-on-primary">
+<span class="material-symbols-outlined text-[20px]">sensor_door</span>
+</span>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold">Biometric Turnstile Access Stream</h2>
+<p class="font-body-sm text-body-sm text-secondary">Synchronized logs with SIT Security Optical RFID &amp; Biometric Controllers</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-tertiary font-semibold uppercase">Realtime Live</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="bg-surface-container text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-2 px-space-md">Date &amp; Day</th>
+<th class="py-2 px-space-md">Access Point / Node</th>
+<th class="py-2 px-space-md font-tabular-numeric">Device Terminal ID</th>
+<th class="py-2 px-space-md font-tabular-numeric">Punch Time</th>
+<th class="py-2 px-space-md">Direction</th>
+<th class="py-2 px-space-md text-center">Auth Method</th>
+<th class="py-2 px-space-md text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y-0 font-tabular-numeric text-tabular-numeric">
+<!-- Entry 1 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-space-md font-sans text-on-surface font-medium">Today (28 Oct 2024)</td>
+<td class="py-2.5 px-space-md font-sans text-on-surface">Campus Main Gate North</td>
+<td class="py-2.5 px-space-md text-secondary">DEV-NGATE-01</td>
+<td class="py-2.5 px-space-md text-on-surface font-bold">08:42:18 AM</td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 font-sans text-label-sm text-tertiary font-semibold"><span class="material-symbols-outlined text-[14px]">login</span> IN</span>
+</td>
+<td class="py-2.5 px-space-md text-center font-sans text-label-sm text-secondary">Optical Fingerprint</td>
+<td class="py-2.5 px-space-md text-right font-sans">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-semibold">Granted</span>
+</td>
+</tr>
+<!-- Entry 2 -->
+<tr class="bg-surface-container-low/40 hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-space-md font-sans text-on-surface font-medium">Today (28 Oct 2024)</td>
+<td class="py-2.5 px-space-md font-sans text-on-surface">CSE Dept Turnstile 2 (3rd Fl)</td>
+<td class="py-2.5 px-space-md text-secondary">DEV-CSE-T02</td>
+<td class="py-2.5 px-space-md text-on-surface font-bold">08:55:04 AM</td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 font-sans text-label-sm text-tertiary font-semibold"><span class="material-symbols-outlined text-[14px]">login</span> IN</span>
+</td>
+<td class="py-2.5 px-space-md text-center font-sans text-label-sm text-secondary">RFID Smart Badge</td>
+<td class="py-2.5 px-space-md text-right font-sans">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-semibold">Granted</span>
+</td>
+</tr>
+<!-- Entry 3 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-space-md font-sans text-on-surface font-medium">Yesterday (27 Oct)</td>
+<td class="py-2.5 px-space-md font-sans text-on-surface">CSE Dept Turnstile 2 (3rd Fl)</td>
+<td class="py-2.5 px-space-md text-secondary">DEV-CSE-T02</td>
+<td class="py-2.5 px-space-md text-on-surface">05:14:30 PM</td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 font-sans text-label-sm text-secondary font-semibold"><span class="material-symbols-outlined text-[14px]">logout</span> OUT</span>
+</td>
+<td class="py-2.5 px-space-md text-center font-sans text-label-sm text-secondary">Optical Fingerprint</td>
+<td class="py-2.5 px-space-md text-right font-sans">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-semibold">Granted</span>
+</td>
+</tr>
+<!-- Entry 4 -->
+<tr class="bg-surface-container-low/40 hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-space-md font-sans text-on-surface font-medium">Yesterday (27 Oct)</td>
+<td class="py-2.5 px-space-md font-sans text-on-surface">Campus Main Gate North</td>
+<td class="py-2.5 px-space-md text-secondary">DEV-NGATE-02</td>
+<td class="py-2.5 px-space-md text-on-surface">05:22:12 PM</td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 font-sans text-label-sm text-secondary font-semibold"><span class="material-symbols-outlined text-[14px]">logout</span> OUT</span>
+</td>
+<td class="py-2.5 px-space-md text-center font-sans text-label-sm text-secondary">RFID Smart Badge</td>
+<td class="py-2.5 px-space-md text-right font-sans">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-semibold">Granted</span>
+</td>
+</tr>
+<!-- Entry 5 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-space-md font-sans text-on-surface font-medium">26 Oct 2024</td>
+<td class="py-2.5 px-space-md font-sans text-on-surface">CSE Central Computing Lab</td>
+<td class="py-2.5 px-space-md text-secondary">DEV-LAB-306</td>
+<td class="py-2.5 px-space-md text-on-surface">02:01:45 PM</td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 font-sans text-label-sm text-tertiary font-semibold"><span class="material-symbols-outlined text-[14px]">login</span> IN</span>
+</td>
+<td class="py-2.5 px-space-md text-center font-sans text-label-sm text-secondary">Optical Fingerprint</td>
+<td class="py-2.5 px-space-md text-right font-sans">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-semibold">Granted</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Right Side: Turnstile Hardware Specs & Attendance Radar Summary -->
+<div class="flex flex-col gap-space-md">
+<!-- Hardware / Security Info Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-2 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+<span>Security &amp; Device Identity</span>
+</h3>
+<div class="space-y-2 text-body-sm font-body-sm">
+<div class="flex justify-between py-1 bg-surface-container-low px-2 rounded">
+<span class="text-secondary">Smart Card UID:</span>
+<span class="font-tabular-numeric text-on-surface font-semibold">A4-7F-90-E2-C1</span>
+</div>
+<div class="flex justify-between py-1 bg-surface-container-low px-2 rounded">
+<span class="text-secondary">Biometric Template:</span>
+<span class="font-tabular-numeric text-on-surface font-semibold">FMR-ANSI-378 (SHA256)</span>
+</div>
+<div class="flex justify-between py-1 bg-surface-container-low px-2 rounded">
+<span class="text-secondary">Assigned Lab Wing:</span>
+<span class="text-on-surface font-semibold">CSE Block C (Turnstile 1 &amp; 2)</span>
+</div>
+<div class="flex justify-between py-1 bg-surface-container-low px-2 rounded">
+<span class="text-secondary">Late Arrival Flags:</span>
+<span class="font-tabular-numeric text-tertiary font-bold">0 Violations</span>
+</div>
+</div>
+</div>
+<!-- Quick Attendance Pattern Visualization -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-1">Weekly Presence Pattern</h3>
+<p class="font-body-sm text-body-sm text-secondary mb-3">Avg arrival: 08:48 AM • Avg departure: 05:18 PM</p>
+<!-- Inline Weekly Attendance Bars SVG -->
+<div class="bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex justify-between items-end h-28 gap-2 px-2 pt-2">
+<div class="flex-1 flex flex-col items-center gap-1">
+<span class="font-tabular-numeric-sm text-[10px] text-secondary">7.5h</span>
+<div class="w-full bg-primary rounded-t" style="height: 75px;"></div>
+<span class="font-label-sm text-[10px] text-secondary">Mon</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1">
+<span class="font-tabular-numeric-sm text-[10px] text-secondary">8.2h</span>
+<div class="w-full bg-primary rounded-t" style="height: 82px;"></div>
+<span class="font-label-sm text-[10px] text-secondary">Tue</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1">
+<span class="font-tabular-numeric-sm text-[10px] text-secondary">8.0h</span>
+<div class="w-full bg-primary rounded-t" style="height: 80px;"></div>
+<span class="font-label-sm text-[10px] text-secondary">Wed</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1">
+<span class="font-tabular-numeric-sm text-[10px] text-secondary">6.5h</span>
+<div class="w-full bg-primary rounded-t" style="height: 65px;"></div>
+<span class="font-label-sm text-[10px] text-secondary">Thu</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1">
+<span class="font-tabular-numeric-sm text-[10px] text-secondary">8.5h</span>
+<div class="w-full bg-tertiary rounded-t" style="height: 85px;"></div>
+<span class="font-label-sm text-[10px] text-secondary">Fri</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1">
+<span class="font-tabular-numeric-sm text-[10px] text-secondary">4.0h</span>
+<div class="w-full bg-secondary-fixed-dim rounded-t" style="height: 40px;"></div>
+<span class="font-label-sm text-[10px] text-secondary">Sat</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between text-label-sm font-label-sm">
+<span class="text-secondary font-medium">Cumulative Hours logged this month:</span>
+<span class="font-tabular-numeric text-on-surface font-bold">148.5 hrs</span>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3: Official Examination Results Tabulation (Autonomous Grade Card Sem V) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm mb-space-lg" id="sem-results-section">
+<!-- Header with Seals and Badges -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md pb-space-md mb-space-md border-b-0 bg-surface-container-low p-space-md rounded-xl">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-primary-container text-on-primary flex items-center justify-center font-headline-xl font-bold">
+          SIT
+        </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-bold">Autonomous Examination Statement of Marks</h2>
+<span class="px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-semibold">OFFICIAL GAZETTE</span>
+</div>
+<span class="font-body-sm text-body-sm text-secondary">Examination: B.Tech Semester V (Winter 2023 Session) • Held in Dec 2023 • Published Jan 2024</span>
+</div>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="flex items-center gap-2 bg-surface-container-lowest px-space-md py-1.5 rounded-lg shadow-sm font-tabular-numeric">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-sans">Seat No:</span>
+<span class="font-bold text-on-surface">504212</span>
+</div>
+<button class="inline-flex items-center gap-1.5 px-space-md py-1.5 bg-primary-container text-on-primary rounded font-label-sm text-label-sm font-semibold shadow hover:opacity-95 transition-all">
+<span class="material-symbols-outlined text-[18px]">download_for_offline</span>
+<span>Download Signed Gazette PDF</span>
+</button>
+</div>
+</div>
+<!-- Marks Breakdown Matrix -->
+<div class="overflow-x-auto rounded-lg bg-surface-container-lowest">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="bg-surface-container text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-2.5 px-space-md font-semibold">Course Code &amp; Name</th>
+<th class="py-2.5 px-space-md font-semibold text-center">Course Type</th>
+<th class="py-2.5 px-space-md font-semibold text-right font-tabular-numeric">Credits</th>
+<th class="py-2.5 px-space-md font-semibold text-right font-tabular-numeric">CIE-1 (20)</th>
+<th class="py-2.5 px-space-md font-semibold text-right font-tabular-numeric">CIE-2 (20)</th>
+<th class="py-2.5 px-space-md font-semibold text-right font-tabular-numeric">Term Work (25)</th>
+<th class="py-2.5 px-space-md font-semibold text-right font-tabular-numeric">ESE (60)</th>
+<th class="py-2.5 px-space-md font-semibold text-right font-tabular-numeric">Total (125)</th>
+<th class="py-2.5 px-space-md font-semibold text-center font-tabular-numeric">Grade Pts</th>
+<th class="py-2.5 px-space-md font-semibold text-center">Letter Grade</th>
+<th class="py-2.5 px-space-md font-semibold text-center">Outcome</th>
+</tr>
+</thead>
+<tbody class="divide-y-0">
+<!-- Course 1 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-space-md">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">CS501: Operating System Architecture</span>
+</td>
+<td class="py-3 px-space-md text-center text-secondary">Theory Compulsory</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-medium">4</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">18</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">19</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">23</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-medium">52</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-bold text-on-surface">112</td>
+<td class="py-3 px-space-md text-center font-tabular-numeric font-bold">10</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center justify-center w-7 h-7 rounded bg-tertiary-fixed text-on-tertiary-fixed font-bold font-tabular-numeric">O</span>
+</td>
+<td class="py-3 px-space-md text-center text-tertiary font-semibold font-label-sm">PASS</td>
+</tr>
+<!-- Course 2 -->
+<tr class="bg-surface-container-low/40 hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-space-md">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">CS502: Computer Networks &amp; Protocols</span>
+</td>
+<td class="py-3 px-space-md text-center text-secondary">Theory Compulsory</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-medium">4</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">17</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">18</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">22</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-medium">49</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-bold text-on-surface">106</td>
+<td class="py-3 px-space-md text-center font-tabular-numeric font-bold">9</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center justify-center w-7 h-7 rounded bg-surface-container-high text-on-surface font-bold font-tabular-numeric">A+</span>
+</td>
+<td class="py-3 px-space-md text-center text-tertiary font-semibold font-label-sm">PASS</td>
+</tr>
+<!-- Course 3 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-space-md">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">CS503: Database Management Systems</span>
+</td>
+<td class="py-3 px-space-md text-center text-secondary">Theory Compulsory</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-medium">4</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">19</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">17</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">24</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-medium">51</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-bold text-on-surface">111</td>
+<td class="py-3 px-space-md text-center font-tabular-numeric font-bold">10</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center justify-center w-7 h-7 rounded bg-tertiary-fixed text-on-tertiary-fixed font-bold font-tabular-numeric">O</span>
+</td>
+<td class="py-3 px-space-md text-center text-tertiary font-semibold font-label-sm">PASS</td>
+</tr>
+<!-- Course 4 -->
+<tr class="bg-surface-container-low/40 hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-space-md">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">CS504: Software Engineering &amp; Agile Methods</span>
+</td>
+<td class="py-3 px-space-md text-center text-secondary">Theory Compulsory</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-medium">3</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">16</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">17</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">21</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-medium">48</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-bold text-on-surface">102</td>
+<td class="py-3 px-space-md text-center font-tabular-numeric font-bold">9</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center justify-center w-7 h-7 rounded bg-surface-container-high text-on-surface font-bold font-tabular-numeric">A+</span>
+</td>
+<td class="py-3 px-space-md text-center text-tertiary font-semibold font-label-sm">PASS</td>
+</tr>
+<!-- Course 5: Lab -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-space-md">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">CS505: OS &amp; Networks Laboratory</span>
+</td>
+<td class="py-3 px-space-md text-center text-secondary">Laboratory Practical</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-medium">2</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-secondary">—</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-secondary">—</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">24</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-medium">23 (POE)</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-bold text-on-surface">47/50</td>
+<td class="py-3 px-space-md text-center font-tabular-numeric font-bold">10</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center justify-center w-7 h-7 rounded bg-tertiary-fixed text-on-tertiary-fixed font-bold font-tabular-numeric">O</span>
+</td>
+<td class="py-3 px-space-md text-center text-tertiary font-semibold font-label-sm">PASS</td>
+</tr>
+<!-- Course 6: DBMS Lab -->
+<tr class="bg-surface-container-low/40 hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-space-md">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">CS506: Database Practical &amp; SQL Lab</span>
+</td>
+<td class="py-3 px-space-md text-center text-secondary">Laboratory Practical</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-medium">2</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-secondary">—</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-secondary">—</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">23</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-medium">22 (POE)</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-bold text-on-surface">45/50</td>
+<td class="py-3 px-space-md text-center font-tabular-numeric font-bold">9</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center justify-center w-7 h-7 rounded bg-surface-container-high text-on-surface font-bold font-tabular-numeric">A+</span>
+</td>
+<td class="py-3 px-space-md text-center text-tertiary font-semibold font-label-sm">PASS</td>
+</tr>
+<!-- Course 7: Mini Project -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-space-md">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">CS507: Mini Project Stage 2A &amp; Seminar</span>
+</td>
+<td class="py-3 px-space-md text-center text-secondary">Institutional Project</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-medium">3</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-secondary">—</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-secondary">—</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">46</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-medium">45 (Ext)</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-bold text-on-surface">91/100</td>
+<td class="py-3 px-space-md text-center font-tabular-numeric font-bold">10</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center justify-center w-7 h-7 rounded bg-tertiary-fixed text-on-tertiary-fixed font-bold font-tabular-numeric">O</span>
+</td>
+<td class="py-3 px-space-md text-center text-tertiary font-semibold font-label-sm">PASS</td>
+</tr>
+<!-- Course 8: Audit -->
+<tr class="bg-surface-container-low/40 hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-space-md">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">AC501: Constitution of India &amp; Professional Ethics</span>
+</td>
+<td class="py-3 px-space-md text-center text-secondary">Mandatory Non-Credit Audit</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric text-secondary">—</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">18</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">19</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">—</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric">—</td>
+<td class="py-3 px-space-md text-right font-tabular-numeric font-bold text-on-surface">37/50</td>
+<td class="py-3 px-space-md text-center font-tabular-numeric text-secondary">—</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center justify-center px-1.5 py-0.5 rounded bg-surface-container font-semibold font-label-sm text-on-surface">COMP</span>
+</td>
+<td class="py-3 px-space-md text-center text-tertiary font-semibold font-label-sm">SATISFACTORY</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Final Grade Card Summary Bar & Digital Verification Box -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-lg mt-space-md pt-space-md bg-surface-container-low p-space-md rounded-xl">
+<!-- Left 2 Cols: Calculation Metric Strip -->
+<div class="lg:col-span-2 flex flex-col justify-between gap-space-md">
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-sm">
+<div class="bg-surface-container-lowest p-space-md rounded-lg shadow-sm">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-semibold">Total Credits Offered</span>
+<div class="font-headline-xl text-headline-xl text-on-surface font-tabular-numeric font-bold mt-1">24.0</div>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">100% Earned</span>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-lg shadow-sm">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-semibold">Total Marks Secured</span>
+<div class="font-headline-xl text-headline-xl text-on-surface font-tabular-numeric font-bold mt-1">620 / 700</div>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-tertiary font-semibold">88.57% Aggregate</span>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-lg shadow-sm">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-semibold">Semester SGPA</span>
+<div class="font-headline-xl text-headline-xl text-primary font-tabular-numeric font-bold mt-1">8.90</div>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-tertiary font-bold">FIRST CLASS DIST.</span>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-lg shadow-sm">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-semibold">Cumulative CGPA</span>
+<div class="font-headline-xl text-headline-xl text-tertiary font-tabular-numeric font-bold mt-1">8.86</div>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">Sem I through V</span>
+</div>
+</div>
+<div class="flex items-center gap-space-md p-space-sm bg-surface-container-lowest rounded-lg text-body-sm font-body-sm text-secondary">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0">workspace_premium</span>
+<span>Grading Scale: <strong>O (10): Outstanding (≥80%)</strong> • <strong>A+ (9): Excellent (70-79%)</strong> • <strong>A (8): Very Good (60-69%)</strong> • <strong>B+ (7): Good (55-59%)</strong> • <strong>B (6): Above Avg (50-54%)</strong>.</span>
+</div>
+</div>
+<!-- Right Col: CoE QR Digital Authentication Box -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-start justify-between gap-space-sm">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider font-semibold">Autonomous Verification</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-0.5">Controller of Examinations</h4>
+<p class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary mt-0.5">Hash: 8a93e502c81...bf77</p>
+</div>
+<!-- Inline SVG QR Code Box -->
+<div class="w-16 h-16 bg-surface-container p-1 rounded shrink-0 flex items-center justify-center">
+<svg class="w-14 h-14 text-on-surface" fill="currentColor" viewbox="0 0 24 24">
+<path d="M2 2h8v8H2V2zm2 2v4h4V4H4zm10-2h8v8h-8V2zm2 2v4h4V4h-4zM2 14h8v8H2v-8zm2 2v4h4v-4H4zm14-2h4v2h-4v-2zm-4 0h2v4h-2v-4zm2 4h2v4h-2v-4zm2 2h2v2h-2v-2zm-6 2h4v2h-4v-2zm8-2h2v4h-2v-4zM5 5h2v2H5V5zm12 0h2v2h-2V5zM5 17h2v2H5v-2z"></path>
+</svg>
+</div>
+</div>
+<div class="my-space-sm pt-space-xs">
+<div class="flex items-center gap-2 text-label-sm font-label-sm text-on-surface font-medium">
+<span class="material-symbols-outlined text-tertiary text-[18px]">verified</span>
+<span>Digitally Certified by Dr. P. B. Mane (CoE)</span>
+</div>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary block mt-0.5">Digital Timestamp: 14-JAN-2024 16:30:11 UTC</span>
+</div>
+<button class="w-full py-1.5 bg-surface-container hover:bg-surface-container-high text-on-surface font-headline-sm text-headline-sm rounded flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[16px]">qr_code_scanner</span>
+<span>Verify on SIT National Academic Depository</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Micro Footer Information -->
+<div class="flex flex-wrap items-center justify-between text-secondary font-label-sm text-label-sm py-space-sm px-space-xs gap-space-sm">
+<span>Sharad Institute of Technology, College of Engineering (An Autonomous Institute), Yadrav (Ichalkaranji)</span>
+<span class="font-tabular-numeric">Confidential • For Registered Student &amp; Parent Access Only</span>
+</div>
+</div></main></div></body></html>

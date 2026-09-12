@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "error": "#ba1a1a",
+          "on-primary": "#ffffff",
+          "surface-container-lowest": "#ffffff",
+          "error-container": "#ffdad6",
+          "on-primary-fixed-variant": "#0039b5",
+          "on-tertiary-fixed-variant": "#005137",
+          "surface-container": "#e5eeff",
+          "tertiary-fixed-dim": "#68dba9",
+          "on-secondary-fixed-variant": "#3f465c",
+          "surface-container-highest": "#d3e4fe",
+          "surface-tint": "#2151da",
+          "surface-container-low": "#eff4ff",
+          "on-secondary-container": "#5c647a",
+          "inverse-on-surface": "#eaf1ff",
+          "surface-container-high": "#dce9ff",
+          "primary": "#0037b0",
+          "surface": "#f8f9ff",
+          "secondary-fixed": "#dae2fd",
+          "tertiary-fixed": "#85f8c4",
+          "on-tertiary-container": "#76eab6",
+          "on-background": "#0b1c30",
+          "primary-fixed": "#dce1ff",
+          "tertiary": "#004f35",
+          "surface-variant": "#d3e4fe",
+          "on-surface-variant": "#434655",
+          "tertiary-container": "#006948",
+          "on-error-container": "#93000a",
+          "on-primary-fixed": "#001551",
+          "outline-variant": "#c4c5d7",
+          "surface-dim": "#cbdbf5",
+          "inverse-primary": "#b7c4ff",
+          "on-error": "#ffffff",
+          "outline": "#747686",
+          "secondary-container": "#dae2fd",
+          "on-secondary-fixed": "#131b2e",
+          "on-secondary": "#ffffff",
+          "surface-bright": "#f8f9ff",
+          "primary-fixed-dim": "#b7c4ff",
+          "on-primary-container": "#cad3ff",
+          "background": "#f8f9ff",
+          "secondary": "#565e74",
+          "secondary-fixed-dim": "#bec6e0",
+          "primary-container": "#1d4ed8",
+          "inverse-surface": "#213145",
+          "on-surface": "#0b1c30",
+          "on-tertiary-fixed": "#002114",
+          "on-tertiary": "#ffffff"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.125rem",
+          "lg": "0.25rem",
+          "xl": "0.5rem",
+          "full": "0.75rem"
+        },
+        "spacing": {
+          "gutter": "1rem",
+          "space-sm": "0.5rem",
+          "space-md": "0.75rem",
+          "margin": "1.5rem",
+          "margin-mobile": "1rem",
+          "space-xs": "0.25rem",
+          "space-xl": "1.5rem",
+          "gutter-compact": "0.5rem",
+          "space-lg": "1rem"
+        },
+        "fontFamily": {
+          "headline-md": [
+            "Inter"
+          ],
+          "tabular-numeric-sm": [
+            "JetBrains Mono"
+          ],
+          "body-lg": [
+            "Inter"
+          ],
+          "tabular-numeric": [
+            "JetBrains Mono"
+          ],
+          "body-sm": [
+            "Inter"
+          ],
+          "label-md": [
+            "Inter"
+          ],
+          "body-md": [
+            "Inter"
+          ],
+          "display-lg": [
+            "Inter"
+          ],
+          "headline-lg": [
+            "Inter"
+          ],
+          "headline-sm": [
+            "Inter"
+          ],
+          "label-sm": [
+            "Inter"
+          ],
+          "headline-xl": [
+            "Inter"
+          ]
+        },
+        "fontSize": {
+          "headline-md": [
+            "16px",
+            {
+              "lineHeight": "24px",
+              "letterSpacing": "-0.005em",
+              "fontWeight": "600"
+            }
+          ],
+          "tabular-numeric-sm": [
+            "11px",
+            {
+              "lineHeight": "14px",
+              "fontWeight": "500"
+            }
+          ],
+          "body-lg": [
+            "15px",
+            {
+              "lineHeight": "22px",
+              "fontWeight": "400"
+            }
+          ],
+          "tabular-numeric": [
+            "13px",
+            {
+              "lineHeight": "18px",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "500"
+            }
+          ],
+          "body-sm": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "fontWeight": "400"
+            }
+          ],
+          "label-md": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "letterSpacing": "0.04em",
+              "fontWeight": "600"
+            }
+          ],
+          "body-md": [
+            "13px",
+            {
+              "lineHeight": "18px",
+              "fontWeight": "400"
+            }
+          ],
+          "display-lg": [
+            "32px",
+            {
+              "lineHeight": "40px",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "700"
+            }
+          ],
+          "headline-lg": [
+            "20px",
+            {
+              "lineHeight": "28px",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "600"
+            }
+          ],
+          "headline-sm": [
+            "14px",
+            {
+              "lineHeight": "20px",
+              "fontWeight": "600"
+            }
+          ],
+          "label-sm": [
+            "11px",
+            {
+              "lineHeight": "14px",
+              "letterSpacing": "0.05em",
+              "fontWeight": "600"
+            }
+          ],
+          "headline-xl": [
+            "24px",
+            {
+              "lineHeight": "32px",
+              "letterSpacing": "-0.015em",
+              "fontWeight": "700"
+            }
+          ]
+        }
+      },
+    },
+  }</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-64 bg-surface-container-lowest border-r border-outline-variant/40 z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="h-14 px-space-lg flex items-center justify-between border-b border-outline-variant/30"><div class="flex items-center gap-space-sm"><div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary font-headline-md text-headline-md">S</div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">Campus Connect</span><span class="font-label-sm text-label-sm text-secondary leading-tight">SIT COE Yadrav</span></div></div><span class="px-1.5 py-0.5 rounded-sm bg-primary/10 text-primary font-tabular-numeric-sm text-tabular-numeric-sm">v2.4</span></div><div class="p-space-md border-b border-outline-variant/30"><label class="font-label-sm text-label-sm text-secondary uppercase block mb-1">Active Portal Role</label><div class="relative"><select class="w-full appearance-none bg-surface-container-low border border-outline-variant/60 rounded-lg px-space-sm py-1.5 font-label-md text-label-md text-on-surface focus:outline-none focus:border-primary pr-8"><option selected="" value="admin">Admin Console (Institutional)</option><option value="hod">Head of Department (HOD)</option><option value="faculty">Faculty Member</option><option value="student">Student Portal</option></select><span class="material-symbols-outlined absolute right-2 top-2 text-on-surface-variant pointer-events-none text-[16px]">unfold_more</span></div></div><nav class="px-space-md py-space-sm flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary font-headline-sm rounded-lg"><span class="px-space-sm pt-2 pb-1 font-label-sm text-label-sm text-secondary uppercase tracking-wider">Core</span><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span class="font-body-md text-body-md">Dashboard</span></a><a class="flex items-center justify-between px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="notifications" href="#"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[18px]">notifications</span><span class="font-body-md text-body-md">Notifications</span></div><span class="px-1.5 py-0.2 rounded-full bg-error text-on-error font-tabular-numeric-sm text-tabular-numeric-sm">4</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="global-search" href="#"><span class="material-symbols-outlined text-[18px]">manage_search</span><span class="font-body-md text-body-md">Global Search</span></a><span class="px-space-sm pt-3 pb-1 font-label-sm text-label-sm text-secondary uppercase tracking-wider">Academic Management</span><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="departments" href="#"><span class="material-symbols-outlined text-[18px]">domain</span><span class="font-body-md text-body-md">Departments</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="courses-and-curriculum" href="#"><span class="material-symbols-outlined text-[18px]">menu_book</span><span class="font-body-md text-body-md">Courses &amp; Curriculum</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="subjects" href="#"><span class="material-symbols-outlined text-[18px]">auto_stories</span><span class="font-body-md text-body-md">Subjects</span></a><span class="px-space-sm pt-3 pb-1 font-label-sm text-label-sm text-secondary uppercase tracking-wider">People</span><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="students-directory" href="#"><span class="material-symbols-outlined text-[18px]">school</span><span class="font-body-md text-body-md">Students Directory</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="faculty-and-staff" href="#"><span class="material-symbols-outlined text-[18px]">badge</span><span class="font-body-md text-body-md">Faculty &amp; Staff</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="hod-management" href="#"><span class="material-symbols-outlined text-[18px]">supervisor_account</span><span class="font-body-md text-body-md">HOD Management</span></a><span class="px-space-sm pt-3 pb-1 font-label-sm text-label-sm text-secondary uppercase tracking-wider">Operations</span><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="attendance-register" href="#"><span class="material-symbols-outlined text-[18px]">fact_check</span><span class="font-body-md text-body-md">Attendance Register</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="marks-and-results" href="#"><span class="material-symbols-outlined text-[18px]">grade</span><span class="font-body-md text-body-md">Marks &amp; Results</span></a><a aria-current="page" class="flex items-center gap-2.5 px-space-sm py-1.5 transition-colors bg-primary-container text-on-primary font-headline-sm rounded-lg" data-path="study-materials" href="#"><span class="material-symbols-outlined text-[18px]">folder_shared</span><span class="font-body-md text-body-md">Study Materials</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="campus-notices" href="#"><span class="material-symbols-outlined text-[18px]">campaign</span><span class="font-body-md text-body-md">Campus Notices</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="events-calendar" href="#"><span class="material-symbols-outlined text-[18px]">calendar_month</span><span class="font-body-md text-body-md">Events Calendar</span></a><span class="px-space-sm pt-3 pb-1 font-label-sm text-label-sm text-secondary uppercase tracking-wider">System</span><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="user-profile" href="#"><span class="material-symbols-outlined text-[18px]">account_circle</span><span class="font-body-md text-body-md">User Profile</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[18px]">settings</span><span class="font-body-md text-body-md">Settings</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-error hover:bg-error-container hover:text-on-error-container transition-colors" data-path="login" href="#"><span class="material-symbols-outlined text-[18px]">logout</span><span class="font-body-md text-body-md">Logout</span></a></nav></div><div class="p-space-md border-t border-outline-variant/30 bg-surface-container-low/50"><div class="flex items-center gap-space-sm"><div class="w-9 h-9 rounded-full bg-primary/20 text-primary flex items-center justify-center font-headline-sm text-headline-sm font-semibold">SP</div><div class="flex flex-col min-w-0 flex-1"><span class="font-label-md text-label-md text-on-surface truncate">Dr. S. Patil</span><span class="font-label-sm text-label-sm text-secondary truncate">System Admin • sit.coe</span></div><span class="material-symbols-outlined text-secondary text-[18px]">more_vert</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-14 bg-surface-container-lowest border-b border-outline-variant/40 z-40 px-space-xl flex items-center justify-between shadow-[0_1px_4px_rgba(15,23,42,0.04)]"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-2 font-body-sm text-body-sm text-secondary"><span class="hover:text-primary cursor-pointer">Sharad Institute</span><span class="text-outline-variant">/</span><span class="hover:text-primary cursor-pointer">Administration</span><span class="text-outline-variant">/</span><span class="text-on-surface font-headline-sm text-headline-sm">Workspace</span></div><div class="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-fixed font-tabular-numeric-sm text-tabular-numeric-sm font-medium"><span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>AY 2024-25 • Even Semester</div></div><div class="flex items-center gap-space-md"><div class="relative w-64"><input class="w-full bg-surface-container-low border border-outline-variant/50 rounded-lg pl-8 pr-12 py-1 font-body-sm text-body-sm text-on-surface placeholder:text-secondary focus:outline-none focus:border-primary" placeholder="Global search (Ctrl+K)..." type="text"/><span class="material-symbols-outlined absolute left-2.5 top-1.5 text-secondary text-[16px]">search</span><kbd class="absolute right-2 top-1 px-1.5 py-0.2 text-[10px] font-tabular-numeric-sm text-secondary bg-surface-container rounded border border-outline-variant/40">Ctrl+K</kbd></div><button class="flex items-center gap-1.5 bg-primary-container text-on-primary px-space-md py-1.5 rounded-lg font-label-md text-label-md hover:bg-primary transition-colors shadow-sm" type="button"><span class="material-symbols-outlined text-[16px]">add</span><span>New Action</span></button><div class="h-4 w-px bg-outline-variant/40"></div><div class="flex items-center gap-1"><button class="p-1.5 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="Academic Calendar" type="button"><span class="material-symbols-outlined text-[20px]">calendar_today</span></button><button class="relative p-1.5 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="Alerts" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-error"></span></button><button class="p-1.5 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="Documentation &amp; Help" type="button"><span class="material-symbols-outlined text-[20px]">help</span></button></div><div class="flex items-center gap-2 pl-1 cursor-pointer"><div class="w-7 h-7 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center font-label-md text-label-md text-primary font-semibold">SP</div><span class="material-symbols-outlined text-secondary text-[16px]">expand_more</span></div></div></header><main class="w-full pt-14 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<!-- Top Operational Banner & Institutional KPIs -->
+<section class="px-margin py-space-lg flex flex-col gap-space-lg">
+<!-- Breadcrumb & Control Bar -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-2 font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">
+<span class="px-2 py-0.5 rounded bg-surface-container text-primary font-semibold">ERP ACCREDITED WORKSPACE</span>
+<span>•</span>
+<span>CAMPUS CALENDAR CONTROL DECK</span>
+<span>•</span>
+<span class="text-tertiary-container font-semibold">AFFILIATED TO DBATU LONERE</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Institutional Events, Academic Calendar &amp; Official Notices</h1>
+<p class="font-body-md text-body-md text-secondary">Operational event dispatch, examination schedules, departmental symposiums, and statutory council notifications for Sharad Institute of Technology College of Engineering.</p>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="flex items-center gap-1.5 px-space-md py-2 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors shadow-sm" id="btn-export-pdf" onclick="triggerScheduleExport()">
+<span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+<span>Export Schedule (PDF)</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-lg py-2 rounded-lg bg-primary-container text-on-primary font-headline-sm text-headline-sm hover:bg-primary transition-all shadow-md" id="btn-open-create-event" onclick="openCreateModal()">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>+ Create New Campus Event</span>
+</button>
+</div>
+</div>
+<!-- Metrics Matrix Strip -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-md">
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Active Term Calendar</span>
+<span class="w-6 h-6 rounded bg-primary/10 text-primary flex items-center justify-center material-symbols-outlined text-[14px]">event_available</span>
+</div>
+<div class="font-tabular-numeric text-headline-xl text-on-surface">AY 2024-25</div>
+<div class="flex items-center gap-1 font-body-sm text-body-sm text-tertiary-container">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+<span>Even Semester Active</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Events Scheduled (March)</span>
+<span class="w-6 h-6 rounded bg-surface-container-highest text-primary flex items-center justify-center material-symbols-outlined text-[14px]">campaign</span>
+</div>
+<div class="font-tabular-numeric text-headline-xl text-primary">19 Notices</div>
+<div class="flex items-center gap-1 font-body-sm text-body-sm text-secondary">
+<span>7 Institutional • 12 Departmental</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Total RSVPs / Registrations</span>
+<span class="w-6 h-6 rounded bg-secondary-container text-on-secondary-fixed flex items-center justify-center material-symbols-outlined text-[14px]">how_to_reg</span>
+</div>
+<div class="font-tabular-numeric text-headline-xl text-on-surface">1,428</div>
+<div class="flex items-center gap-1 font-body-sm text-body-sm text-tertiary-container">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+<span>+24% over odd semester</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Auditorium Bookings</span>
+<span class="w-6 h-6 rounded bg-surface-container text-on-surface-variant flex items-center justify-center material-symbols-outlined text-[14px]">meeting_room</span>
+</div>
+<div class="font-tabular-numeric text-headline-xl text-on-surface">92% Utilized</div>
+<div class="flex items-center gap-1 font-body-sm text-body-sm text-secondary">
+<span>Central Aud. booked thru Mar 31</span>
+</div>
+</div>
+</div>
+<!-- Filter Deck & Presentation Toggles -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-space-md">
+<!-- Search & Select Group -->
+<div class="flex flex-wrap items-center gap-space-sm flex-1">
+<!-- View Segment Toggles -->
+<div class="flex bg-surface-container-low p-0.5 rounded-lg">
+<button class="px-3 py-1.5 rounded-md font-headline-sm text-headline-sm bg-surface-container-lowest text-primary shadow-sm flex items-center gap-1" id="tab-month" onclick="setViewMode('month')">
+<span class="material-symbols-outlined text-[16px]">calendar_view_month</span>
+<span>Month</span>
+</button>
+<button class="px-3 py-1.5 rounded-md font-headline-sm text-headline-sm text-secondary hover:text-on-surface flex items-center gap-1" id="tab-week" onclick="setViewMode('week')">
+<span class="material-symbols-outlined text-[16px]">calendar_view_week</span>
+<span>Week</span>
+</button>
+<button class="px-3 py-1.5 rounded-md font-headline-sm text-headline-sm text-secondary hover:text-on-surface flex items-center gap-1" id="tab-list" onclick="setViewMode('list')">
+<span class="material-symbols-outlined text-[16px]">format_list_bulleted</span>
+<span>List Grid</span>
+</button>
+</div>
+<div class="h-6 w-px bg-outline-variant/50 hidden md:block"></div>
+<!-- Category Filter -->
+<div class="relative min-w-[170px]">
+<select class="w-full bg-surface-container-low border-0 rounded-lg px-space-sm py-1.5 font-body-md text-body-md text-on-surface focus:bg-surface-container-lowest focus:outline-none shadow-sm pr-8" id="filter-category" onchange="filterEvents()">
+<option value="ALL">All Categories</option>
+<option value="ACADEMIC">Academic</option>
+<option value="CULTURAL">Cultural</option>
+<option value="SPORTS">Sports</option>
+<option value="EXAMINATION">Examination</option>
+<option value="WORKSHOPS">Workshops / Seminars</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2 text-secondary pointer-events-none text-[16px]">filter_list</span>
+</div>
+<!-- Department Filter -->
+<div class="relative min-w-[180px]">
+<select class="w-full bg-surface-container-low border-0 rounded-lg px-space-sm py-1.5 font-body-md text-body-md text-on-surface focus:bg-surface-container-lowest focus:outline-none shadow-sm pr-8" id="filter-dept" onchange="filterEvents()">
+<option value="ALL">All Departments</option>
+<option value="CSE">Computer Science &amp; Engg</option>
+<option value="ME">Mechanical Engineering</option>
+<option value="CE">Civil Engineering</option>
+<option value="ETC">Electronics &amp; Telecomm</option>
+<option value="NSS">NSS &amp; Social Cell</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2 text-secondary pointer-events-none text-[16px]">apartment</span>
+</div>
+<!-- Quick Keyword Filter -->
+<div class="relative flex-1 min-w-[200px]">
+<input class="w-full bg-surface-container-low rounded-lg pl-8 pr-3 py-1.5 font-body-md text-body-md text-on-surface placeholder:text-secondary focus:outline-none focus:bg-surface-container-lowest shadow-sm" id="filter-keyword" onkeyup="filterEvents()" placeholder="Search title, venue, or guest..." type="text"/>
+<span class="material-symbols-outlined absolute left-2.5 top-2 text-secondary text-[16px]">search</span>
+</div>
+</div>
+<!-- State Previews & Calendar Jump -->
+<div class="flex items-center gap-space-xs self-end xl:self-auto">
+<button class="px-2.5 py-1 rounded bg-surface-container text-on-surface font-tabular-numeric-sm text-tabular-numeric-sm hover:bg-surface-container-high" onclick="toggleMockState('data')" title="Render real dataset">Standard View</button>
+<button class="px-2.5 py-1 rounded bg-surface-container text-secondary font-tabular-numeric-sm text-tabular-numeric-sm hover:bg-surface-container-high" onclick="toggleMockState('loading')" title="Preview skeleton loader">Loading State</button>
+<button class="px-2.5 py-1 rounded bg-surface-container text-secondary font-tabular-numeric-sm text-tabular-numeric-sm hover:bg-surface-container-high" onclick="toggleMockState('empty')" title="Preview empty results">Empty State</button>
+</div>
+</div>
+</section>
+<!-- Dual Column Main Content Area -->
+<section class="px-margin pb-margin flex-1">
+<!-- Normal Loaded State -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-start" id="state-data-container">
+<!-- Left Column: Interactive Monthly Event Calendar Grid (7 Cols on desktop) -->
+<div class="xl:col-span-7 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<!-- Month Header & Pagination -->
+<div class="flex items-center justify-between pb-space-sm border-b-0">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-headline-md text-headline-md">
+              03
+            </div>
+<div class="flex flex-col">
+<span class="font-headline-lg text-headline-lg text-on-surface tracking-tight">March 2025</span>
+<span class="font-label-sm text-label-sm text-secondary uppercase">Even Term Phase • Week 10-14</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="p-1.5 rounded-lg bg-surface-container-low text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="Previous Month">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="px-3 py-1 rounded-lg bg-surface-container-low text-primary font-headline-sm text-headline-sm hover:bg-surface-container">
+              Today
+            </button>
+<button class="p-1.5 rounded-lg bg-surface-container-low text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="Next Month">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Days of Week Indicator -->
+<div class="grid grid-cols-7 gap-1 text-center bg-surface-container-low py-2 rounded-lg font-label-md text-label-md text-secondary uppercase tracking-wider">
+<span>Sun</span>
+<span>Mon</span>
+<span>Tue</span>
+<span>Wed</span>
+<span>Thu</span>
+<span>Fri</span>
+<span>Sat</span>
+</div>
+<!-- 35-Cell Month Grid for March 2025 (Starts on Saturday March 1) -->
+<div class="grid grid-cols-7 gap-1.5 font-tabular-numeric text-tabular-numeric">
+<!-- Leading Days Feb 23-28 (Past Month) -->
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/40 opacity-40 flex flex-col justify-between">
+<span class="font-semibold text-secondary">23</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/40 opacity-40 flex flex-col justify-between">
+<span class="font-semibold text-secondary">24</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/40 opacity-40 flex flex-col justify-between">
+<span class="font-semibold text-secondary">25</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/40 opacity-40 flex flex-col justify-between">
+<span class="font-semibold text-secondary">26</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/40 opacity-40 flex flex-col justify-between">
+<span class="font-semibold text-secondary">27</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/40 opacity-40 flex flex-col justify-between">
+<span class="font-semibold text-secondary">28</span>
+</div>
+<!-- March 1 -->
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 hover:bg-surface-container transition-colors flex flex-col justify-between">
+<span class="font-semibold text-on-surface">1</span>
+<div class="px-1 py-0.5 rounded bg-surface-container text-secondary text-[10px] truncate">Dean Council Meet</div>
+</div>
+<!-- Week 2: Mar 2 - Mar 8 -->
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-secondary">2</span>
+<span class="text-[10px] text-secondary">Sunday</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">3</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">4</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">5</span>
+<div class="px-1 py-0.5 rounded bg-surface-container-high text-primary font-semibold text-[10px] truncate">HOD Sync</div>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">6</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">7</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">8</span>
+<div class="px-1 py-0.5 rounded bg-secondary-container text-on-secondary-fixed text-[10px] truncate">WIE Seminar</div>
+</div>
+<!-- Week 3: Mar 9 - Mar 15 -->
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-secondary">9</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">10</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">11</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">12</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">13</span>
+<div class="px-1 py-0.5 rounded bg-surface-container text-secondary text-[10px] truncate">Civil Lab Demo</div>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">14</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">15</span>
+</div>
+<!-- Week 4: Mar 16 - Mar 22 (Contains Exam & Cloud Workshop) -->
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-secondary">16</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">17</span>
+</div>
+<!-- MAR 18: Mid-Term II Exams -->
+<div class="min-h-[86px] p-1.5 rounded-lg bg-error-container/40 border-l-2 border-error hover:bg-error-container/60 transition-colors flex flex-col justify-between cursor-pointer" onclick="filterByDate('2025-03-18')">
+<div class="flex items-center justify-between">
+<span class="font-bold text-error">18</span>
+<span class="material-symbols-outlined text-[12px] text-error">assignment_late</span>
+</div>
+<div class="px-1 py-0.5 rounded bg-error text-on-error font-headline-sm text-[9px] truncate" title="Mid-Term II Exams (Institutional)">
+              Mid-Term II Exams
+            </div>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">19</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">20</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">21</span>
+</div>
+<!-- MAR 22: Workshop on Cloud Computing -->
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-highest border-l-2 border-primary hover:bg-surface-container transition-colors flex flex-col justify-between cursor-pointer" onclick="filterByDate('2025-03-22')">
+<div class="flex items-center justify-between">
+<span class="font-bold text-primary">22</span>
+<span class="material-symbols-outlined text-[12px] text-primary">terminal</span>
+</div>
+<div class="px-1 py-0.5 rounded bg-primary text-on-primary font-headline-sm text-[9px] truncate" title="Workshop on Cloud Computing">
+              Cloud Computing WS
+            </div>
+</div>
+<!-- Week 5: Mar 23 - Mar 29 (Contains Guest Lecture & Sports Day) -->
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-secondary">23</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">24</span>
+</div>
+<!-- MAR 25: Guest Lecture DBATU -->
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors flex flex-col justify-between cursor-pointer" onclick="filterByDate('2025-03-25')">
+<div class="flex items-center justify-between">
+<span class="font-bold text-on-surface">25</span>
+<span class="material-symbols-outlined text-[12px] text-secondary">record_voice_over</span>
+</div>
+<div class="px-1 py-0.5 rounded bg-secondary-container text-on-secondary-fixed font-headline-sm text-[9px] truncate" title="Guest Lecture: Next-Gen Database Systems">
+              Next-Gen DB Lecture
+            </div>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">26</span>
+</div>
+<!-- MAR 27: INVICTUS Day 1 -->
+<div class="min-h-[86px] p-1.5 rounded-lg bg-primary/10 border-l-2 border-primary hover:bg-primary/20 transition-colors flex flex-col justify-between cursor-pointer" onclick="filterByDate('2025-03-27')">
+<div class="flex items-center justify-between">
+<span class="font-bold text-primary">27</span>
+<span class="material-symbols-outlined text-[12px] text-primary">military_tech</span>
+</div>
+<div class="px-1 py-0.5 rounded bg-primary-container text-on-primary font-headline-sm text-[9px] truncate" title="INVICTUS 2025 Technical Symposium Inauguration">
+              INVICTUS 2025 Day 1
+            </div>
+</div>
+<!-- MAR 28: Annual Sports Day -->
+<div class="min-h-[86px] p-1.5 rounded-lg bg-tertiary-fixed/40 border-l-2 border-tertiary-container hover:bg-tertiary-fixed/60 transition-colors flex flex-col justify-between cursor-pointer" onclick="filterByDate('2025-03-28')">
+<div class="flex items-center justify-between">
+<span class="font-bold text-tertiary-container">28</span>
+<span class="material-symbols-outlined text-[12px] text-tertiary-container">sports_volleyball</span>
+</div>
+<div class="px-1 py-0.5 rounded bg-tertiary-container text-on-tertiary font-headline-sm text-[9px] truncate" title="Annual College Sports Day">
+              Annual Sports Day
+            </div>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">29</span>
+</div>
+<!-- Week 6: Mar 30 - 31 -->
+<!-- MAR 30: Blood Donation Camp -->
+<div class="min-h-[86px] p-1.5 rounded-lg bg-error-container/30 border-l-2 border-error hover:bg-error-container/50 transition-colors flex flex-col justify-between cursor-pointer" onclick="filterByDate('2025-03-30')">
+<div class="flex items-center justify-between">
+<span class="font-bold text-error">30</span>
+<span class="material-symbols-outlined text-[12px] text-error">volunteer_activism</span>
+</div>
+<div class="px-1 py-0.5 rounded bg-error-container text-on-error-container font-headline-sm text-[9px] truncate" title="Blood Donation Camp &amp; Health Checkup (NSS)">
+              Blood Donation Camp
+            </div>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/80 flex flex-col justify-between">
+<span class="font-semibold text-on-surface">31</span>
+<div class="px-1 py-0.5 rounded bg-surface-container text-secondary text-[10px] truncate">Term Summary Report</div>
+</div>
+<!-- Fill Remaining Next Month Days -->
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/40 opacity-40 flex flex-col justify-between">
+<span class="font-semibold text-secondary">1</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/40 opacity-40 flex flex-col justify-between">
+<span class="font-semibold text-secondary">2</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/40 opacity-40 flex flex-col justify-between">
+<span class="font-semibold text-secondary">3</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/40 opacity-40 flex flex-col justify-between">
+<span class="font-semibold text-secondary">4</span>
+</div>
+<div class="min-h-[86px] p-1.5 rounded-lg bg-surface-container-low/40 opacity-40 flex flex-col justify-between">
+<span class="font-semibold text-secondary">5</span>
+</div>
+</div>
+<!-- Legend Ribbon -->
+<div class="flex flex-wrap items-center gap-space-md pt-space-xs text-secondary font-label-sm text-label-sm">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+<span>Symposiums &amp; Technical</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-error"></span>
+<span>Examinations &amp; Council</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary-container"></span>
+<span>Sports &amp; Cultural</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span>Workshops &amp; Social Drives</span>
+</div>
+</div>
+</div>
+<!-- Right Column: Upcoming Events List with Rich Cards (5 Cols on desktop) -->
+<div class="xl:col-span-5 flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Active Notices &amp; Events</h2>
+<span class="px-2 py-0.5 rounded-full bg-primary-container text-on-primary font-tabular-numeric-sm text-tabular-numeric-sm">3 Highlighted</span>
+</div>
+<span class="font-body-sm text-body-sm text-secondary">Live DBATU Term Register</span>
+</div>
+<!-- Event Cards Stack -->
+<div class="flex flex-col gap-space-md" id="events-list-container">
+<!-- Event Card 1: INVICTUS 2025 -->
+<article class="event-item bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md transition-all hover:shadow-md" data-category="WORKSHOPS" data-date="2025-03-27" data-dept="CSE">
+<!-- Header Meta -->
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-1 rounded bg-primary/10 text-primary font-label-sm text-label-sm uppercase font-bold">WORKSHOPS / SYMPOSIUM</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary font-label-sm text-label-sm">CSE Dept Organizer</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1 rounded text-secondary hover:text-primary hover:bg-surface-container transition-colors" onclick="openEditModal('INVICTUS 2025 Annual Technical Symposium', 'WORKSHOPS', 'CSE', '2025-03-27', '09:30', '17:30', 'Main Auditorium &amp; IT Wing', 'Dr. Anand Deshpande (Persistent Systems)', '650')" title="Edit Event">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded text-secondary hover:text-error hover:bg-error-container/40 transition-colors" onclick="openDeleteDialog('National Level Technical Symposium - INVICTUS 2025')" title="Cancel / Remove Event">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<!-- Card Body & Image Spot -->
+<div class="flex flex-col gap-space-xs">
+<h3 class="font-headline-md text-headline-md text-on-surface">National Level Technical Symposium - INVICTUS 2025</h3>
+<p class="font-body-sm text-body-sm text-secondary line-clamp-2">
+                Flagship multi-track engineering conference featuring coding hackathons, technical paper presentation rounds, robotics arena, and project exhibition approved by Shivaji Univ / DBATU zonal council.
+              </p>
+</div>
+<!-- Visual Context Preview -->
+<div class="w-full h-32 rounded-lg bg-surface-container-low overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="A crowded university central auditorium with high tech lighting, blue institutional banners displaying INVICTUS 2025, modern stage setup, college students seated attentively during annual technical symposium." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxRcGIUigOyx-mZAJwh31l7hdhbGtFEW09qJQZDDp7tazTIrnRxFYYbXFK371vbRPS0WxaM2lFCzTcsaDNRHPRZM8j3fHVOB5udmnrDRNr6fC4irypocLV0DucyXpK8F5STxkYbEBA4Z1quOfAzT9P4nKNfnl-rRp6BqVay-ci0jU7zbSC5oXncH3XGOqeUSbpPfJQ65CS6HwvIabv1j6sC8rQl0akC76xtTQ_e0yNrjVvjw-0OR9J9w"/>
+<div class="absolute bottom-2 left-2 px-2 py-1 rounded bg-inverse-surface/80 backdrop-blur-sm text-surface-bright font-tabular-numeric-sm text-tabular-numeric-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">groups</span>
+<span>650 Registered Attendees</span>
+</div>
+</div>
+<!-- Detailed Metadata Block -->
+<div class="grid grid-cols-2 gap-y-2 gap-x-space-md py-space-xs font-body-sm text-body-sm text-on-surface-variant bg-surface-container-low/60 p-space-sm rounded-lg">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">calendar_today</span>
+<span>March 27 &amp; 28, 2025</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">schedule</span>
+<span>09:30 AM - 05:30 PM</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
+<span class="truncate">Central Auditorium &amp; IT Wing</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">badge</span>
+<span class="truncate">Chief Guest: Dr. A. Deshpande</span>
+</div>
+</div>
+<!-- Action Controls -->
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex items-center gap-1 font-label-sm text-label-sm text-tertiary-container">
+<span class="w-2 h-2 rounded-full bg-tertiary-container"></span>
+<span>Approved by Principal Office</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container text-on-surface font-headline-sm text-headline-sm hover:bg-surface-container-high transition-colors" onclick="viewRegisteredStudents('INVICTUS 2025', 650)">
+                  View Registered Students
+                </button>
+<button class="px-space-sm py-1.5 rounded-lg bg-surface-container text-primary font-label-md text-label-md hover:bg-surface-container-high transition-colors flex items-center gap-1" onclick="downloadBrochure('INVICTUS-2025-Brochure.pdf')" title="Download Brochure Attachment">
+<span class="material-symbols-outlined text-[16px]">attachment</span>
+<span>PDF</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Event Card 2: Guest Lecture on Next-Gen Database Systems -->
+<article class="event-item bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md transition-all hover:shadow-md" data-category="ACADEMIC" data-date="2025-03-25" data-dept="CSE">
+<!-- Header Meta -->
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-1 rounded bg-secondary-container text-on-secondary-fixed font-label-sm text-label-sm uppercase font-bold">EXPERT GUEST LECTURE</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary font-label-sm text-label-sm">Academic Board</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1 rounded text-secondary hover:text-primary hover:bg-surface-container transition-colors" onclick="openEditModal('Guest Lecture on Next-Gen Database Systems', 'ACADEMIC', 'CSE', '2025-03-25', '11:00', '13:00', 'Seminar Hall 1', 'Prof. Dr. V. K. Rama, DBATU Lonere', '180')" title="Edit Event">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded text-secondary hover:text-error hover:bg-error-container/40 transition-colors" onclick="openDeleteDialog('Guest Lecture on Next-Gen Database Systems')" title="Cancel Event">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs">
+<h3 class="font-headline-md text-headline-md text-on-surface">Guest Lecture on Next-Gen Database Systems</h3>
+<p class="font-body-sm text-body-sm text-secondary">
+                Curriculum enrichment session for Third Year &amp; Final Year Computer Science &amp; IT engineering cohorts on Distributed Relational Engine internals and transactional consistency.
+              </p>
+</div>
+<!-- Speaker Profile Spotlight -->
+<div class="flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-low">
+<div class="w-12 h-12 rounded-full bg-primary/20 text-primary flex items-center justify-center font-headline-md font-bold">
+                VR
+              </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Prof. Dr. V. K. Rama</span>
+<span class="font-body-sm text-body-sm text-secondary truncate">Senior Faculty &amp; Chair, DBATU Lonere Academic Council</span>
+</div>
+</div>
+<!-- Details Strip -->
+<div class="grid grid-cols-2 gap-y-2 font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">calendar_month</span>
+<span>March 25, 2025</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">schedule</span>
+<span>11:00 AM - 01:00 PM</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">meeting_room</span>
+<span>Seminar Hall 1 (Capacity: 220)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">group</span>
+<span>Target: B.Tech CSE (S5/S7)</span>
+</div>
+</div>
+<!-- Action Controls -->
+<div class="flex items-center justify-between pt-space-xs">
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">Mandatory Attendance Applied</span>
+<div class="flex items-center gap-space-sm">
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container text-on-surface font-headline-sm text-headline-sm hover:bg-surface-container-high transition-colors" onclick="viewRegisteredStudents('Guest Lecture - DBATU', 180)">
+                  Check Roster (180 enrolled)
+                </button>
+</div>
+</div>
+</article>
+<!-- Event Card 3: Blood Donation Camp & Health Checkup -->
+<article class="event-item bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md transition-all hover:shadow-md" data-category="CULTURAL" data-date="2025-03-30" data-dept="NSS">
+<!-- Header Meta -->
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-1 rounded bg-error-container text-on-error-container font-label-sm text-label-sm uppercase font-bold">SOCIAL WELFARE &amp; NSS CELL</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary font-label-sm text-label-sm">Campus Wide</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1 rounded text-secondary hover:text-primary hover:bg-surface-container transition-colors" onclick="openEditModal('Blood Donation Camp &amp; Health Checkup', 'CULTURAL', 'NSS', '2025-03-30', '10:00', '16:00', 'Gymkhana &amp; Medical Room', 'Kolhapur District Civil Surgeon Team', '340')" title="Edit Event">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded text-secondary hover:text-error hover:bg-error-container/40 transition-colors" onclick="openDeleteDialog('Blood Donation Camp &amp; Health Checkup')" title="Cancel Event">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs">
+<h3 class="font-headline-md text-headline-md text-on-surface">Annual Blood Donation Camp &amp; Health Checkup</h3>
+<p class="font-body-sm text-body-sm text-secondary">
+                Collaborative humanitarian initiative organized by Sharad Institute NSS Unit in association with District Red Cross Blood Bank. Includes routine vitals check and dental screening for all teaching staff and undergraduates.
+              </p>
+</div>
+<div class="grid grid-cols-2 gap-y-2 font-body-sm text-body-sm text-on-surface-variant bg-surface-container-low/60 p-space-sm rounded-lg">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-error">calendar_today</span>
+<span>March 30, 2025</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-error">schedule</span>
+<span>10:00 AM - 04:00 PM</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-error">pin_drop</span>
+<span>Gymkhana Hall &amp; Health Unit</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-error">medical_services</span>
+<span>Partner: Red Cross Society</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="font-label-sm text-label-sm text-tertiary-container flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>Certificates of Merit for Donors</span>
+</span>
+<div class="flex items-center gap-space-sm">
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container text-on-surface font-headline-sm text-headline-sm hover:bg-surface-container-high transition-colors" onclick="viewRegisteredStudents('NSS Blood Donation Camp', 340)">
+                  Volunteer Log (340 slots)
+                </button>
+</div>
+</div>
+</article>
+</div>
+</div>
+</div>
+<!-- Loading State Preview Container (Hidden by default) -->
+<div class="hidden grid-cols-1 xl:grid-cols-12 gap-space-lg items-start" id="state-loading-container">
+<div class="xl:col-span-7 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md animate-pulse">
+<div class="h-10 bg-surface-container rounded-lg w-1/3"></div>
+<div class="grid grid-cols-7 gap-2">
+<div class="h-6 bg-surface-container-low rounded"></div>
+<div class="h-6 bg-surface-container-low rounded"></div>
+<div class="h-6 bg-surface-container-low rounded"></div>
+<div class="h-6 bg-surface-container-low rounded"></div>
+<div class="h-6 bg-surface-container-low rounded"></div>
+<div class="h-6 bg-surface-container-low rounded"></div>
+<div class="h-6 bg-surface-container-low rounded"></div>
+</div>
+<div class="grid grid-cols-7 gap-2">
+<div class="h-20 bg-surface-container-low rounded"></div>
+<div class="h-20 bg-surface-container-low rounded"></div>
+<div class="h-20 bg-surface-container-low rounded"></div>
+<div class="h-20 bg-surface-container-low rounded"></div>
+<div class="h-20 bg-surface-container-low rounded"></div>
+<div class="h-20 bg-surface-container-low rounded"></div>
+<div class="h-20 bg-surface-container-low rounded"></div>
+<div class="h-20 bg-surface-container-low rounded"></div>
+<div class="h-20 bg-surface-container-low rounded"></div>
+<div class="h-20 bg-surface-container-low rounded"></div>
+<div class="h-20 bg-surface-container-low rounded"></div>
+<div class="h-20 bg-surface-container-low rounded"></div>
+<div class="h-20 bg-surface-container-low rounded"></div>
+<div class="h-20 bg-surface-container-low rounded"></div>
+</div>
+</div>
+<div class="xl:col-span-5 flex flex-col gap-space-md animate-pulse">
+<div class="h-6 bg-surface-container rounded w-1/2"></div>
+<div class="h-64 bg-surface-container-lowest rounded-xl p-space-md flex flex-col gap-3">
+<div class="h-6 bg-surface-container rounded w-3/4"></div>
+<div class="h-4 bg-surface-container-low rounded w-full"></div>
+<div class="h-28 bg-surface-container-low rounded w-full"></div>
+</div>
+<div class="h-48 bg-surface-container-lowest rounded-xl p-space-md flex flex-col gap-3">
+<div class="h-6 bg-surface-container rounded w-2/3"></div>
+<div class="h-4 bg-surface-container-low rounded w-full"></div>
+</div>
+</div>
+</div>
+<!-- Empty State Preview Container (Hidden by default) -->
+<div class="hidden bg-surface-container-lowest p-12 rounded-xl shadow-sm flex flex-col items-center justify-center text-center gap-space-md max-w-2xl mx-auto my-12" id="state-empty-container">
+<div class="w-16 h-16 rounded-full bg-surface-container text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[36px]">event_busy</span>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="font-headline-lg text-headline-lg text-on-surface">No Campus Events Scheduled</h3>
+<p class="font-body-md text-body-md text-secondary">
+          There are no departmental notices, seminars, or institutional calendar entries matching the selected criteria for this academic semester window.
+        </p>
+</div>
+<div class="flex items-center gap-space-sm pt-space-xs">
+<button class="px-space-md py-2 rounded-lg bg-surface-container text-on-surface font-headline-sm text-headline-sm hover:bg-surface-container-high" onclick="resetFilters()">
+          Clear Active Filters
+        </button>
+<button class="px-space-md py-2 rounded-lg bg-primary-container text-on-primary font-headline-sm text-headline-sm hover:bg-primary" onclick="openCreateModal()">
+          + Create New Event
+        </button>
+</div>
+</div>
+</section>
+<!-- MODAL: Create New Campus Event -->
+<div class="fixed inset-0 z-50 hidden bg-inverse-surface/60 backdrop-blur-[2px] flex items-center justify-center p-space-md overflow-y-auto" id="modal-create-event">
+<div class="bg-surface-container-lowest rounded-xl shadow-xl w-full max-w-2xl max-h-[942px] flex flex-col overflow-hidden animate-in fade-in zoom-in-95">
+<!-- Modal Header -->
+<div class="p-space-lg bg-surface-container-lowest border-b-0 flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Create New Campus Event</h3>
+<span class="font-body-sm text-body-sm text-secondary">Institutional Academic &amp; Co-Curricular Calendar Dispatch</span>
+</div>
+</div>
+<button class="text-secondary hover:text-on-surface p-1 rounded-lg hover:bg-surface-container" onclick="closeCreateModal()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Modal Body (Scrollable Form) -->
+<form class="p-space-lg overflow-y-auto flex flex-col gap-space-md" id="form-create-event" onsubmit="handleCreateSubmit(event)">
+<!-- Event Title -->
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Event Title <span class="text-error">*</span></label>
+<input class="w-full bg-surface-container-low rounded-lg px-space-md py-2 font-body-md text-body-md text-on-surface focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" id="form-title" placeholder="e.g. INVICTUS 2025 Annual Technical Symposium" required="" type="text"/>
+</div>
+<!-- Category & Department -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Category <span class="text-error">*</span></label>
+<select class="w-full bg-surface-container-low rounded-lg px-space-md py-2 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" id="form-category" required="">
+<option value="ACADEMIC">Academic</option>
+<option value="CULTURAL">Cultural</option>
+<option value="SPORTS">Sports</option>
+<option value="EXAMINATION">Examination</option>
+<option selected="" value="WORKSHOPS">Workshops / Seminars</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Organizing Department <span class="text-error">*</span></label>
+<select class="w-full bg-surface-container-low rounded-lg px-space-md py-2 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" id="form-dept" required="">
+<option value="ALL">Institutional Central Cell</option>
+<option selected="" value="CSE">Computer Science &amp; Engineering</option>
+<option value="ME">Mechanical Engineering</option>
+<option value="CE">Civil Engineering</option>
+<option value="ETC">Electronics &amp; Telecommunication</option>
+<option value="NSS">NSS &amp; Social Unit</option>
+</select>
+</div>
+</div>
+<!-- Date & Times -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Event Date <span class="text-error">*</span></label>
+<input class="w-full bg-surface-container-low rounded-lg px-space-md py-2 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" id="form-date" required="" type="date" value="2025-03-27"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Start Time <span class="text-error">*</span></label>
+<input class="w-full bg-surface-container-low rounded-lg px-space-md py-2 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" id="form-start-time" required="" type="time" value="09:30"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">End Time <span class="text-error">*</span></label>
+<input class="w-full bg-surface-container-low rounded-lg px-space-md py-2 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" id="form-end-time" required="" type="time" value="17:30"/>
+</div>
+</div>
+<!-- Venue / Location -->
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Venue / Location <span class="text-error">*</span></label>
+<input class="w-full bg-surface-container-low rounded-lg px-space-md py-2 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" id="form-venue" placeholder="e.g. Main Auditorium, Seminar Hall 2, IT Lab Complex" required="" type="text" value="Main Auditorium &amp; IT Wing"/>
+</div>
+<!-- Target Audience Checkboxes -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Target Audience</label>
+<div class="flex flex-wrap items-center gap-space-lg bg-surface-container-low p-space-sm rounded-lg">
+<label class="flex items-center gap-2 cursor-pointer font-body-md text-body-md text-on-surface">
+<input checked="" class="w-4 h-4 rounded text-primary focus:ring-primary" id="aud-students" type="checkbox"/>
+<span>Students (UG / PG)</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer font-body-md text-body-md text-on-surface">
+<input checked="" class="w-4 h-4 rounded text-primary focus:ring-primary" id="aud-faculty" type="checkbox"/>
+<span>Faculty &amp; Academic Staff</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer font-body-md text-body-md text-on-surface">
+<input class="w-4 h-4 rounded text-primary focus:ring-primary" id="aud-all" type="checkbox"/>
+<span>All Campus Stakeholders</span>
+</label>
+</div>
+</div>
+<!-- Speaker & Description -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Chief Guest / Keynote Speaker</label>
+<input class="w-full bg-surface-container-low rounded-lg px-space-md py-2 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" id="form-speaker" placeholder="e.g. Dr. Anand Deshpande (Founder, Persistent Systems)" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Brochure / Notice Document (PDF)</label>
+<div class="relative bg-surface-container-low rounded-lg px-space-md py-1.5 flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-secondary truncate" id="file-chosen-text">Brochure_Invictus_2025.pdf</span>
+<input accept=".pdf" class="absolute inset-0 opacity-0 cursor-pointer" id="form-file" onchange="updateFileName(this)" type="file"/>
+<button class="px-2 py-1 bg-surface-container rounded text-primary font-label-sm text-label-sm" type="button">Browse</button>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Event Description &amp; Instructions</label>
+<textarea class="w-full bg-surface-container-low rounded-lg p-space-md font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" id="form-desc" placeholder="Provide schedule timeline, registration guidelines, dress code, and prerequisites..." rows="3"></textarea>
+</div>
+<!-- Modal Footer Actions -->
+<div class="pt-space-sm flex items-center justify-end gap-space-sm border-t-0">
+<button class="px-space-md py-2 rounded-lg bg-surface-container text-secondary font-headline-sm text-headline-sm hover:text-on-surface hover:bg-surface-container-high transition-colors" onclick="closeCreateModal()" type="button">
+            Cancel
+          </button>
+<button class="px-space-md py-2 rounded-lg bg-surface-container text-primary font-headline-sm text-headline-sm hover:bg-surface-container-high transition-colors" onclick="saveAsDraft()" type="button">
+            Save as Draft
+          </button>
+<button class="px-space-lg py-2 rounded-lg bg-primary-container text-on-primary font-headline-sm text-headline-sm hover:bg-primary transition-all shadow-md" type="submit">
+            Publish Event
+          </button>
+</div>
+</form>
+</div>
+</div>
+<!-- MODAL: Delete / Cancellation Confirmation Dialog -->
+<div class="fixed inset-0 z-50 hidden bg-inverse-surface/60 backdrop-blur-[2px] flex items-center justify-center p-space-md" id="modal-delete-dialog">
+<div class="bg-surface-container-lowest rounded-xl shadow-xl w-full max-w-md p-space-lg flex flex-col gap-space-md animate-in fade-in zoom-in-95">
+<div class="flex items-center gap-space-sm text-error">
+<div class="w-10 h-10 rounded-full bg-error-container text-on-error-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">warning</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Cancel Campus Event?</h3>
+<span class="font-body-sm text-body-sm text-error font-semibold">Irreversible Administrative Action</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-secondary" id="delete-prompt-text">
+        Are you sure you want to cancel this event? An automated administrative bulletin will be dispatched to all registered students and faculty coordinators.
+      </p>
+<div class="flex items-center justify-end gap-space-sm pt-space-xs">
+<button class="px-space-md py-2 rounded-lg bg-surface-container text-secondary font-headline-sm text-headline-sm hover:bg-surface-container-high" onclick="closeDeleteDialog()">
+          Dismiss
+        </button>
+<button class="px-space-md py-2 rounded-lg bg-error text-on-error font-headline-sm text-headline-sm hover:opacity-90 shadow-sm" onclick="confirmEventCancellation()">
+          Confirm Cancellation
+        </button>
+</div>
+</div>
+</div>
+<!-- DRAWER: Registered Students Roster View -->
+<div class="fixed inset-0 z-50 hidden bg-inverse-surface/50 backdrop-blur-xs flex justify-end" id="drawer-roster">
+<div class="bg-surface-container-lowest w-full max-w-lg h-full p-space-lg shadow-2xl flex flex-col justify-between overflow-y-auto">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-sm">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface" id="roster-event-title">Event Roster</h3>
+<span class="font-body-sm text-body-sm text-secondary" id="roster-count-text">650 Confirmed Registrations</span>
+</div>
+<button class="p-1 rounded text-secondary hover:text-on-surface hover:bg-surface-container" onclick="closeRosterDrawer()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="flex items-center gap-space-sm">
+<div class="relative flex-1">
+<input class="w-full bg-surface-container-low rounded-lg pl-8 pr-3 py-1.5 font-body-sm text-body-sm text-on-surface focus:outline-none" placeholder="Search by Student PRN or Name..." type="text"/>
+<span class="material-symbols-outlined absolute left-2.5 top-2 text-secondary text-[16px]">search</span>
+</div>
+<button class="px-3 py-1.5 rounded-lg bg-surface-container text-primary font-headline-sm text-headline-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">download</span>
+<span>CSV</span>
+</button>
+</div>
+<!-- Sample Roster Table -->
+<div class="flex flex-col gap-1 font-body-sm text-body-sm">
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between font-semibold text-secondary">
+<span>Student Name &amp; PRN</span>
+<span>Dept / Year</span>
+</div>
+<div class="p-space-sm rounded-lg hover:bg-surface-container-low flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Atharva Mane</span>
+<span class="font-tabular-numeric-sm text-secondary">PRN: 2021BTECS00042</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-primary/10 text-primary font-label-sm">CSE • TY</span>
+</div>
+<div class="p-space-sm rounded-lg hover:bg-surface-container-low flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Pooja Kadam</span>
+<span class="font-tabular-numeric-sm text-secondary">PRN: 2022BTEME00019</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary font-label-sm">ME • SY</span>
+</div>
+<div class="p-space-sm rounded-lg hover:bg-surface-container-low flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Sanket Shinde</span>
+<span class="font-tabular-numeric-sm text-secondary">PRN: 2020BTECV00088</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary font-label-sm">CE • B.Tech</span>
+</div>
+<div class="p-space-sm rounded-lg hover:bg-surface-container-low flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Snehal Patil</span>
+<span class="font-tabular-numeric-sm text-secondary">PRN: 2021BTEET00054</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary font-label-sm">E&amp;TC • TY</span>
+</div>
+</div>
+</div>
+<div class="pt-space-md border-t-0 flex items-center justify-end">
+<button class="w-full py-2 rounded-lg bg-surface-container text-on-surface font-headline-sm text-headline-sm hover:bg-surface-container-high" onclick="closeRosterDrawer()">
+          Close Roster View
+        </button>
+</div>
+</div>
+</div>
+<!-- Operational Toast Notification Box -->
+<div class="fixed bottom-6 right-6 z-50 hidden bg-inverse-surface text-inverse-on-surface px-space-lg py-space-md rounded-xl shadow-xl flex items-center gap-space-sm transition-all animate-bounce" id="system-toast">
+<span class="material-symbols-outlined text-[20px] text-tertiary-fixed" id="toast-icon">check_circle</span>
+<span class="font-body-md text-body-md" id="toast-message">Action executed successfully.</span>
+</div>
+</div>
+<script>
+  // Global State & Interaction Controller
+  let activeEventToDelete = null;
+
+  function setViewMode(mode) {
+    const tabs = ['month', 'week', 'list'];
+    tabs.forEach(t => {
+      const el = document.getElementById('tab-' + t);
+      if (t === mode) {
+        el.className = "px-3 py-1.5 rounded-md font-headline-sm text-headline-sm bg-surface-container-lowest text-primary shadow-sm flex items-center gap-1";
+      } else {
+        el.className = "px-3 py-1.5 rounded-md font-headline-sm text-headline-sm text-secondary hover:text-on-surface flex items-center gap-1";
+      }
+    });
+    showToast("Switched calendar view to: " + mode.toUpperCase());
+  }
+
+  function filterEvents() {
+    const category = document.getElementById('filter-category').value;
+    const dept = document.getElementById('filter-dept').value;
+    const keyword = document.getElementById('filter-keyword').value.toLowerCase().trim();
+
+    const items = document.querySelectorAll('.event-item');
+    let visibleCount = 0;
+
+    items.forEach(item => {
+      const itemCat = item.getAttribute('data-category');
+      const itemDept = item.getAttribute('data-dept');
+      const text = item.innerText.toLowerCase();
+
+      const matchCat = (category === 'ALL' || itemCat === category);
+      const matchDept = (dept === 'ALL' || itemDept === dept);
+      const matchKeyword = (keyword === '' || text.includes(keyword));
+
+      if (matchCat && matchDept && matchKeyword) {
+        item.style.display = 'flex';
+        visibleCount++;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+
+    if (visibleCount === 0) {
+      toggleMockState('empty');
+    } else {
+      document.getElementById('state-data-container').classList.remove('hidden');
+      document.getElementById('state-empty-container').classList.add('hidden');
+      document.getElementById('state-loading-container').classList.add('hidden');
+    }
+  }
+
+  function filterByDate(dateStr) {
+    const input = document.getElementById('filter-keyword');
+    const parts = dateStr.split('-');
+    const day = parts[2];
+    showToast("Focusing records for March " + day + ", 2025");
+    
+    const items = document.querySelectorAll('.event-item');
+    let match = false;
+    items.forEach(item => {
+      if (item.getAttribute('data-date') === dateStr) {
+        item.style.display = 'flex';
+        item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        match = true;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+
+    if (!match) {
+      toggleMockState('empty');
+    }
+  }
+
+  function resetFilters() {
+    document.getElementById('filter-category').value = 'ALL';
+    document.getElementById('filter-dept').value = 'ALL';
+    document.getElementById('filter-keyword').value = '';
+    toggleMockState('data');
+    filterEvents();
+  }
+
+  function toggleMockState(state) {
+    const dataContainer = document.getElementById('state-data-container');
+    const loadContainer = document.getElementById('state-loading-container');
+    const emptyContainer = document.getElementById('state-empty-container');
+
+    dataContainer.classList.add('hidden');
+    loadContainer.classList.add('hidden');
+    emptyContainer.classList.add('hidden');
+
+    if (state === 'data') {
+      dataContainer.classList.remove('hidden');
+    } else if (state === 'loading') {
+      loadContainer.classList.remove('hidden');
+      loadContainer.classList.add('grid');
+    } else if (state === 'empty') {
+      emptyContainer.classList.remove('hidden');
+      emptyContainer.classList.add('flex');
+    }
+  }
+
+  // Create Event Modal Handlers
+  function openCreateModal() {
+    document.getElementById('form-create-event').reset();
+    document.getElementById('modal-create-event').classList.remove('hidden');
+  }
+
+  function closeCreateModal() {
+    document.getElementById('modal-create-event').classList.add('hidden');
+  }
+
+  function updateFileName(input) {
+    if (input.files && input.files[0]) {
+      document.getElementById('file-chosen-text').innerText = input.files[0].name;
+    }
+  }
+
+  function handleCreateSubmit(e) {
+    e.preventDefault();
+    const title = document.getElementById('form-title').value;
+    closeCreateModal();
+    showToast("New Event '" + title + "' published to institutional portal.");
+  }
+
+  function saveAsDraft() {
+    closeCreateModal();
+    showToast("Event saved as administrative draft.");
+  }
+
+  // Edit Event Handler
+  function openEditModal(title, category, dept, date, startTime, endTime, venue, speaker, count) {
+    openCreateModal();
+    document.getElementById('form-title').value = title;
+    document.getElementById('form-category').value = category;
+    document.getElementById('form-dept').value = dept;
+    document.getElementById('form-date').value = date;
+    document.getElementById('form-start-time').value = startTime;
+    document.getElementById('form-end-time').value = endTime;
+    document.getElementById('form-venue').value = venue;
+    document.getElementById('form-speaker').value = speaker;
+  }
+
+  // Delete Handlers
+  function openDeleteDialog(eventName) {
+    activeEventToDelete = eventName;
+    document.getElementById('delete-prompt-text').innerText = 
+      "Are you sure you want to cancel '" + eventName + "'? A cancellation bulletin will be broadcasted to all registered participants.";
+    document.getElementById('modal-delete-dialog').classList.remove('hidden');
+  }
+
+  function closeDeleteDialog() {
+    activeEventToDelete = null;
+    document.getElementById('modal-delete-dialog').classList.add('hidden');
+  }
+
+  function confirmEventCancellation() {
+    const name = activeEventToDelete || "Event";
+    closeDeleteDialog();
+    showToast("Cancelled '" + name + "'. Notice sent to students & DBATU register.");
+  }
+
+  // Registered Students Drawer
+  function viewRegisteredStudents(title, count) {
+    document.getElementById('roster-event-title').innerText = title;
+    document.getElementById('roster-count-text').innerText = count + " Registered Students (Active Attendance Roll)";
+    document.getElementById('drawer-roster').classList.remove('hidden');
+  }
+
+  function closeRosterDrawer() {
+    document.getElementById('drawer-roster').classList.add('hidden');
+  }
+
+  // Export & Download Micro-interactions
+  function triggerScheduleExport() {
+    showToast("Compiling official SIT COE March 2025 Calendar Schedule PDF...");
+  }
+
+  function downloadBrochure(fileName) {
+    showToast("Downloading institutional brochure: " + fileName);
+  }
+
+  // Notification Toast Helper
+  function showToast(msg) {
+    const toast = document.getElementById('system-toast');
+    const toastMsg = document.getElementById('toast-message');
+    toastMsg.innerText = msg;
+    toast.classList.remove('hidden');
+    setTimeout(() => {
+      toast.classList.add('hidden');
+    }, 4000);
+  }
+</script></main></div></body></html>

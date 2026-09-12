@@ -8,15 +8,12 @@ load_dotenv(os.path.join(basedir, '.env'))
 
 def resolve_database_uri():
     """
-    Resolves the database URI with Render PostgreSQL compatibility.
-    Fixes the 'postgres://' schema prefix to 'postgresql://' as required by SQLAlchemy 1.4+.
+    Resolves the local/ephemeral database URI.
+    On Vercel, /tmp is the only writable local directory.
+    Firebase Realtime Database acts as the primary cloud database.
     """
-    db_url = os.environ.get('DATABASE_URL')
-    if db_url and db_url.strip():
-        db_url = db_url.strip()
-        if db_url.startswith("postgres://"):
-            db_url = db_url.replace("postgres://", "postgresql://", 1)
-        return db_url
+    if os.environ.get('VERCEL') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME'):
+        return "sqlite:////tmp/campus_connect.db"
     return f"sqlite:///{os.path.join(basedir, 'campus_connect.db')}"
 
 
@@ -30,9 +27,20 @@ class Config:
         "pool_pre_ping": True,
         "pool_recycle": 300,
     }
+
+    # Firebase Realtime Database Configuration
+    FIREBASE_DATABASE_URL = os.environ.get('FIREBASE_DATABASE_URL', 'https://campus-connect-4e66c-default-rtdb.firebaseio.com/').rstrip('/') + '/'
+    FIREBASE_SERVICE_ACCOUNT_KEY = os.environ.get('FIREBASE_SERVICE_ACCOUNT_KEY')
+    FIREBASE_DATABASE_SECRET = os.environ.get('FIREBASE_DATABASE_SECRET')
+    FIREBASE_PROJECT_ID = os.environ.get('FIREBASE_PROJECT_ID', 'campus-connect-4e66c')
+    FIREBASE_CLIENT_EMAIL = os.environ.get('FIREBASE_CLIENT_EMAIL')
+    FIREBASE_PRIVATE_KEY = os.environ.get('FIREBASE_PRIVATE_KEY')
+    FIREBASE_CREDENTIALS_PATH = os.environ.get('FIREBASE_CREDENTIALS_PATH') or os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
     
     # Upload configuration
-    UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER') or os.path.join(basedir, 'app', 'static', 'uploads')
+    UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER') or (
+        '/tmp/uploads' if os.environ.get('VERCEL') else os.path.join(basedir, 'app', 'static', 'uploads')
+    )
     MAX_CONTENT_LENGTH = int(os.environ.get('MAX_CONTENT_LENGTH') or 16 * 1024 * 1024)  # 16 MB max upload
     ALLOWED_IMAGE_EXTENSIONS = {'jpg', 'jpeg', 'png', 'webp'}
     ALLOWED_DOC_EXTENSIONS = {'pdf', 'doc', 'docx', 'ppt', 'pptx', 'jpg', 'jpeg', 'png', 'txt'}
@@ -82,12 +90,8 @@ class ProductionConfig(Config):
 
     @classmethod
     def init_app(cls, app):
-        db_url = os.environ.get('DATABASE_URL')
-        if not db_url and (os.environ.get('RENDER') or os.environ.get('FLASK_ENV') == 'production'):
-            raise RuntimeError(
-                "CRITICAL: DATABASE_URL environment variable is missing or empty in production mode on Render. "
-                "Please configure your Render PostgreSQL connection string in the Render Dashboard."
-            )
+        # In production on Vercel, Firebase Realtime Database is primary
+        pass
 
 
 class TestingConfig(Config):
@@ -99,8 +103,8 @@ class TestingConfig(Config):
 def is_production_env():
     return (
         os.environ.get('FLASK_ENV') == 'production' or
-        os.environ.get('RENDER') is not None or
-        (os.environ.get('DATABASE_URL') is not None and os.environ.get('FLASK_ENV') != 'development')
+        os.environ.get('VERCEL') is not None or
+        os.environ.get('RENDER') is not None
     )
 
 

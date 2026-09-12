@@ -36,7 +36,7 @@ def create_app(config_name=None):
     socketio.init_app(
         flask_app,
         cors_allowed_origins='*',
-        async_mode='eventlet',
+        async_mode='threading',
         logger=False,
         engineio_logger=False,
     )
@@ -207,6 +207,10 @@ def create_app(config_name=None):
     from app.routes.event_routes import event_bp
     from app.routes.report_routes import report_bp
     from app.routes.api_routes import api_bp
+    from app.routes.stitch_routes import stitch_bp
+
+    # Register Stitch Blueprint first for primary UI routing
+    flask_app.register_blueprint(stitch_bp)
 
     flask_app.register_blueprint(main_bp)
     flask_app.register_blueprint(auth_bp, url_prefix='/auth')
@@ -232,6 +236,7 @@ def create_app(config_name=None):
     from app.routes.chat_routes import chat_bp
     flask_app.register_blueprint(chat_bp)
     csrf.exempt(chat_bp)
+    csrf.exempt(stitch_bp)
 
     # Register SocketIO event handlers explicitly without shadowing local names
     from app.chat import events as _chat_events  # noqa: F401
@@ -302,5 +307,11 @@ def create_app(config_name=None):
             initialize_database_schema()
         except Exception as e:
             flask_app.logger.warning(f"Startup database schema check notice: {e}")
+
+        try:
+            from app.services.firebase_service import init_firebase
+            init_firebase(flask_app)
+        except Exception as e:
+            flask_app.logger.warning(f"Startup Firebase Realtime Database initialization notice: {e}")
 
     return flask_app

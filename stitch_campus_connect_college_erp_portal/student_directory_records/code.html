@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"secondary":"#565e74","secondary-container":"#dae2fd","primary-fixed":"#dce1ff","inverse-on-surface":"#eaf1ff","surface-container-high":"#dce9ff","on-surface":"#0b1c30","secondary-fixed":"#dae2fd","tertiary-fixed-dim":"#68dba9","background":"#f8f9ff","surface-bright":"#f8f9ff","on-secondary-container":"#5c647a","on-tertiary":"#ffffff","surface":"#f8f9ff","on-primary":"#ffffff","surface-variant":"#d3e4fe","on-primary-fixed-variant":"#0039b5","on-background":"#0b1c30","surface-tint":"#2151da","on-secondary":"#ffffff","inverse-surface":"#213145","surface-container":"#e5eeff","outline":"#747686","on-tertiary-fixed-variant":"#005137","surface-container-low":"#eff4ff","tertiary":"#004f35","outline-variant":"#c4c5d7","on-primary-container":"#cad3ff","on-primary-fixed":"#001551","secondary-fixed-dim":"#bec6e0","on-secondary-fixed-variant":"#3f465c","tertiary-container":"#006948","primary":"#0037b0","surface-dim":"#cbdbf5","tertiary-fixed":"#85f8c4","on-tertiary-fixed":"#002114","on-secondary-fixed":"#131b2e","on-error":"#ffffff","inverse-primary":"#b7c4ff","error":"#ba1a1a","on-tertiary-container":"#76eab6","primary-fixed-dim":"#b7c4ff","primary-container":"#1d4ed8","error-container":"#ffdad6","on-surface-variant":"#434655","on-error-container":"#93000a","surface-container-lowest":"#ffffff","surface-container-highest":"#d3e4fe"},borderRadius:{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},spacing:{"margin-mobile":"1rem","gutter":"1rem","space-xs":"0.25rem","space-md":"0.75rem","gutter-compact":"0.5rem","space-lg":"1rem","margin":"1.5rem","space-sm":"0.5rem","space-xl":"1.5rem"},fontFamily:{"tabular-numeric-sm":["JetBrains Mono"],"headline-sm":["Inter"],"headline-md":["Inter"],"body-sm":["Inter"],"body-lg":["Inter"],"display-lg":["Inter"],"label-md":["Inter"],"label-sm":["Inter"],"body-md":["Inter"],"headline-xl":["Inter"],"tabular-numeric":["JetBrains Mono"],"headline-lg":["Inter"]},fontSize:{"tabular-numeric-sm":["11px",{"lineHeight":"14px","fontWeight":"500"}],"headline-sm":["14px",{"lineHeight":"20px","fontWeight":"600"}],"headline-md":["16px",{"lineHeight":"24px","letterSpacing":"-0.005em","fontWeight":"600"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"body-lg":["15px",{"lineHeight":"22px","fontWeight":"400"}],"display-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"700"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.04em","fontWeight":"600"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.05em","fontWeight":"600"}],"body-md":["13px",{"lineHeight":"18px","fontWeight":"400"}],"headline-xl":["24px",{"lineHeight":"32px","letterSpacing":"-0.015em","fontWeight":"700"}],"tabular-numeric":["13px",{"lineHeight":"18px","letterSpacing":"-0.02em","fontWeight":"500"}],"headline-lg":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-72 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="px-space-xl pt-space-lg pb-space-md flex items-center gap-space-md"><img alt="Campus Connect SIT Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1ULElvCIlshpn8u0OlNNbpTdHgYzarbUQ3sSlGU4g8QOj6hpy1V-6PR_1lBLK_usMdThUroWygsgfAL6qGee_P-8XSuwbSpiEyVuwD8_tzy9aVSF7xX5A7FPSpkXX2CouF8RzIGkG17Zc7CqaMiWTNxAR_2mxLNiWyi0MgueaGFHXpkIoiOHIkZqddOoFrABD3Rj0t-GOByaBf-AgLPJXyr8yD8lO5rCFLtsPpG4ec1JEDQU_XA0eA-NGg"/><div class="flex flex-col min-w-0"><span class="font-headline-sm text-headline-sm text-on-surface truncate leading-tight">Sharad Institute of Technology</span><span class="font-label-sm text-label-sm text-secondary tracking-wider truncate">CAMPUS CONNECT ERP</span></div></div><div class="px-space-xl pb-space-md"><div class="bg-surface-container-high rounded-xl p-space-xs flex items-center justify-between"><div class="flex items-center gap-space-xs pl-space-xs"><span class="w-2 h-2 rounded-full bg-tertiary"></span><span class="font-label-sm text-label-sm text-on-surface font-semibold">SUPER ADMIN</span></div><button class="flex items-center text-secondary hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[18px]">unfold_more</span></button></div></div><nav class="px-space-md space-y-space-md pb-space-xl" data-active-classes="bg-primary-container text-on-primary font-semibold shadow-sm"><div class="space-y-space-xs"><span class="px-space-sm font-label-sm text-label-sm text-secondary uppercase tracking-wider block">Core</span><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span class="font-body-md text-body-md">Dashboard</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="analytics-and-reports" href="#"><span class="material-symbols-outlined text-[18px]">analytics</span><span class="font-body-md text-body-md">Analytics &amp; Reports</span></a></div><div class="space-y-space-xs"><span class="px-space-sm font-label-sm text-label-sm text-secondary uppercase tracking-wider block">Academics &amp; Curriculum</span><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="departments" href="#"><span class="material-symbols-outlined text-[18px]">domain</span><span class="font-body-md text-body-md">Departments</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="courses-and-syllabus" href="#"><span class="material-symbols-outlined text-[18px]">menu_book</span><span class="font-body-md text-body-md">Courses &amp; Syllabus</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="subjects" href="#"><span class="material-symbols-outlined text-[18px]">layers</span><span class="font-body-md text-body-md">Subjects</span></a></div><div class="space-y-space-xs"><span class="px-space-sm font-label-sm text-label-sm text-secondary uppercase tracking-wider block">People Directory</span><a aria-current="page" class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg transition-all bg-primary-container text-on-primary font-semibold shadow-sm" data-path="students-directory" href="#"><span class="material-symbols-outlined text-[18px]">school</span><span class="font-body-md text-body-md">Students Directory</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="faculty-and-staff" href="#"><span class="material-symbols-outlined text-[18px]">badge</span><span class="font-body-md text-body-md">Faculty &amp; Staff</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="hod-management" href="#"><span class="material-symbols-outlined text-[18px]">supervisor_account</span><span class="font-body-md text-body-md">HOD Management</span></a></div><div class="space-y-space-xs"><span class="px-space-sm font-label-sm text-label-sm text-secondary uppercase tracking-wider block">Operations</span><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="attendance-tracker" href="#"><span class="material-symbols-outlined text-[18px]">fact_check</span><span class="font-body-md text-body-md">Attendance Tracker</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="examination-and-results" href="#"><span class="material-symbols-outlined text-[18px]">assignment_turned_in</span><span class="font-body-md text-body-md">Examination &amp; Results</span></a></div><div class="space-y-space-xs"><span class="px-space-sm font-label-sm text-label-sm text-secondary uppercase tracking-wider block">Communication &amp; Repo</span><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="official-notices" href="#"><span class="material-symbols-outlined text-[18px]">campaign</span><span class="font-body-md text-body-md">Official Notices</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="study-materials-repository" href="#"><span class="material-symbols-outlined text-[18px]">folder_shared</span><span class="font-body-md text-body-md">Study Materials Repository</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="campus-events" href="#"><span class="material-symbols-outlined text-[18px]">event</span><span class="font-body-md text-body-md">Campus Events</span></a></div><div class="space-y-space-xs"><span class="px-space-sm font-label-sm text-label-sm text-secondary uppercase tracking-wider block">System &amp; Security</span><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="role-permissions" href="#"><span class="material-symbols-outlined text-[18px]">admin_panel_settings</span><span class="font-body-md text-body-md">Role Permissions</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="audit-logs" href="#"><span class="material-symbols-outlined text-[18px]">receipt_long</span><span class="font-body-md text-body-md">Audit Logs</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="settings" href="#"><span class="material-symbols-outlined text-[18px]">settings</span><span class="font-body-md text-body-md">Settings</span></a></div></nav></div><div class="p-space-md bg-surface-container-high m-space-md rounded-xl flex items-center justify-between"><div class="flex items-center gap-space-md min-w-0"><img alt="Profile" class="w-8 h-8 rounded-full object-cover shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhYl6gFQnAnK_u1QI4I6kpgTUBz8zkz4S0iTSMOfteQuGNFH8wcQ786hcaha3Lvwql-gun7Ii-twZwnY_0xsvc5TeO2YwbFj3lUFwZthKaL9aBhsFOzfWQoP1BNup3YW-w_1PJivK7Fw_NgrnFRgPewtJ6MQezgPl1mqG_glViYBC6CJhrz4i5J1f3NUEu1mpC6Xn5Ma068gy3BMqa3iSiNSs-T_YfDGMd88RMTJLQoh5vRgTFsdjMqg"/><div class="flex flex-col min-w-0"><span class="font-headline-sm text-headline-sm text-on-surface truncate">Dr. S. Patil</span><span class="font-label-sm text-label-sm text-secondary truncate">SIT-EMP-001</span></div></div><div class="flex items-center gap-space-xs shrink-0"><button class="p-space-xs text-secondary hover:text-on-surface rounded transition-colors" title="Toggle Sidebar"><span class="material-symbols-outlined text-[18px]">dock_to_left</span></button><button class="p-space-xs text-error hover:bg-error-container hover:text-on-error-container rounded transition-colors" title="Sign Out"><span class="material-symbols-outlined text-[18px]">logout</span></button></div></div></aside><div class="pl-72 flex flex-col min-h-screen"><header class="fixed top-0 left-72 right-0 h-14 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs text-secondary font-label-md text-label-md"><span class="hover:text-on-surface cursor-pointer">SIT Core</span><span class="material-symbols-outlined text-[14px]">chevron_right</span><span class="text-on-surface font-semibold">Console</span></div><div class="inline-flex items-center px-space-sm py-space-xs rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm"><span class="w-1.5 h-1.5 rounded-full bg-primary mr-1.5"></span>AY 2024-25 • Even Semester</div></div><div class="flex-1 max-w-lg mx-space-xl"><div class="relative flex items-center"><span class="material-symbols-outlined absolute left-3 text-secondary text-[18px]">search</span><input class="w-full bg-surface-container-lowest text-on-surface placeholder:text-secondary rounded-lg pl-9 pr-12 py-1.5 font-body-sm text-body-sm shadow-[0_1px_4px_rgba(0,0,0,0.04)] outline-none focus:ring-2 focus:ring-primary/20" placeholder="Search students, faculty, PRN, subjects, notices..." type="text"/><kbd class="absolute right-3 px-1.5 py-0.5 rounded bg-surface-container-high font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">⌘K</kbd></div></div><div class="flex items-center gap-space-sm"><button class="flex items-center gap-space-xs px-space-md py-1.5 bg-primary-container text-on-primary rounded-lg font-headline-sm text-headline-sm shadow-sm hover:opacity-95 transition-opacity"><span class="material-symbols-outlined text-[16px]">add</span><span>Quick Action</span></button><button class="relative p-space-sm text-secondary hover:text-on-surface rounded-lg hover:bg-surface-container transition-colors" title="Academic Calendar"><span class="material-symbols-outlined text-[20px]">calendar_today</span></button><button class="relative p-space-sm text-secondary hover:text-on-surface rounded-lg hover:bg-surface-container transition-colors" title="Notifications"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1 right-1 w-4 h-4 rounded-full bg-error text-on-error font-tabular-numeric-sm text-[10px] flex items-center justify-center font-bold">4</span></button><button class="p-space-sm text-secondary hover:text-on-surface rounded-lg hover:bg-surface-container transition-colors" title="Help Desk"><span class="material-symbols-outlined text-[20px]">help</span></button><div class="h-6 w-px bg-surface-container-highest mx-space-xs"></div><div class="flex items-center gap-space-xs cursor-pointer"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhYl6gFQnAnK_u1QI4I6kpgTUBz8zkz4S0iTSMOfteQuGNFH8wcQ786hcaha3Lvwql-gun7Ii-twZwnY_0xsvc5TeO2YwbFj3lUFwZthKaL9aBhsFOzfWQoP1BNup3YW-w_1PJivK7Fw_NgrnFRgPewtJ6MQezgPl1mqG_glViYBC6CJhrz4i5J1f3NUEu1mpC6Xn5Ma068gy3BMqa3iSiNSs-T_YfDGMd88RMTJLQoh5vRgTFsdjMqg"/><span class="material-symbols-outlined text-secondary text-[18px]">expand_more</span></div></div></header><main class="w-full pt-14 px-space-xl pb-space-xl flex-1"><div class="flex flex-col w-full">
+<!-- Top Command & Action Bar -->
+<section class="flex flex-col xl:flex-row xl:items-center justify-between gap-space-md mb-space-lg">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm uppercase tracking-wider mb-0.5">
+<span>Academic Operations</span>
+<span>/</span>
+<span class="text-primary font-semibold">Enrollment &amp; Governance</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Student Directory &amp; Academic Records</h1>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5">Manage student identities, compliance metrics, attendance status, and semester marksheets across all engineering faculties.</p>
+</div>
+<!-- Action Buttons Palette -->
+<div class="flex flex-wrap items-center gap-space-xs">
+<button class="flex items-center gap-space-xs px-space-md py-1.5 bg-surface-container hover:bg-surface-container-high text-on-surface font-headline-sm text-headline-sm rounded-lg shadow-sm transition-all">
+<span class="material-symbols-outlined text-[17px] text-secondary">file_download</span>
+<span>Export Records</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-1.5 bg-surface-container hover:bg-surface-container-high text-on-surface font-headline-sm text-headline-sm rounded-lg shadow-sm transition-all">
+<span class="material-symbols-outlined text-[17px] text-secondary">upload_file</span>
+<span>Import CSV/Excel</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-1.5 bg-surface-container hover:bg-surface-container-high text-on-surface font-headline-sm text-headline-sm rounded-lg shadow-sm transition-all">
+<span class="material-symbols-outlined text-[17px] text-secondary">badge</span>
+<span>Batch ID Card Gen</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-1.5 bg-primary-container text-on-primary font-headline-sm text-headline-sm rounded-lg shadow-sm hover:opacity-95 transition-all">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+<span>+ Add New Student</span>
+</button>
+</div>
+</section>
+<!-- Summary KPI Bar -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-space-md mb-space-lg">
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Total Enrolled</span>
+<div class="flex items-baseline gap-space-xs mt-0.5">
+<span class="font-headline-xl text-headline-xl text-on-surface font-tabular-numeric">4,820</span>
+<span class="font-label-sm text-label-sm text-tertiary font-medium">100% active base</span>
+</div>
+</div>
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">school</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Regular Intake</span>
+<div class="flex items-baseline gap-space-xs mt-0.5">
+<span class="font-headline-xl text-headline-xl text-on-surface font-tabular-numeric">4,680</span>
+<span class="font-label-sm text-label-sm text-secondary">CAP Central</span>
+</div>
+</div>
+<div class="w-10 h-10 rounded-xl bg-secondary-container/40 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[22px]">how_to_reg</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Lateral (DSE) Entry</span>
+<div class="flex items-baseline gap-space-xs mt-0.5">
+<span class="font-headline-xl text-headline-xl text-on-surface font-tabular-numeric">140</span>
+<span class="font-label-sm text-label-sm text-primary">Direct 2nd Yr</span>
+</div>
+</div>
+<div class="w-10 h-10 rounded-xl bg-primary-fixed/50 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">move_up</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-error uppercase tracking-wider font-semibold">Defaulters (&lt;75% Att.)</span>
+<div class="flex items-baseline gap-space-xs mt-0.5">
+<span class="font-headline-xl text-headline-xl text-error font-tabular-numeric">82</span>
+<span class="font-label-sm text-label-sm text-error bg-error-container/70 px-1.5 py-0.5 rounded">Action Needed</span>
+</div>
+</div>
+<div class="w-10 h-10 rounded-xl bg-error-container/60 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[22px]">warning</span>
+</div>
+</div>
+</section>
+<!-- Multi-Tier Filter & Search Controls -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm mb-space-md">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-sm items-center">
+<!-- Search Input -->
+<div class="md:col-span-4 relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-secondary text-[18px]">search</span>
+<input class="w-full bg-surface-container-low text-on-surface placeholder:text-secondary rounded-lg pl-9 pr-8 py-2 font-body-sm text-body-sm outline-none focus:bg-surface-container-lowest focus:shadow-sm transition-all" id="searchInput" placeholder="Search by Full Name, PRN (e.g. SIT2022CSE042), Roll No..." type="text"/>
+<button class="absolute right-2 text-secondary hover:text-on-surface" title="Clear Search">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+</button>
+</div>
+<!-- Department Filter -->
+<div class="md:col-span-2">
+<select class="w-full bg-surface-container-low text-on-surface font-body-sm text-body-sm rounded-lg px-space-sm py-2 outline-none cursor-pointer">
+<option value="">Department: All</option>
+<option selected="" value="cse">Computer Science &amp; Engg</option>
+<option value="aids">AI &amp; Data Science</option>
+<option value="mech">Mechanical Engg</option>
+<option value="civil">Civil Engg</option>
+<option value="entc">Electronics &amp; Telecom</option>
+</select>
+</div>
+<!-- Year & Semester Filter -->
+<div class="md:col-span-2">
+<select class="w-full bg-surface-container-low text-on-surface font-body-sm text-body-sm rounded-lg px-space-sm py-2 outline-none cursor-pointer">
+<option value="">Year: All Academic Yrs</option>
+<option value="fy">First Year (Sem I-II)</option>
+<option value="sy">Second Year (Sem III-IV)</option>
+<option selected="" value="ty">Third Year (Sem V-VI)</option>
+<option value="final">Final Year (Sem VII-VIII)</option>
+</select>
+</div>
+<!-- Division Filter -->
+<div class="md:col-span-2">
+<select class="w-full bg-surface-container-low text-on-surface font-body-sm text-body-sm rounded-lg px-space-sm py-2 outline-none cursor-pointer">
+<option value="">Division: All (A, B, C)</option>
+<option selected="" value="A">Division A</option>
+<option value="B">Division B</option>
+<option value="C">Division C</option>
+</select>
+</div>
+<!-- Compliance Status -->
+<div class="md:col-span-2 flex items-center gap-space-xs">
+<select class="w-full bg-surface-container-low text-on-surface font-body-sm text-body-sm rounded-lg px-space-sm py-2 outline-none cursor-pointer">
+<option value="">Status: All Types</option>
+<option selected="" value="active">Active Regular</option>
+<option value="detention">Detained / Hold</option>
+<option value="tc">TC Issued</option>
+<option value="leave">On Approved Leave</option>
+</select>
+<button class="p-2 bg-surface-container hover:bg-surface-container-high rounded-lg text-secondary hover:text-on-surface transition-colors" title="Reset Filters">
+<span class="material-symbols-outlined text-[18px]">restart_alt</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Sticky Bulk Action Strip -->
+<div class="flex items-center justify-between bg-inverse-surface text-inverse-on-surface px-space-lg py-space-sm rounded-xl shadow-md mb-space-sm" id="bulkActionBar">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed"></span>
+<span class="font-headline-sm text-headline-sm text-inverse-on-surface"><span id="selectedCount">3</span> students selected</span>
+</div>
+<span class="text-outline text-body-sm">|</span>
+<span class="font-body-sm text-body-sm text-inverse-on-surface/80">Batch action triggers instant SMS dispatch &amp; academic holds.</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="flex items-center gap-space-xs px-space-md py-1 bg-surface-container-highest/20 hover:bg-surface-container-highest/30 rounded-lg text-inverse-on-surface font-label-md text-label-md transition-all">
+<span class="material-symbols-outlined text-[16px]">sms</span>
+<span>Send SMS / Notice</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-1 bg-surface-container-highest/20 hover:bg-surface-container-highest/30 rounded-lg text-inverse-on-surface font-label-md text-label-md transition-all">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+<span>Export Consolidated PDF</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-1 bg-error/80 hover:bg-error rounded-lg text-on-error font-label-md text-label-md transition-all">
+<span class="material-symbols-outlined text-[16px]">block</span>
+<span>Flag for Parent Inquiry</span>
+</button>
+<button class="p-1 text-inverse-on-surface/60 hover:text-inverse-on-surface rounded" onclick="document.getElementById('bulkActionBar').classList.add('hidden')">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<!-- Main Canvas: Table Layout paired with Sliding Detail Preview Drawer -->
+<div class="relative flex flex-col xl:flex-row gap-space-md items-start w-full">
+<!-- Production Data Table Panel -->
+<div class="flex-1 w-full bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-2.5 px-space-md w-10 text-center">
+<input checked="" class="w-4 h-4 rounded cursor-pointer accent-primary" type="checkbox"/>
+</th>
+<th class="py-2.5 px-space-sm">PRN &amp; Profile</th>
+<th class="py-2.5 px-space-md">Department &amp; Batch</th>
+<th class="py-2.5 px-space-sm text-center">Sem / Div</th>
+<th class="py-2.5 px-space-md">Attendance Progress</th>
+<th class="py-2.5 px-space-sm text-right">CGPA (Curr)</th>
+<th class="py-2.5 px-space-md text-center">Compliance Status</th>
+<th class="py-2.5 px-space-md text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-low font-body-sm text-body-sm">
+<!-- Row 1 (Selected Row - Aditya Patil) -->
+<tr class="bg-primary-fixed/15 hover:bg-primary-fixed/25 transition-colors cursor-pointer group" onclick="selectStudent('Aditya Suresh Patil', 'SIT2022CSE042', '91.4%', '8.92', 'Computer Science &amp; Engineering', 'Third Year (TY) • Div A')">
+<td class="py-3 px-space-md text-center" onclick="event.stopPropagation()">
+<input checked="" class="w-4 h-4 rounded cursor-pointer accent-primary" type="checkbox"/>
+</td>
+<td class="py-3 px-space-sm">
+<div class="flex items-center gap-space-sm">
+<img class="w-9 h-9 rounded-full object-cover shadow-sm ring-2 ring-primary/20" data-alt="Clear portrait of male Indian engineering college student in white collared shirt with smart clean campus background, natural lighting, institutional ID photo style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFBBzUSk1qIp_jx3eLH8vg0UelmkpjXNyIHuk8Z1DKkQ0ASZwKYwPkV1MHaY6bk4f6ua87T8ak-ZbwgnJ4thS2x_umxyuall67LMSFXO9nKl--TiBlcv536z8U1mSOQfd1vRiWQxhxfuesVLNJH_X9rjvCA_Ozn_ta7GRrOkATGb623-9MoiQnhTq5A9RiOGohvq8QidZSvgtOD9i_MAlWiAO2h2vDfKz4_mzqelrRPiPTIpZGfFjGjQ"/>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors truncate">Aditya Suresh Patil</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary truncate">SIT2022CSE042 • Roll 24</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-medium">B.Tech Computer Science</span>
+<span class="font-body-sm text-body-sm text-secondary">Batch 2022-26 • Regular</span>
+</div>
+</td>
+<td class="py-3 px-space-sm text-center">
+<span class="inline-flex items-center justify-center px-2 py-0.5 rounded-md bg-surface-container text-on-surface font-tabular-numeric font-medium">Sem VI - A</span>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col gap-1 w-32">
+<div class="flex items-center justify-between text-label-sm font-tabular-numeric">
+<span class="text-tertiary font-bold">91.4%</span>
+<span class="text-secondary">Compliant</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary-container h-full rounded-full" style="width: 91.4%"></div>
+</div>
+</div>
+</td>
+<td class="py-3 px-space-sm text-right">
+<span class="font-tabular-numeric text-tabular-numeric font-bold text-on-surface">8.92</span>
+</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-tertiary-fixed/40 text-on-tertiary-fixed-variant font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Active
+                </span>
+</td>
+<td class="py-3 px-space-md text-right" onclick="event.stopPropagation()">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-primary" title="View Full File">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface" title="Edit Student Data">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface" title="Academic Marksheet">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group" onclick="selectStudent('Neha Vinod Kulkarni', 'SIT2022CSE078', '94.8%', '9.41', 'Computer Science &amp; Engineering', 'Third Year (TY) • Div A')">
+<td class="py-3 px-space-md text-center" onclick="event.stopPropagation()">
+<input checked="" class="w-4 h-4 rounded cursor-pointer accent-primary" type="checkbox"/>
+</td>
+<td class="py-3 px-space-sm">
+<div class="flex items-center gap-space-sm">
+<img class="w-9 h-9 rounded-full object-cover shadow-sm" data-alt="Professional identification headshot of female Indian engineering student wearing eyeglasses, navy blue blazer, bright studio lighting, neutral grey backdrop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu9hz_Gt_YZ7xnNgKTjtKI1t8tdI6E-mUF9x2pUq5429YTj18HK7MfZAxFcEYu9oPLRLVE7C6fuhRgtRW-R3fzaJx-_PP43xNfiG-_bTsJ6fQZjiYGFC8Q7nJ3F-p_JZGN4PT-OMvMvCZb2XaA8ghOksPUFKnGu8_SuhzaWMc4IE5uYK2NA18qE9GQjJHLzugwChbF1yra4jCwBnzWPUD-DH-US2ZsaTl21frDUcyBa3tQPHhHxJkctw"/>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors truncate">Neha Vinod Kulkarni</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary truncate">SIT2022CSE078 • Roll 32</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-medium">B.Tech Computer Science</span>
+<span class="font-body-sm text-body-sm text-secondary">Batch 2022-26 • Regular</span>
+</div>
+</td>
+<td class="py-3 px-space-sm text-center">
+<span class="inline-flex items-center justify-center px-2 py-0.5 rounded-md bg-surface-container text-on-surface font-tabular-numeric font-medium">Sem VI - A</span>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col gap-1 w-32">
+<div class="flex items-center justify-between text-label-sm font-tabular-numeric">
+<span class="text-tertiary font-bold">94.8%</span>
+<span class="text-secondary">Distinction</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary-container h-full rounded-full" style="width: 94.8%"></div>
+</div>
+</div>
+</td>
+<td class="py-3 px-space-sm text-right">
+<span class="font-tabular-numeric text-tabular-numeric font-bold text-primary">9.41</span>
+</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-tertiary-fixed/40 text-on-tertiary-fixed-variant font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Active
+                </span>
+</td>
+<td class="py-3 px-space-md text-right" onclick="event.stopPropagation()">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-primary">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 (Defaulter Student Example) -->
+<tr class="bg-error-container/20 hover:bg-error-container/30 transition-colors cursor-pointer group" onclick="selectStudent('Rohan Rajesh Deshmukh', 'SIT2022CSE104', '64.2%', '6.78', 'Computer Science &amp; Engineering', 'Third Year (TY) • Div A')">
+<td class="py-3 px-space-md text-center" onclick="event.stopPropagation()">
+<input checked="" class="w-4 h-4 rounded cursor-pointer accent-primary" type="checkbox"/>
+</td>
+<td class="py-3 px-space-sm">
+<div class="flex items-center gap-space-sm">
+<img class="w-9 h-9 rounded-full object-cover shadow-sm ring-2 ring-error/30" data-alt="Collegiate student photo of male university undergraduate in casual olive tee against modern library shelves backdrop, authentic educational atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjlQhNqKEZr1lUvtLhhEoAnerHeBa40VMlauxDS-1A3iBKOn49AtSFL3j3Up1Z8P7uMRXOMwIi6zmZQDQd3beMixw5yCKtiu5g_kXCaA--3Dmi7ris-AZ2K_tkBiVcnJy4UACRrLWhSMYx8T1WuDeXErMI8J2eity4H61pavSOA_N5V6m0iXeIpCjV3T8YA8HpzXzTYepAaXfX6lYBdyc4f5htw_EEUMCj_KcxtUEDHcIXWmEHsvQDMw"/>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-error font-semibold truncate">Rohan Rajesh Deshmukh</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary truncate">SIT2022CSE104 • Roll 46</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-medium">B.Tech Computer Science</span>
+<span class="font-body-sm text-body-sm text-secondary">Batch 2022-26 • Regular</span>
+</div>
+</td>
+<td class="py-3 px-space-sm text-center">
+<span class="inline-flex items-center justify-center px-2 py-0.5 rounded-md bg-surface-container text-on-surface font-tabular-numeric font-medium">Sem VI - A</span>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col gap-1 w-32">
+<div class="flex items-center justify-between text-label-sm font-tabular-numeric">
+<span class="text-error font-bold">64.2%</span>
+<span class="text-error font-semibold">Defaulter</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-error h-full rounded-full" style="width: 64.2%"></div>
+</div>
+</div>
+</td>
+<td class="py-3 px-space-sm text-right">
+<span class="font-tabular-numeric text-tabular-numeric font-bold text-on-surface">6.78</span>
+</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span> Warning Notice
+                </span>
+</td>
+<td class="py-3 px-space-md text-right" onclick="event.stopPropagation()">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-primary">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group" onclick="selectStudent('Pooja Anant Shinde', 'SIT2022CSE019', '88.5%', '8.45', 'Computer Science &amp; Engineering', 'Third Year (TY) • Div A')">
+<td class="py-3 px-space-md text-center" onclick="event.stopPropagation()">
+<input class="w-4 h-4 rounded cursor-pointer accent-primary" type="checkbox"/>
+</td>
+<td class="py-3 px-space-sm">
+<div class="flex items-center gap-space-sm">
+<img class="w-9 h-9 rounded-full object-cover shadow-sm" data-alt="Headshot of a smiling female Indian student wearing glasses and maroon formal attire with clean institutional architectural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAC8Hc3ctONMDlY7ioTK1HLRLraKHjr5IDzTzGCyHstMG6Ux02BsC9DPu8SDwrD7lZG0L3ZAL0WK7NovBcC8vZ89ycU7ZXTjdykT6UIWe8Zv2iTVMGai3j-xThiWL0gMAKtLzfS52R54J1jB4VW2t_jL5CtgRByxaclphMsFoYKrutPGWUy9dB3GGRH5-hxEqIk5SdV3p_kv6WhDtJs0CL-QPRk5WlMCEwlhMMoeh1tdjzk03OvoX7ZuQ"/>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors truncate">Pooja Anant Shinde</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary truncate">SIT2022CSE019 • Roll 08</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-medium">B.Tech Computer Science</span>
+<span class="font-body-sm text-body-sm text-secondary">Batch 2022-26 • Regular</span>
+</div>
+</td>
+<td class="py-3 px-space-sm text-center">
+<span class="inline-flex items-center justify-center px-2 py-0.5 rounded-md bg-surface-container text-on-surface font-tabular-numeric font-medium">Sem VI - A</span>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col gap-1 w-32">
+<div class="flex items-center justify-between text-label-sm font-tabular-numeric">
+<span class="text-tertiary font-bold">88.5%</span>
+<span class="text-secondary">Good</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary-container h-full rounded-full" style="width: 88.5%"></div>
+</div>
+</div>
+</td>
+<td class="py-3 px-space-sm text-right">
+<span class="font-tabular-numeric text-tabular-numeric font-bold text-on-surface">8.45</span>
+</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-tertiary-fixed/40 text-on-tertiary-fixed-variant font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Active
+                </span>
+</td>
+<td class="py-3 px-space-md text-right" onclick="event.stopPropagation()">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-primary">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 5 (Lateral Entry Example) -->
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group" onclick="selectStudent('Tanmay Ganesh More', 'SIT2023DSE007', '82.0%', '7.95', 'Computer Science &amp; Engineering', 'Third Year (TY) • Div A')">
+<td class="py-3 px-space-md text-center" onclick="event.stopPropagation()">
+<input class="w-4 h-4 rounded cursor-pointer accent-primary" type="checkbox"/>
+</td>
+<td class="py-3 px-space-sm">
+<div class="flex items-center gap-space-sm">
+<img class="w-9 h-9 rounded-full object-cover shadow-sm" data-alt="Realistic photo of male Indian technical student wearing blue button-down shirt with computer lab workstation in soft background focus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBos8f060sShEAfL4zTMM0yrU6aYshnztYSG6qRQruoEWWmoi28WzBaKI1BslWVOcCMx9xTf2I9eouP2xgGEoQeKAgHV3YQEYm6u2aFihaj0i1dHcX0LctVqE_3ETNl2PNZgXlxXd3_LCdsiJmcmgh30tSpOpmHsOPQgZddSXYCm5_2o_jmL3Y251sxAaMsq8hRekB6cEREKrnPX9xp1738un3rlEBOi0GiYkvNZUrPs-Hz21KT4_DNpg"/>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors truncate">Tanmay Ganesh More</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary truncate">SIT2023DSE007 • Roll 61</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-medium">B.Tech Computer Science</span>
+<span class="font-body-sm text-body-sm text-primary font-medium">Lateral Entry • Poly Diploma</span>
+</div>
+</td>
+<td class="py-3 px-space-sm text-center">
+<span class="inline-flex items-center justify-center px-2 py-0.5 rounded-md bg-surface-container text-on-surface font-tabular-numeric font-medium">Sem VI - A</span>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col gap-1 w-32">
+<div class="flex items-center justify-between text-label-sm font-tabular-numeric">
+<span class="text-tertiary font-bold">82.0%</span>
+<span class="text-secondary">Average</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary-container h-full rounded-full" style="width: 82%"></div>
+</div>
+</div>
+</td>
+<td class="py-3 px-space-sm text-right">
+<span class="font-tabular-numeric text-tabular-numeric font-bold text-on-surface">7.95</span>
+</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-tertiary-fixed/40 text-on-tertiary-fixed-variant font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Active
+                </span>
+</td>
+<td class="py-3 px-space-md text-right" onclick="event.stopPropagation()">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-primary">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 6 -->
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group" onclick="selectStudent('Shruti Mahesh Jadhav', 'SIT2022CSE055', '96.2%', '9.18', 'Computer Science &amp; Engineering', 'Third Year (TY) • Div A')">
+<td class="py-3 px-space-md text-center" onclick="event.stopPropagation()">
+<input class="w-4 h-4 rounded cursor-pointer accent-primary" type="checkbox"/>
+</td>
+<td class="py-3 px-space-sm">
+<div class="flex items-center gap-space-sm">
+<img class="w-9 h-9 rounded-full object-cover shadow-sm" data-alt="Portrait of South Asian female university student in formal yellow and white traditional top, confident gaze, bright academic library setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5RAYByyrZFqliBKWSxVNFnFYDxYVfEuaybUo0spFu2SUY1QFjVIzdedr7qdrSyU0Jd2akTTMa3BTr8jFwv5Sp1p3FJ5OIuhoPV7RIxB-IpsltU9yamPVYlHKpXLfJOG43RpNKKanH0n_WzNdW2pzw5rm3nZ8xV9X2y4nZgkyt-XaGLrYjqZj_wCr2rl_Zq9cidVa3_2xQglLxJ5O4cCbJJCOJSA5BdIB5g64CRrtBowEinWRufhnLXw"/>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors truncate">Shruti Mahesh Jadhav</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary truncate">SIT2022CSE055 • Roll 28</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-medium">B.Tech Computer Science</span>
+<span class="font-body-sm text-body-sm text-secondary">Batch 2022-26 • Regular</span>
+</div>
+</td>
+<td class="py-3 px-space-sm text-center">
+<span class="inline-flex items-center justify-center px-2 py-0.5 rounded-md bg-surface-container text-on-surface font-tabular-numeric font-medium">Sem VI - A</span>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col gap-1 w-32">
+<div class="flex items-center justify-between text-label-sm font-tabular-numeric">
+<span class="text-tertiary font-bold">96.2%</span>
+<span class="text-secondary">Distinction</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary-container h-full rounded-full" style="width: 96.2%"></div>
+</div>
+</div>
+</td>
+<td class="py-3 px-space-sm text-right">
+<span class="font-tabular-numeric text-tabular-numeric font-bold text-primary">9.18</span>
+</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-tertiary-fixed/40 text-on-tertiary-fixed-variant font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Active
+                </span>
+</td>
+<td class="py-3 px-space-md text-right" onclick="event.stopPropagation()">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-primary">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 7 (Provisional/Medical Leave) -->
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group" onclick="selectStudent('Kunal Deepak Chavan', 'SIT2022CSE031', '71.1%', '7.12', 'Computer Science &amp; Engineering', 'Third Year (TY) • Div A')">
+<td class="py-3 px-space-md text-center" onclick="event.stopPropagation()">
+<input class="w-4 h-4 rounded cursor-pointer accent-primary" type="checkbox"/>
+</td>
+<td class="py-3 px-space-sm">
+<div class="flex items-center gap-space-sm">
+<img class="w-9 h-9 rounded-full object-cover shadow-sm" data-alt="Passport style crisp ID photograph of Indian young adult male in dark formal suit and light background, formal academic registry style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCH0hJirqaD_2UrRrVEu3srwG_d2YYOXbLZcgJyFhB_2U8FpIN-FAlnXdepyp9kU9wmIaIBKD3TbWS0kr68q6I7HIUUss-c2nEBH7oHKvawYFFQzdk60EMewXeuZeuVifAR89hKSQVW1N8k4UOnKByqqi8FW6VXG5kHmRt2VcU8Dwk7kK5O9VXB7bjAcBhGfY7ehGhIKlbnIYn_9jRCkxIomcGrWxH2uEKROkxnZ5Mrn-TILRDErDXp5A"/>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors truncate">Kunal Deepak Chavan</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary truncate">SIT2022CSE031 • Roll 15</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-medium">B.Tech Computer Science</span>
+<span class="font-body-sm text-body-sm text-secondary">Batch 2022-26 • Regular</span>
+</div>
+</td>
+<td class="py-3 px-space-sm text-center">
+<span class="inline-flex items-center justify-center px-2 py-0.5 rounded-md bg-surface-container text-on-surface font-tabular-numeric font-medium">Sem VI - A</span>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col gap-1 w-32">
+<div class="flex items-center justify-between text-label-sm font-tabular-numeric">
+<span class="text-secondary font-bold">71.1%</span>
+<span class="text-secondary">Provisional</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary-fixed-dim h-full rounded-full" style="width: 71.1%"></div>
+</div>
+</div>
+</td>
+<td class="py-3 px-space-sm text-right">
+<span class="font-tabular-numeric text-tabular-numeric font-bold text-on-surface">7.12</span>
+</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Med Leave
+                </span>
+</td>
+<td class="py-3 px-space-md text-right" onclick="event.stopPropagation()">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-primary">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 8 -->
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group" onclick="selectStudent('Ananya Prakash Joshi', 'SIT2022CSE011', '89.0%', '8.81', 'Computer Science &amp; Engineering', 'Third Year (TY) • Div A')">
+<td class="py-3 px-space-md text-center" onclick="event.stopPropagation()">
+<input class="w-4 h-4 rounded cursor-pointer accent-primary" type="checkbox"/>
+</td>
+<td class="py-3 px-space-sm">
+<div class="flex items-center gap-space-sm">
+<img class="w-9 h-9 rounded-full object-cover shadow-sm" data-alt="Studio portrait of smiling Indian female student wearing glasses and clean collared shirt with subtle architectural campus background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBh92CpkkCa3Ui9TrA5D0TbGqzKIBzR1CZoktzDz4reu7euFLXModM--DXOSqi0C7YNK36ZAb2NEhRcnH6SlLPepFRW4WBGhxLiICy1mVd1o7yKd98psFEtBPeh6jCflRXQAz5IvTzDXjAemejJpVTbEM_tjDy8IwUM6mvZ7s_BhlH-aDuwpBWv__IisBG04yKrd10dl2XviLe0dZdR_HHU6KUA_ffvUN1OntFGpeBw61OxapBVEVM4VA"/>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors truncate">Ananya Prakash Joshi</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary truncate">SIT2022CSE011 • Roll 05</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-medium">B.Tech Computer Science</span>
+<span class="font-body-sm text-body-sm text-secondary">Batch 2022-26 • Regular</span>
+</div>
+</td>
+<td class="py-3 px-space-sm text-center">
+<span class="inline-flex items-center justify-center px-2 py-0.5 rounded-md bg-surface-container text-on-surface font-tabular-numeric font-medium">Sem VI - A</span>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col gap-1 w-32">
+<div class="flex items-center justify-between text-label-sm font-tabular-numeric">
+<span class="text-tertiary font-bold">89.0%</span>
+<span class="text-secondary">Consistent</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary-container h-full rounded-full" style="width: 89%"></div>
+</div>
+</div>
+</td>
+<td class="py-3 px-space-sm text-right">
+<span class="font-tabular-numeric text-tabular-numeric font-bold text-on-surface">8.81</span>
+</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-tertiary-fixed/40 text-on-tertiary-fixed-variant font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Active
+                </span>
+</td>
+<td class="py-3 px-space-md text-right" onclick="event.stopPropagation()">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-primary">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="flex flex-col sm:flex-row items-center justify-between px-space-lg py-space-sm bg-surface-container-low text-secondary">
+<div class="flex items-center gap-space-sm mb-2 sm:mb-0">
+<span class="font-body-sm text-body-sm">Showing <strong class="text-on-surface">1 - 8</strong> of <strong class="text-on-surface">74</strong> students in Division A</span>
+<select class="bg-surface-container text-on-surface font-body-sm text-body-sm rounded px-1.5 py-0.5 outline-none">
+<option>10 / page</option>
+<option>25 / page</option>
+<option>50 / page</option>
+</select>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined text-[18px]">first_page</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-7 h-7 rounded bg-primary text-on-primary font-tabular-numeric-sm text-tabular-numeric-sm font-semibold flex items-center justify-center">1</button>
+<button class="w-7 h-7 rounded hover:bg-surface-container text-on-surface font-tabular-numeric-sm text-tabular-numeric-sm font-medium flex items-center justify-center">2</button>
+<button class="w-7 h-7 rounded hover:bg-surface-container text-on-surface font-tabular-numeric-sm text-tabular-numeric-sm font-medium flex items-center justify-center">3</button>
+<span class="px-1 text-secondary">...</span>
+<button class="w-7 h-7 rounded hover:bg-surface-container text-on-surface font-tabular-numeric-sm text-tabular-numeric-sm font-medium flex items-center justify-center">8</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-secondary hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">last_page</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Sliding Side Drawer / Detail Preview for Selected Student -->
+<div class="w-full xl:w-[410px] shrink-0 bg-surface-container-lowest rounded-xl shadow-md p-space-lg flex flex-col gap-space-md" id="studentDetailDrawer">
+<!-- Drawer Header with Dismiss & Quick Print -->
+<div class="flex items-center justify-between pb-space-sm border-b-0">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Record Inspector</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1.5 text-secondary hover:text-on-surface hover:bg-surface-container rounded-lg" title="Print Comprehensive Dossier">
+<span class="material-symbols-outlined text-[18px]">print</span>
+</button>
+<button class="p-1.5 text-secondary hover:text-on-surface hover:bg-surface-container rounded-lg" title="Full Window View">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</div>
+</div>
+<!-- Identity Banner & Clearance Badge -->
+<div class="flex items-start gap-space-md bg-surface-container-low p-space-md rounded-xl">
+<img class="w-16 h-16 rounded-xl object-cover shadow-sm ring-2 ring-primary" data-alt="Passport style profile photograph of Aditya Suresh Patil, third year Indian college student, clear bright portrait" id="drawerPhoto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWCqj-qYegIikxMFehUxj7AM7EcN5rzkvs93L7mc5wjfBcP37_x2_Q7HhceaOQY2U2tAFSfUMjmzuF7zQwb7WE--R8eYLh8P7ZPZ1K3lJftbItILeTSu0w_V1b_vhwIkH2rKnj8kihQgB_9AUrYhCBR1jBNlbnioa-Lt1d7t-F9D6PtagUTgG-KmimJNmJOdKtxP2RLpodbiSlQLT9lYtx2DVsH0kqZLseB-UVfTCZOwmwxkLnHkbifQ"/>
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex items-center justify-between">
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm font-semibold text-primary" id="drawerPrn">SIT2022CSE042</span>
+<span class="inline-flex items-center px-1.5 py-0.5 rounded bg-tertiary-fixed/50 text-on-tertiary-fixed-variant font-label-sm text-label-sm font-semibold">
+              Fees Cleared
+            </span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold leading-tight mt-0.5 truncate" id="drawerName">Aditya Suresh Patil</h2>
+<span class="font-body-sm text-body-sm text-secondary mt-0.5 truncate" id="drawerDept">Dept. of Computer Science &amp; Engg</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium" id="drawerSem">Third Year (TY) • Div A • Roll 24</span>
+</div>
+</div>
+<!-- Quick Metrics Ribbon -->
+<div class="grid grid-cols-3 gap-space-xs text-center">
+<div class="bg-surface-container-low p-2 rounded-lg">
+<span class="font-label-sm text-label-sm text-secondary block">Cumulative CGPA</span>
+<span class="font-tabular-numeric text-tabular-numeric font-bold text-primary block mt-0.5" id="drawerCgpa">8.92</span>
+</div>
+<div class="bg-surface-container-low p-2 rounded-lg">
+<span class="font-label-sm text-label-sm text-secondary block">Avg Attendance</span>
+<span class="font-tabular-numeric text-tabular-numeric font-bold text-tertiary block mt-0.5" id="drawerAtt">91.4%</span>
+</div>
+<div class="bg-surface-container-low p-2 rounded-lg">
+<span class="font-label-sm text-label-sm text-secondary block">Backlogs</span>
+<span class="font-tabular-numeric text-tabular-numeric font-bold text-on-surface block mt-0.5">0 Clear</span>
+</div>
+</div>
+<!-- Semester-wise CGPA Trend (Inline SVG Graph) -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Semester SGPA Trajectory</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-tertiary font-semibold">+0.34 over Sem V</span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-xl">
+<svg class="w-full h-24 overflow-visible" viewbox="0 0 320 80">
+<!-- Grid Lines -->
+<line class="text-surface-variant/40" stroke="currentColor" stroke-dasharray="2,2" stroke-width="1" x1="10" x2="310" y1="20" y2="20"></line>
+<line class="text-surface-variant/40" stroke="currentColor" stroke-dasharray="2,2" stroke-width="1" x1="10" x2="310" y1="50" y2="50"></line>
+<!-- Area Gradient Fill -->
+<defs>
+<lineargradient id="sgpaGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#1D4ED8" stop-opacity="0.25"></stop>
+<stop offset="100%" stop-color="#1D4ED8" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<path d="M 20,60 L 80,48 L 140,36 L 200,40 L 260,24 L 300,18 L 300,75 L 20,75 Z" fill="url(#sgpaGrad)"></path>
+<!-- Trend Polyline -->
+<polyline fill="none" points="20,60 80,48 140,36 200,40 260,24 300,18" stroke="#1D4ED8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></polyline>
+<!-- Coordinate Nodes -->
+<circle class="fill-surface-container-lowest stroke-primary" cx="20" cy="60" r="3.5" stroke-width="2"></circle>
+<circle class="fill-surface-container-lowest stroke-primary" cx="80" cy="48" r="3.5" stroke-width="2"></circle>
+<circle class="fill-surface-container-lowest stroke-primary" cx="140" cy="36" r="3.5" stroke-width="2"></circle>
+<circle class="fill-surface-container-lowest stroke-primary" cx="200" cy="40" r="3.5" stroke-width="2"></circle>
+<circle class="fill-surface-container-lowest stroke-primary" cx="260" cy="24" r="3.5" stroke-width="2"></circle>
+<circle class="fill-primary stroke-surface-container-lowest" cx="300" cy="18" r="4" stroke-width="1.5"></circle>
+<!-- Labels -->
+<text fill="#565E74" font-family="JetBrains Mono" font-size="8" text-anchor="middle" x="20" y="76">S1: 8.1</text>
+<text fill="#565E74" font-family="JetBrains Mono" font-size="8" text-anchor="middle" x="80" y="76">S2: 8.4</text>
+<text fill="#565E74" font-family="JetBrains Mono" font-size="8" text-anchor="middle" x="140" y="76">S3: 8.7</text>
+<text fill="#565E74" font-family="JetBrains Mono" font-size="8" text-anchor="middle" x="200" y="76">S4: 8.6</text>
+<text fill="#565E74" font-family="JetBrains Mono" font-size="8" text-anchor="middle" x="260" y="76">S5: 8.9</text>
+<text fill="#0037B0" font-family="JetBrains Mono" font-size="8" font-weight="bold" text-anchor="middle" x="300" y="76">S6: 9.1</text>
+</svg>
+</div>
+</div>
+<!-- Monthly Attendance Breakdown -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Even Sem Monthly Attendance</span>
+<div class="grid grid-cols-4 gap-space-xs text-center">
+<div class="bg-surface-container-low p-2 rounded-lg">
+<span class="font-label-sm text-label-sm text-secondary block">Jan</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm font-bold text-tertiary">94%</span>
+</div>
+<div class="bg-surface-container-low p-2 rounded-lg">
+<span class="font-label-sm text-label-sm text-secondary block">Feb</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm font-bold text-tertiary">90%</span>
+</div>
+<div class="bg-surface-container-low p-2 rounded-lg">
+<span class="font-label-sm text-label-sm text-secondary block">Mar</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm font-bold text-tertiary">92%</span>
+</div>
+<div class="bg-surface-container-low p-2 rounded-lg">
+<span class="font-label-sm text-label-sm text-secondary block">Apr (MTD)</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm font-bold text-tertiary">89%</span>
+</div>
+</div>
+</div>
+<!-- Contact & Parent Information -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Contact &amp; Guardian Info</span>
+<div class="space-y-1 bg-surface-container-low p-space-sm rounded-xl font-body-sm text-body-sm">
+<div class="flex items-center justify-between py-1">
+<span class="text-secondary flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">mail</span> Student Email</span>
+<span class="text-on-surface font-medium select-all">aditya.patil@sitcoe.org</span>
+</div>
+<div class="flex items-center justify-between py-1">
+<span class="text-secondary flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">call</span> Student Mobile</span>
+<span class="text-on-surface font-tabular-numeric font-medium">+91 98234 11092</span>
+</div>
+<div class="flex items-center justify-between py-1">
+<span class="text-secondary flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">family_restroom</span> Father's Name</span>
+<span class="text-on-surface font-medium">Suresh Baburao Patil</span>
+</div>
+<div class="flex items-center justify-between py-1">
+<span class="text-secondary flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">contact_phone</span> Guardian Phone</span>
+<span class="text-on-surface font-tabular-numeric font-medium">+91 94220 88319</span>
+</div>
+</div>
+</div>
+<!-- Verified Documents Archive -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Uploaded Documents (4/4)</span>
+<span class="font-label-sm text-label-sm text-tertiary font-semibold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">verified</span> Verified
+          </span>
+</div>
+<div class="grid grid-cols-2 gap-space-xs">
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-center gap-1.5 truncate">
+<span class="material-symbols-outlined text-secondary text-[18px]">description</span>
+<span class="font-label-sm text-label-sm text-on-surface group-hover:text-primary truncate">Aadhar_Card.pdf</span>
+</div>
+<span class="material-symbols-outlined text-secondary text-[16px]">download</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-center gap-1.5 truncate">
+<span class="material-symbols-outlined text-secondary text-[18px]">description</span>
+<span class="font-label-sm text-label-sm text-on-surface group-hover:text-primary truncate">SSC_Marksheet.pdf</span>
+</div>
+<span class="material-symbols-outlined text-secondary text-[16px]">download</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-center gap-1.5 truncate">
+<span class="material-symbols-outlined text-secondary text-[18px]">description</span>
+<span class="font-label-sm text-label-sm text-on-surface group-hover:text-primary truncate">HSC_Certificate.pdf</span>
+</div>
+<span class="material-symbols-outlined text-secondary text-[16px]">download</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-center gap-1.5 truncate">
+<span class="material-symbols-outlined text-secondary text-[18px]">description</span>
+<span class="font-label-sm text-label-sm text-on-surface group-hover:text-primary truncate">Admission_CAP.pdf</span>
+</div>
+<span class="material-symbols-outlined text-secondary text-[16px]">download</span>
+</div>
+</div>
+</div>
+<!-- Quick Action Buttons -->
+<div class="flex items-center gap-space-xs pt-space-xs">
+<button class="flex-1 flex items-center justify-center gap-1 py-2 rounded-lg bg-primary text-on-primary font-headline-sm text-headline-sm hover:opacity-95 shadow-sm transition-all">
+<span class="material-symbols-outlined text-[17px]">badge</span>
+<span>Generate ID Card</span>
+</button>
+<button class="flex items-center justify-center p-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface" title="Flag Student Account">
+<span class="material-symbols-outlined text-[18px]">flag</span>
+</button>
+<button class="flex items-center justify-center p-2 rounded-lg bg-error-container text-on-error-container hover:bg-error hover:text-on-error transition-colors" title="Deactivate Enrollment">
+<span class="material-symbols-outlined text-[18px]">person_off</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+    function selectStudent(name, prn, att, cgpa, dept, sem) {
+      document.getElementById('drawerName').innerText = name;
+      document.getElementById('drawerPrn').innerText = prn;
+      document.getElementById('drawerAtt').innerText = att;
+      document.getElementById('drawerCgpa').innerText = cgpa;
+      document.getElementById('drawerDept').innerText = 'Dept. of ' + dept;
+      document.getElementById('drawerSem').innerText = sem;
+    }
+  </script>
+</div></main></div></body></html>

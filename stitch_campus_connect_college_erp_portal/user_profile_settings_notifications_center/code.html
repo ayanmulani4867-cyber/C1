@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "error": "#ba1a1a",
+          "on-primary": "#ffffff",
+          "surface-container-lowest": "#ffffff",
+          "error-container": "#ffdad6",
+          "on-primary-fixed-variant": "#0039b5",
+          "on-tertiary-fixed-variant": "#005137",
+          "surface-container": "#e5eeff",
+          "tertiary-fixed-dim": "#68dba9",
+          "on-secondary-fixed-variant": "#3f465c",
+          "surface-container-highest": "#d3e4fe",
+          "surface-tint": "#2151da",
+          "surface-container-low": "#eff4ff",
+          "on-secondary-container": "#5c647a",
+          "inverse-on-surface": "#eaf1ff",
+          "surface-container-high": "#dce9ff",
+          "primary": "#0037b0",
+          "surface": "#f8f9ff",
+          "secondary-fixed": "#dae2fd",
+          "tertiary-fixed": "#85f8c4",
+          "on-tertiary-container": "#76eab6",
+          "on-background": "#0b1c30",
+          "primary-fixed": "#dce1ff",
+          "tertiary": "#004f35",
+          "surface-variant": "#d3e4fe",
+          "on-surface-variant": "#434655",
+          "tertiary-container": "#006948",
+          "on-error-container": "#93000a",
+          "on-primary-fixed": "#001551",
+          "outline-variant": "#c4c5d7",
+          "surface-dim": "#cbdbf5",
+          "inverse-primary": "#b7c4ff",
+          "on-error": "#ffffff",
+          "outline": "#747686",
+          "secondary-container": "#dae2fd",
+          "on-secondary-fixed": "#131b2e",
+          "on-secondary": "#ffffff",
+          "surface-bright": "#f8f9ff",
+          "primary-fixed-dim": "#b7c4ff",
+          "on-primary-container": "#cad3ff",
+          "background": "#f8f9ff",
+          "secondary": "#565e74",
+          "secondary-fixed-dim": "#bec6e0",
+          "primary-container": "#1d4ed8",
+          "inverse-surface": "#213145",
+          "on-surface": "#0b1c30",
+          "on-tertiary-fixed": "#002114",
+          "on-tertiary": "#ffffff"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.125rem",
+          "lg": "0.25rem",
+          "xl": "0.5rem",
+          "full": "0.75rem"
+        },
+        "spacing": {
+          "gutter": "1rem",
+          "space-sm": "0.5rem",
+          "space-md": "0.75rem",
+          "margin": "1.5rem",
+          "margin-mobile": "1rem",
+          "space-xs": "0.25rem",
+          "space-xl": "1.5rem",
+          "gutter-compact": "0.5rem",
+          "space-lg": "1rem"
+        },
+        "fontFamily": {
+          "headline-md": [
+            "Inter"
+          ],
+          "tabular-numeric-sm": [
+            "JetBrains Mono"
+          ],
+          "body-lg": [
+            "Inter"
+          ],
+          "tabular-numeric": [
+            "JetBrains Mono"
+          ],
+          "body-sm": [
+            "Inter"
+          ],
+          "label-md": [
+            "Inter"
+          ],
+          "body-md": [
+            "Inter"
+          ],
+          "display-lg": [
+            "Inter"
+          ],
+          "headline-lg": [
+            "Inter"
+          ],
+          "headline-sm": [
+            "Inter"
+          ],
+          "label-sm": [
+            "Inter"
+          ],
+          "headline-xl": [
+            "Inter"
+          ]
+        },
+        "fontSize": {
+          "headline-md": [
+            "16px",
+            {
+              "lineHeight": "24px",
+              "letterSpacing": "-0.005em",
+              "fontWeight": "600"
+            }
+          ],
+          "tabular-numeric-sm": [
+            "11px",
+            {
+              "lineHeight": "14px",
+              "fontWeight": "500"
+            }
+          ],
+          "body-lg": [
+            "15px",
+            {
+              "lineHeight": "22px",
+              "fontWeight": "400"
+            }
+          ],
+          "tabular-numeric": [
+            "13px",
+            {
+              "lineHeight": "18px",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "500"
+            }
+          ],
+          "body-sm": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "fontWeight": "400"
+            }
+          ],
+          "label-md": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "letterSpacing": "0.04em",
+              "fontWeight": "600"
+            }
+          ],
+          "body-md": [
+            "13px",
+            {
+              "lineHeight": "18px",
+              "fontWeight": "400"
+            }
+          ],
+          "display-lg": [
+            "32px",
+            {
+              "lineHeight": "40px",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "700"
+            }
+          ],
+          "headline-lg": [
+            "20px",
+            {
+              "lineHeight": "28px",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "600"
+            }
+          ],
+          "headline-sm": [
+            "14px",
+            {
+              "lineHeight": "20px",
+              "fontWeight": "600"
+            }
+          ],
+          "label-sm": [
+            "11px",
+            {
+              "lineHeight": "14px",
+              "letterSpacing": "0.05em",
+              "fontWeight": "600"
+            }
+          ],
+          "headline-xl": [
+            "24px",
+            {
+              "lineHeight": "32px",
+              "letterSpacing": "-0.015em",
+              "fontWeight": "700"
+            }
+          ]
+        }
+      },
+    },
+  }</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-64 bg-surface-container-lowest border-r border-outline-variant/40 z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="h-14 px-space-lg flex items-center justify-between border-b border-outline-variant/30"><div class="flex items-center gap-space-sm"><div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary font-headline-md text-headline-md">S</div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">Campus Connect</span><span class="font-label-sm text-label-sm text-secondary leading-tight">SIT COE Yadrav</span></div></div><span class="px-1.5 py-0.5 rounded-sm bg-primary/10 text-primary font-tabular-numeric-sm text-tabular-numeric-sm">v2.4</span></div><div class="p-space-md border-b border-outline-variant/30"><label class="font-label-sm text-label-sm text-secondary uppercase block mb-1">Active Portal Role</label><div class="relative"><select class="w-full appearance-none bg-surface-container-low border border-outline-variant/60 rounded-lg px-space-sm py-1.5 font-label-md text-label-md text-on-surface focus:outline-none focus:border-primary pr-8"><option selected="" value="admin">Admin Console (Institutional)</option><option value="hod">Head of Department (HOD)</option><option value="faculty">Faculty Member</option><option value="student">Student Portal</option></select><span class="material-symbols-outlined absolute right-2 top-2 text-on-surface-variant pointer-events-none text-[16px]">unfold_more</span></div></div><nav class="px-space-md py-space-sm flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary font-headline-sm rounded-lg"><span class="px-space-sm pt-2 pb-1 font-label-sm text-label-sm text-secondary uppercase tracking-wider">Core</span><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span class="font-body-md text-body-md">Dashboard</span></a><a class="flex items-center justify-between px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="notifications" href="#"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[18px]">notifications</span><span class="font-body-md text-body-md">Notifications</span></div><span class="px-1.5 py-0.2 rounded-full bg-error text-on-error font-tabular-numeric-sm text-tabular-numeric-sm">4</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="global-search" href="#"><span class="material-symbols-outlined text-[18px]">manage_search</span><span class="font-body-md text-body-md">Global Search</span></a><span class="px-space-sm pt-3 pb-1 font-label-sm text-label-sm text-secondary uppercase tracking-wider">Academic Management</span><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="departments" href="#"><span class="material-symbols-outlined text-[18px]">domain</span><span class="font-body-md text-body-md">Departments</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="courses-and-curriculum" href="#"><span class="material-symbols-outlined text-[18px]">menu_book</span><span class="font-body-md text-body-md">Courses &amp; Curriculum</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="subjects" href="#"><span class="material-symbols-outlined text-[18px]">auto_stories</span><span class="font-body-md text-body-md">Subjects</span></a><span class="px-space-sm pt-3 pb-1 font-label-sm text-label-sm text-secondary uppercase tracking-wider">People</span><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="students-directory" href="#"><span class="material-symbols-outlined text-[18px]">school</span><span class="font-body-md text-body-md">Students Directory</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="faculty-and-staff" href="#"><span class="material-symbols-outlined text-[18px]">badge</span><span class="font-body-md text-body-md">Faculty &amp; Staff</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="hod-management" href="#"><span class="material-symbols-outlined text-[18px]">supervisor_account</span><span class="font-body-md text-body-md">HOD Management</span></a><span class="px-space-sm pt-3 pb-1 font-label-sm text-label-sm text-secondary uppercase tracking-wider">Operations</span><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="attendance-register" href="#"><span class="material-symbols-outlined text-[18px]">fact_check</span><span class="font-body-md text-body-md">Attendance Register</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="marks-and-results" href="#"><span class="material-symbols-outlined text-[18px]">grade</span><span class="font-body-md text-body-md">Marks &amp; Results</span></a><a aria-current="page" class="flex items-center gap-2.5 px-space-sm py-1.5 transition-colors bg-primary-container text-on-primary font-headline-sm rounded-lg" data-path="study-materials" href="#"><span class="material-symbols-outlined text-[18px]">folder_shared</span><span class="font-body-md text-body-md">Study Materials</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="campus-notices" href="#"><span class="material-symbols-outlined text-[18px]">campaign</span><span class="font-body-md text-body-md">Campus Notices</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="events-calendar" href="#"><span class="material-symbols-outlined text-[18px]">calendar_month</span><span class="font-body-md text-body-md">Events Calendar</span></a><span class="px-space-sm pt-3 pb-1 font-label-sm text-label-sm text-secondary uppercase tracking-wider">System</span><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="user-profile" href="#"><span class="material-symbols-outlined text-[18px]">account_circle</span><span class="font-body-md text-body-md">User Profile</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[18px]">settings</span><span class="font-body-md text-body-md">Settings</span></a><a class="flex items-center gap-2.5 px-space-sm py-1.5 rounded-lg text-error hover:bg-error-container hover:text-on-error-container transition-colors" data-path="login" href="#"><span class="material-symbols-outlined text-[18px]">logout</span><span class="font-body-md text-body-md">Logout</span></a></nav></div><div class="p-space-md border-t border-outline-variant/30 bg-surface-container-low/50"><div class="flex items-center gap-space-sm"><div class="w-9 h-9 rounded-full bg-primary/20 text-primary flex items-center justify-center font-headline-sm text-headline-sm font-semibold">SP</div><div class="flex flex-col min-w-0 flex-1"><span class="font-label-md text-label-md text-on-surface truncate">Dr. S. Patil</span><span class="font-label-sm text-label-sm text-secondary truncate">System Admin • sit.coe</span></div><span class="material-symbols-outlined text-secondary text-[18px]">more_vert</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-14 bg-surface-container-lowest border-b border-outline-variant/40 z-40 px-space-xl flex items-center justify-between shadow-[0_1px_4px_rgba(15,23,42,0.04)]"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-2 font-body-sm text-body-sm text-secondary"><span class="hover:text-primary cursor-pointer">Sharad Institute</span><span class="text-outline-variant">/</span><span class="hover:text-primary cursor-pointer">Administration</span><span class="text-outline-variant">/</span><span class="text-on-surface font-headline-sm text-headline-sm">Workspace</span></div><div class="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-fixed font-tabular-numeric-sm text-tabular-numeric-sm font-medium"><span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>AY 2024-25 • Even Semester</div></div><div class="flex items-center gap-space-md"><div class="relative w-64"><input class="w-full bg-surface-container-low border border-outline-variant/50 rounded-lg pl-8 pr-12 py-1 font-body-sm text-body-sm text-on-surface placeholder:text-secondary focus:outline-none focus:border-primary" placeholder="Global search (Ctrl+K)..." type="text"/><span class="material-symbols-outlined absolute left-2.5 top-1.5 text-secondary text-[16px]">search</span><kbd class="absolute right-2 top-1 px-1.5 py-0.2 text-[10px] font-tabular-numeric-sm text-secondary bg-surface-container rounded border border-outline-variant/40">Ctrl+K</kbd></div><button class="flex items-center gap-1.5 bg-primary-container text-on-primary px-space-md py-1.5 rounded-lg font-label-md text-label-md hover:bg-primary transition-colors shadow-sm" type="button"><span class="material-symbols-outlined text-[16px]">add</span><span>New Action</span></button><div class="h-4 w-px bg-outline-variant/40"></div><div class="flex items-center gap-1"><button class="p-1.5 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="Academic Calendar" type="button"><span class="material-symbols-outlined text-[20px]">calendar_today</span></button><button class="relative p-1.5 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="Alerts" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-error"></span></button><button class="p-1.5 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="Documentation &amp; Help" type="button"><span class="material-symbols-outlined text-[20px]">help</span></button></div><div class="flex items-center gap-2 pl-1 cursor-pointer"><div class="w-7 h-7 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center font-label-md text-label-md text-primary font-semibold">SP</div><span class="material-symbols-outlined text-secondary text-[16px]">expand_more</span></div></div></header><main class="w-full pt-14 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<div class="px-margin py-space-lg flex flex-col gap-space-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+<span>Campus ERP</span>
+<span>/</span>
+<span>Identity Governance</span>
+<span>/</span>
+<span class="text-primary font-headline-sm text-headline-sm">Staff Record #EMP-SIT-2016-042</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface tracking-tight mt-1">Staff Profile &amp; Control Hub</h1>
+<p class="font-body-md text-body-md text-secondary mt-0.5">Sharad Institute of Technology, College of Engineering, Yadrav (Ichalkaranji)</p>
+</div>
+<div class="flex items-center gap-space-sm self-start md:self-auto">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-tertiary-fixed/30 text-on-tertiary-fixed-variant font-label-md text-label-md">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+          Institutional Account Active
+        </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-secondary-container text-on-secondary-fixed font-tabular-numeric text-tabular-numeric">
+          Term: AY 2024-25 (Even)
+        </span>
+</div>
+</div>
+<!-- Segmented Navigation Tabs -->
+<div class="bg-surface-container-low p-1 rounded-xl shadow-sm flex flex-wrap items-center gap-1">
+<button class="tab-button flex items-center gap-2 px-space-lg py-2 rounded-lg font-headline-sm text-headline-sm bg-primary-container text-on-primary shadow-sm transition-all" id="tab-btn-1" onclick="switchTab(1)">
+<span class="material-symbols-outlined text-[18px]">badge</span>
+<span>1. My Profile &amp; Credentials</span>
+</button>
+<button class="tab-button flex items-center gap-2 px-space-lg py-2 rounded-lg font-headline-sm text-headline-sm text-secondary hover:text-on-surface hover:bg-surface-container transition-all" id="tab-btn-2" onclick="switchTab(2)">
+<span class="material-symbols-outlined text-[18px]">lock_reset</span>
+<span>2. Account &amp; Security Settings</span>
+</button>
+<button class="tab-button flex items-center gap-2 px-space-lg py-2 rounded-lg font-headline-sm text-headline-sm text-secondary hover:text-on-surface hover:bg-surface-container transition-all" id="tab-btn-3" onclick="switchTab(3)">
+<span class="material-symbols-outlined text-[18px]">notifications_active</span>
+<span>3. Notifications &amp; Alerts</span>
+<span class="px-1.5 py-0.2 rounded-full bg-error text-on-error font-tabular-numeric-sm text-tabular-numeric-sm">4</span>
+</button>
+<button class="tab-button flex items-center gap-2 px-space-lg py-2 rounded-lg font-headline-sm text-headline-sm text-secondary hover:text-on-surface hover:bg-surface-container transition-all" id="tab-btn-4" onclick="switchTab(4)">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+<span>4. System Preferences</span>
+</button>
+</div>
+<!-- TAB 1: Profile & Credentials -->
+<div class="tab-pane flex flex-col gap-space-lg" id="tab-pane-1">
+<!-- Institutional Identity Banner & Photo -->
+<div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm relative overflow-hidden">
+<div class="absolute top-0 right-0 w-96 h-48 bg-gradient-to-l from-primary/10 via-primary/5 to-transparent pointer-events-none"></div>
+<div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-space-xl relative z-10">
+<div class="flex flex-col sm:flex-row items-start sm:items-center gap-space-lg">
+<div class="relative">
+<img class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl object-cover shadow-md" data-alt="Official photographic identification portrait of Dr S Patil an Indian male senior professor wearing navy executive blazer with white collared shirt in sharp focus under academic studio illumination with neutral SIT Yadrav campus background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoj6WubUSa2Gbqesal3Ilt7NA5dlfhZlLBznPQK_Mv9y8X15OR84Har5hCJ6tvh4Pwv9NHuCi5GFMLQgkxnl-rN1DB28rGP2ffTBV-xsRe37n3WCDdunbZJDRrFAO143EvxTUTp_sKZqsYkf-paZL1OH7YytH3adm44NAExv-jGto0iRDv8H26ABDht8caS-loRm2DEbV6ilMB6ia4S1fBvMEnRox2kfM1fkvIUwuHiGqy50U1iPUAfg"/>
+<span class="absolute -bottom-1 -right-1 bg-tertiary text-on-tertiary rounded-full p-1 shadow">
+<span class="material-symbols-outlined text-[16px] block">verified</span>
+</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-sm flex-wrap">
+<h2 class="font-headline-xl text-headline-xl text-on-surface">Dr. Shashikant S. Patil</h2>
+<span class="px-2 py-0.5 rounded bg-primary/10 text-primary font-label-sm text-label-sm font-semibold">Institutional Admin</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-secondary font-tabular-numeric-sm text-tabular-numeric-sm">SIT-COE-CS-018</span>
+</div>
+<p class="font-body-lg text-body-lg text-secondary mt-1">Professor &amp; Senior Administrator, Department of Computer Science &amp; Engineering</p>
+<div class="flex flex-wrap items-center gap-x-space-lg gap-y-1 mt-3 font-body-sm text-body-sm text-on-surface-variant">
+<span class="inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">mail</span>
+                  s.patil@sitcoe.org
+                </span>
+<span class="inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">phone</span>
+                  +91 98220 54129
+                </span>
+<span class="inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">domain</span>
+                  Cabin 304, Academic Block-B
+                </span>
+<span class="inline-flex items-center gap-1 font-tabular-numeric text-tabular-numeric">
+<span class="material-symbols-outlined text-[16px] text-secondary">event_available</span>
+                  Joined: 18 June 2016
+                </span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-sm self-stretch sm:self-auto justify-end">
+<button class="flex items-center justify-center gap-1.5 px-space-lg py-2 rounded-lg bg-surface-container-high text-primary hover:bg-surface-container-highest font-headline-sm text-headline-sm transition-all shadow-sm" id="toggle-edit-btn" onclick="toggleEditProfile()" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+<span id="toggle-edit-text">Edit Profile</span>
+</button>
+<button class="flex items-center justify-center gap-1.5 px-space-lg py-2 rounded-lg bg-secondary-container text-on-secondary-fixed hover:bg-surface-container-high font-headline-sm text-headline-sm transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span>Export Dossier</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Two-Column Bento: Personal Information & Academic Credentials -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- Column 1: Personal Information Form (7 cols) -->
+<div class="lg:col-span-7 bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-space-md mb-space-lg bg-surface-container-low px-space-md py-2 rounded-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">person</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Personal Information Form</h3>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-surface-container-highest text-secondary" id="edit-state-pill">Mode: Read Only</span>
+</div>
+<form action="/profile/update" class="grid grid-cols-1 md:grid-cols-2 gap-space-md" id="personal-info-form" method="POST">
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-secondary uppercase">First Name</label>
+<input class="profile-input bg-surface-container-low text-on-surface px-space-md py-2 rounded font-body-md text-body-md focus:outline-none transition-all" name="first_name" readonly="" type="text" value="Shashikant"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-secondary uppercase">Last Name</label>
+<input class="profile-input bg-surface-container-low text-on-surface px-space-md py-2 rounded font-body-md text-body-md focus:outline-none transition-all" name="last_name" readonly="" type="text" value="Patil"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-secondary uppercase">Date of Birth</label>
+<input class="profile-input bg-surface-container-low text-on-surface font-tabular-numeric text-tabular-numeric px-space-md py-2 rounded focus:outline-none transition-all" name="dob" readonly="" type="text" value="14 August 1978"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-secondary uppercase">Gender</label>
+<select class="profile-select bg-surface-container-low text-on-surface px-space-md py-2 rounded font-body-md text-body-md focus:outline-none transition-all" disabled="" name="gender">
+<option selected="" value="male">Male</option>
+<option value="female">Female</option>
+<option value="other">Other</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-secondary uppercase">Blood Group</label>
+<input class="profile-input bg-surface-container-low text-on-surface font-tabular-numeric text-tabular-numeric px-space-md py-2 rounded focus:outline-none transition-all" name="blood_group" readonly="" type="text" value="O +ve"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-secondary uppercase">Emergency Contact</label>
+<input class="profile-input bg-surface-container-low text-on-surface font-tabular-numeric text-tabular-numeric px-space-md py-2 rounded focus:outline-none transition-all" name="emergency_contact" readonly="" type="text" value="Mrs. Sunita Patil (+91 94220 87114)"/>
+</div>
+<div class="flex flex-col gap-1 md:col-span-2">
+<label class="font-label-sm text-label-sm text-secondary uppercase">Permanent Residential Address</label>
+<textarea class="profile-input bg-surface-container-low text-on-surface px-space-md py-2 rounded font-body-md text-body-md focus:outline-none transition-all resize-none" name="address" readonly="" rows="2">Plot No. 44, Shri Ram Housing Society, Near Sangli Road bypass, Jaysingpur, Dist. Kolhapur, Maharashtra 416101</textarea>
+</div>
+</form>
+</div>
+<div class="hidden items-center justify-end gap-space-sm pt-space-lg mt-space-lg bg-surface-container-low p-space-md rounded-lg" id="save-bar">
+<button class="px-space-md py-1.5 rounded bg-surface-container-highest text-secondary font-label-md text-label-md hover:bg-secondary-container" onclick="cancelProfileEdit()" type="button">Cancel</button>
+<button class="px-space-lg py-1.5 rounded bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary shadow-sm" onclick="saveProfileMock()" type="button">Save Changes</button>
+</div>
+</div>
+<!-- Column 2: Academic & Professional Credentials (5 cols) -->
+<div class="lg:col-span-5 flex flex-col gap-space-lg">
+<div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center gap-2 pb-space-sm bg-surface-container-low px-space-md py-2 rounded-lg">
+<span class="material-symbols-outlined text-primary text-[20px]">school</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Academic &amp; Professional Qualifications</h3>
+</div>
+<!-- Qualification badges -->
+<div class="flex flex-col gap-space-sm">
+<div class="p-space-md rounded-lg bg-surface-container-low flex items-start gap-space-md">
+<div class="w-8 h-8 rounded bg-primary/10 text-primary flex items-center justify-center font-headline-sm text-headline-sm font-bold shrink-0">
+                  PhD
+                </div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">Doctor of Philosophy (Computer Engineering)</span>
+<span class="font-body-sm text-body-sm text-secondary">Shivaji University, Kolhapur • Awarded 2014</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-1">Thesis: Fault-Tolerant Distributed Data Structures in High Performance Computing</span>
+</div>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container-low flex items-start gap-space-md">
+<div class="w-8 h-8 rounded bg-primary/10 text-primary flex items-center justify-center font-headline-sm text-headline-sm font-bold shrink-0">
+                  M.T
+                </div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">M.Tech (Computer Science &amp; Technology)</span>
+<span class="font-body-sm text-body-sm text-secondary">Government College of Engineering, Pune • 2005 (First Class with Distinction)</span>
+</div>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container-low flex items-start gap-space-md">
+<div class="w-8 h-8 rounded bg-primary/10 text-primary flex items-center justify-center font-headline-sm text-headline-sm font-bold shrink-0">
+                  B.E
+                </div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">B.E. (Computer Science &amp; Engineering)</span>
+<span class="font-body-sm text-body-sm text-secondary">Walchand College of Engineering, Sangli • 1999</span>
+</div>
+</div>
+</div>
+<div class="pt-space-sm flex flex-col gap-space-sm">
+<h4 class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Designation &amp; Specialized Portfolio</h4>
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="p-space-sm rounded bg-surface-container-low">
+<span class="font-label-sm text-label-sm text-secondary block">Designation</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Professor &amp; Dean (ERP)</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container-low">
+<span class="font-label-sm text-label-sm text-secondary block">Assigned Wing</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">North Block, SIT Yadrav</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container-low col-span-2">
+<span class="font-label-sm text-label-sm text-secondary block">Primary Areas of Specialization</span>
+<span class="font-body-md text-body-md text-on-surface">Distributed Database Systems, Operating Systems Architecture, Academic Governance Workflows</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Academic Workload Visual Meter -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-headline-sm text-headline-sm text-on-surface">Semester Allotment Status</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-tertiary font-semibold">18 / 20 Teaching Load Units</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-2.5 overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 90%;"></div>
+</div>
+<div class="flex justify-between items-center mt-2 font-label-sm text-label-sm text-secondary">
+<span>CS-401 (Dist. Systems) • CS-301 (DBMS)</span>
+<span class="font-tabular-numeric">90% Capacity</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- TAB 2: Account & Security Settings -->
+<div class="tab-pane hidden flex flex-col gap-space-lg" id="tab-pane-2">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- Change Password Card (6 cols) -->
+<div class="lg:col-span-6 bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2 pb-space-md mb-space-lg bg-surface-container-low px-space-md py-2 rounded-lg">
+<span class="material-symbols-outlined text-primary text-[20px]">key</span>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Institutional Password Management</h3>
+<p class="font-body-sm text-body-sm text-secondary">Update your Active Directory and SIT ERP portal credentials</p>
+</div>
+</div>
+<form class="flex flex-col gap-space-md" id="password-change-form" onsubmit="event.preventDefault(); handlePasswordChange();">
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-secondary uppercase">Current Password</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low text-on-surface px-space-md py-2 rounded font-body-md text-body-md focus:outline-none focus:bg-surface-container pr-10" id="curr-pass" placeholder="••••••••••••" required="" type="password"/>
+<button class="absolute right-2.5 top-2.5 text-secondary hover:text-on-surface" onclick="togglePassVisibility('curr-pass')" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-secondary uppercase">New Password</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low text-on-surface px-space-md py-2 rounded font-body-md text-body-md focus:outline-none focus:bg-surface-container pr-10" id="new-pass" oninput="evaluatePasswordStrength(this.value)" placeholder="Enter new strong password" required="" type="password"/>
+<button class="absolute right-2.5 top-2.5 text-secondary hover:text-on-surface" onclick="togglePassVisibility('new-pass')" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+</div>
+<!-- Password Strength Meter -->
+<div class="flex flex-col gap-1 mt-1">
+<div class="grid grid-cols-4 gap-1 h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-surface-container-high transition-colors" id="str-1"></div>
+<div class="h-full bg-surface-container-high transition-colors" id="str-2"></div>
+<div class="h-full bg-surface-container-high transition-colors" id="str-3"></div>
+<div class="h-full bg-surface-container-high transition-colors" id="str-4"></div>
+</div>
+<div class="flex justify-between items-center text-secondary font-label-sm text-label-sm">
+<span id="strength-label">Password Strength: Minimum 8 characters</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm">Campus Standard Policy</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-secondary uppercase">Confirm New Password</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low text-on-surface px-space-md py-2 rounded font-body-md text-body-md focus:outline-none focus:bg-surface-container pr-10" id="conf-pass" placeholder="Re-type new password" required="" type="password"/>
+<button class="absolute right-2.5 top-2.5 text-secondary hover:text-on-surface" onclick="togglePassVisibility('conf-pass')" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-low text-secondary font-body-sm text-body-sm flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary shrink-0 mt-0.5">info</span>
+<span>Passwords must contain at least 1 uppercase letter, 1 number, and 1 standard symbol (@, #, $, !). Passwords expire every 180 calendar days per SIT IT charter.</span>
+</div>
+<div class="pt-space-md flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-tertiary hidden" id="password-alert-msg">Password verified and updated!</span>
+<button class="ml-auto px-space-xl py-2 rounded bg-primary-container text-on-primary font-headline-sm text-headline-sm hover:bg-primary transition-all shadow-sm" type="submit">
+                  Update Password
+                </button>
+</div>
+</form>
+</div>
+</div>
+<!-- Active Sessions & Device Logins (6 cols) -->
+<div class="lg:col-span-6 bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col justify-between">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-md bg-surface-container-low px-space-md py-2 rounded-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">devices</span>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Active Institutional Sessions</h3>
+<p class="font-body-sm text-body-sm text-secondary">Authenticated terminals across Sharad Institute Network</p>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-tabular-numeric-sm text-tabular-numeric-sm font-semibold">3 Active</span>
+</div>
+<!-- Session Items -->
+<div class="flex flex-col gap-space-sm" id="session-items-list">
+<!-- Item 1: Current -->
+<div class="p-space-md rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">desktop_windows</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">Administrative Workstation (Win 11)</span>
+<span class="px-1.5 py-0.2 rounded bg-tertiary/20 text-tertiary font-label-sm text-label-sm">This Browser</span>
+</div>
+<div class="flex items-center gap-2 font-tabular-numeric-sm text-tabular-numeric-sm text-secondary mt-0.5">
+<span>IP: 10.20.4.112 (SIT LAN - Admin Wing)</span>
+<span>•</span>
+<span>Chrome 122.0.4</span>
+<span>•</span>
+<span>Active Now</span>
+</div>
+</div>
+</div>
+<span class="text-tertiary material-symbols-outlined text-[20px]">check_circle</span>
+</div>
+<!-- Item 2 -->
+<div class="p-space-md rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">smartphone</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">Faculty Mobile Companion (Android 14)</span>
+<div class="flex items-center gap-2 font-tabular-numeric-sm text-tabular-numeric-sm text-secondary mt-0.5">
+<span>IP: 192.168.10.88 (Campus WiFi)</span>
+<span>•</span>
+<span>CampusConnect PWA</span>
+<span>•</span>
+<span>22 mins ago</span>
+</div>
+</div>
+</div>
+<button class="px-2 py-1 rounded bg-surface-container-highest hover:bg-error-container text-on-surface-variant hover:text-error font-label-sm text-label-sm transition-colors" onclick="terminateSession(this)" type="button">
+                  Revoke
+                </button>
+</div>
+<!-- Item 3 -->
+<div class="p-space-md rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">laptop_mac</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">Personal MacBook Pro (macOS Sonoma)</span>
+<div class="flex items-center gap-2 font-tabular-numeric-sm text-tabular-numeric-sm text-secondary mt-0.5">
+<span>IP: 49.36.140.21 (External Residential)</span>
+<span>•</span>
+<span>Safari 17.3</span>
+<span>•</span>
+<span>Yesterday 20:14</span>
+</div>
+</div>
+</div>
+<button class="px-2 py-1 rounded bg-surface-container-highest hover:bg-error-container text-on-surface-variant hover:text-error font-label-sm text-label-sm transition-colors" onclick="terminateSession(this)" type="button">
+                  Revoke
+                </button>
+</div>
+</div>
+</div>
+<div class="pt-space-lg flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary">Session Timeout: 120 minutes inactivity</span>
+<button class="px-space-md py-2 rounded bg-error-container text-on-error-container hover:bg-error hover:text-on-error font-label-md text-label-md transition-all" onclick="terminateAllOtherSessions()" type="button">
+              Log out of all devices
+            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- TAB 3: Notification & Alerts Center -->
+<div class="tab-pane hidden flex flex-col gap-space-lg" id="tab-pane-3">
+<div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col gap-space-lg">
+<!-- Header Controls & Filters -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md pb-space-sm bg-surface-container-low p-space-md rounded-xl">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="font-label-sm text-label-sm text-secondary uppercase mr-1">Filter Stream:</span>
+<button class="notif-filter-btn px-3 py-1 rounded-full font-label-md text-label-md bg-primary-container text-on-primary" onclick="filterNotifs('all', this)">
+              All (12)
+            </button>
+<button class="notif-filter-btn px-3 py-1 rounded-full font-label-md text-label-md bg-surface-container-highest text-secondary hover:text-on-surface" onclick="filterNotifs('unread', this)">
+              Unread (4)
+            </button>
+<button class="notif-filter-btn px-3 py-1 rounded-full font-label-md text-label-md bg-surface-container-highest text-secondary hover:text-on-surface" onclick="filterNotifs('academic', this)">
+              Academic (5)
+            </button>
+<button class="notif-filter-btn px-3 py-1 rounded-full font-label-md text-label-md bg-surface-container-highest text-secondary hover:text-on-surface" onclick="filterNotifs('circular', this)">
+              Circulars (2)
+            </button>
+<button class="notif-filter-btn px-3 py-1 rounded-full font-label-md text-label-md bg-surface-container-highest text-secondary hover:text-on-surface" onclick="filterNotifs('attendance', this)">
+              Attendance Alerts (1)
+            </button>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="flex items-center gap-1.5 px-space-md py-1.5 rounded bg-surface-container-highest text-on-surface font-label-md text-label-md hover:bg-secondary-container transition-colors" onclick="markAllAsRead()" type="button">
+<span class="material-symbols-outlined text-[16px]">done_all</span>
+<span>Mark All as Read</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-md py-1.5 rounded bg-surface-container-highest text-secondary hover:text-error hover:bg-error-container font-label-md text-label-md transition-colors" onclick="clearAllNotifications()" type="button">
+<span class="material-symbols-outlined text-[16px]">delete_sweep</span>
+<span>Clear Notifications</span>
+</button>
+</div>
+</div>
+<!-- Notification List Items -->
+<div class="flex flex-col gap-space-sm" id="notif-container">
+<!-- Notif 1: Attendance Alert -->
+<div class="notif-item p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-all flex flex-col md:flex-row md:items-center justify-between gap-space-md" data-category="attendance" data-unread="true">
+<div class="flex items-start gap-space-md">
+<div class="w-2.5 h-2.5 rounded-full bg-error mt-1.5 shrink-0 status-dot"></div>
+<div class="w-9 h-9 rounded bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">warning</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">Attendance short alert for CS-301: Database Systems</span>
+<span class="px-2 py-0.2 rounded bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold">Attendance Defaulter</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">Today, 09:42 AM</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5">8 students in Batch-B have fallen below statutory 75% attendance threshold for the current assessment cycle.</p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0 self-end md:self-auto">
+<button class="px-space-md py-1 rounded bg-primary-container text-on-primary font-label-sm text-label-sm hover:bg-primary" type="button">View Student List</button>
+<button class="p-1 text-secondary hover:text-on-surface" onclick="toggleRead(this)" title="Toggle read" type="button">
+<span class="material-symbols-outlined text-[18px]">mark_email_read</span>
+</button>
+</div>
+</div>
+<!-- Notif 2: Academic Exam Approval -->
+<div class="notif-item p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-all flex flex-col md:flex-row md:items-center justify-between gap-space-md" data-category="academic" data-unread="true">
+<div class="flex items-start gap-space-md">
+<div class="w-2.5 h-2.5 rounded-full bg-primary mt-1.5 shrink-0 status-dot"></div>
+<div class="w-9 h-9 rounded bg-primary/10 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">fact_check</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">Mid-term results submitted for approval: Class T.Y. B.Tech (CS)</span>
+<span class="px-2 py-0.2 rounded bg-primary/10 text-primary font-label-sm text-label-sm font-semibold">Academic Review</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">Today, 08:15 AM</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5">Prof. V. Kulkarni has locked Internal Assessment scores. Institutional endorsement pending HOD/Admin approval.</p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0 self-end md:self-auto">
+<button class="px-space-md py-1 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm hover:bg-surface-container-highest" type="button">Review Marksheet</button>
+<button class="p-1 text-secondary hover:text-on-surface" onclick="toggleRead(this)" title="Toggle read" type="button">
+<span class="material-symbols-outlined text-[18px]">mark_email_read</span>
+</button>
+</div>
+</div>
+<!-- Notif 3: Academic Circular -->
+<div class="notif-item p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-all flex flex-col md:flex-row md:items-center justify-between gap-space-md" data-category="circular" data-unread="true">
+<div class="flex items-start gap-space-md">
+<div class="w-2.5 h-2.5 rounded-full bg-tertiary mt-1.5 shrink-0 status-dot"></div>
+<div class="w-9 h-9 rounded bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">campaign</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">Office Circular #SIT/EST/2024/182: Meeting of Academic Council</span>
+<span class="px-2 py-0.2 rounded bg-tertiary-fixed/40 text-on-tertiary-fixed-variant font-label-sm text-label-sm font-semibold">Institutional Circular</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">Yesterday, 04:30 PM</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5">Mandatory deliberation regarding Revised Curriculum Framework (Autonomous Batch 2025) on 12 April at Conference Hall-1.</p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0 self-end md:self-auto">
+<button class="px-space-md py-1 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm hover:bg-surface-container-highest" type="button">Read Circular PDF</button>
+<button class="p-1 text-secondary hover:text-on-surface" onclick="toggleRead(this)" title="Toggle read" type="button">
+<span class="material-symbols-outlined text-[18px]">mark_email_read</span>
+</button>
+</div>
+</div>
+<!-- Notif 4: Circular 2 -->
+<div class="notif-item p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-all flex flex-col md:flex-row md:items-center justify-between gap-space-md" data-category="circular" data-unread="true">
+<div class="flex items-start gap-space-md">
+<div class="w-2.5 h-2.5 rounded-full bg-primary mt-1.5 shrink-0 status-dot"></div>
+<div class="w-9 h-9 rounded bg-surface-container-high text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">event_note</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">Campus Maintenance Window: Server Room B-Block</span>
+<span class="px-2 py-0.2 rounded bg-secondary-container text-on-secondary-fixed font-label-sm text-label-sm font-semibold">IT Infrastructure</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">08 Apr 2025, 05:00 PM</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5">Intranet services and Local LMS file storage will undergo scheduled firmware upgrade between 11:00 PM to 02:00 AM.</p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0 self-end md:self-auto">
+<button class="px-space-md py-1 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm hover:bg-surface-container-highest" type="button">Acknowledge</button>
+<button class="p-1 text-secondary hover:text-on-surface" onclick="toggleRead(this)" title="Toggle read" type="button">
+<span class="material-symbols-outlined text-[18px]">mark_email_read</span>
+</button>
+</div>
+</div>
+<!-- Notif 5: Academic (Read) -->
+<div class="notif-item p-space-md rounded-lg bg-surface-container-low/60 hover:bg-surface-container transition-all flex flex-col md:flex-row md:items-center justify-between gap-space-md" data-category="academic" data-unread="false">
+<div class="flex items-start gap-space-md">
+<div class="w-2.5 h-2.5 rounded-full bg-transparent mt-1.5 shrink-0 status-dot"></div>
+<div class="w-9 h-9 rounded bg-surface-container-high text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">assignment_turned_in</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface opacity-80">Course Syllabus Audit: 7th Sem High Performance Computing</span>
+<span class="px-2 py-0.2 rounded bg-surface-container-highest text-secondary font-label-sm text-label-sm">Curriculum Cell</span>
+<span class="font-tabular-numeric-sm text-tabular-numeric-sm text-secondary">06 Apr 2025</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5 opacity-80">Verified compliance with Shivaji University Board of Studies guideline 2024. All 6 units audited and archived.</p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0 self-end md:self-auto">
+<button class="px-space-md py-1 rounded bg-surface-container-highest text-secondary font-label-sm text-label-sm" type="button">Archived</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- TAB 4: System Preferences & UI States -->
+<div class="tab-pane hidden flex flex-col gap-space-lg" id="tab-pane-4">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- Preferences & Alerts Config (7 cols) -->
+<div class="lg:col-span-7 bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col gap-space-lg">
+<div class="flex items-center gap-2 pb-space-md bg-surface-container-low px-space-md py-2 rounded-lg">
+<span class="material-symbols-outlined text-primary text-[20px]">palette</span>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Institutional UI &amp; Dispatch Preferences</h3>
+<p class="font-body-sm text-body-sm text-secondary">Campus Connect client theme configuration and alert channels</p>
+</div>
+</div>
+<!-- Appearance Option -->
+<div class="flex flex-col gap-space-sm">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Interface Theme Baseline</span>
+<div class="grid grid-cols-2 gap-space-md">
+<label class="p-space-md rounded-lg bg-surface-container-low flex items-center justify-between cursor-pointer border-2 border-primary">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[22px]">light_mode</span>
+<div>
+<span class="font-headline-sm text-headline-sm text-on-surface block">Institutional Light (Default)</span>
+<span class="font-body-sm text-body-sm text-secondary">High-contrast administrative palette</span>
+</div>
+</div>
+<input checked="" class="text-primary focus:ring-0" name="theme_mode" type="radio" value="light"/>
+</label>
+<label class="p-space-md rounded-lg bg-surface-container-low flex items-center justify-between cursor-not-allowed opacity-60">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[22px]">dark_mode</span>
+<div>
+<span class="font-headline-sm text-headline-sm text-on-surface block">Dark Canvas</span>
+<span class="font-body-sm text-body-sm text-secondary">Disabled by Institutional Policy</span>
+</div>
+</div>
+<input class="text-primary focus:ring-0" disabled="" name="theme_mode" type="radio" value="dark"/>
+</label>
+</div>
+</div>
+<!-- Email Alerts Dispatch Toggles -->
+<div class="flex flex-col gap-space-sm pt-space-md">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Email Dispatch Notifications (s.patil@sitcoe.org)</span>
+<div class="flex flex-col gap-space-xs">
+<!-- Toggle 1 -->
+<div class="p-space-md rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<span class="material-symbols-outlined text-primary text-[22px]">campaign</span>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">New Institutional Notices &amp; Circulars</span>
+<span class="font-body-sm text-body-sm text-secondary">Immediate email dispatch for Principal &amp; Registrar notices</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+<!-- Toggle 2 -->
+<div class="p-space-md rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<span class="material-symbols-outlined text-primary text-[22px]">grade</span>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">Exam Results Published &amp; Gazette Updates</span>
+<span class="font-body-sm text-body-sm text-secondary">Summarized ledger dispatch when Controller of Exams signs marksheet</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+<!-- Toggle 3 -->
+<div class="p-space-md rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<span class="material-symbols-outlined text-primary text-[22px]">running_with_errors</span>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">Attendance Shortage &amp; Defaulter Triggers</span>
+<span class="font-body-sm text-body-sm text-secondary">Weekly alert whenever assigned course sections fall below 75%</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- Danger Zone & Account Deactivation Modal Showcase (5 cols) -->
+<div class="lg:col-span-5 bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col justify-between">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center gap-2 pb-space-md bg-error-container/30 px-space-md py-2 rounded-lg">
+<span class="material-symbols-outlined text-error text-[20px]">crisis_alert</span>
+<div>
+<h3 class="font-headline-md text-headline-md text-error">Administrative Danger Zone</h3>
+<p class="font-body-sm text-body-sm text-secondary">Irrevocable institutional access termination</p>
+</div>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-space-sm">
+<span class="font-headline-sm text-headline-sm text-on-surface">Faculty Account Deactivation &amp; Transfer</span>
+<p class="font-body-sm text-body-sm text-secondary">
+                Deactivating this identity revokes SIS database access, gradesheet authorization, and clears assigned timetable blocks. Requires approval from SIT Yadrav Registrar and Principal.
+              </p>
+<div class="flex items-center gap-2 text-error font-label-sm text-label-sm mt-1">
+<span class="material-symbols-outlined text-[16px]">report_problem</span>
+<span>Active Course Allotments: CS-301, CS-401</span>
+</div>
+</div>
+</div>
+<div class="pt-space-xl flex flex-col gap-2">
+<button class="w-full px-space-lg py-2.5 rounded bg-error text-on-error hover:opacity-95 font-headline-sm text-headline-sm shadow-sm transition-all flex items-center justify-center gap-2" onclick="openDeactivateModal()" type="button">
+<span class="material-symbols-outlined text-[18px]">person_off</span>
+<span>Initiate Account Deactivation</span>
+</button>
+<span class="font-label-sm text-label-sm text-center text-secondary">Standard institutional verification policy applies</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Account Deactivation Confirmation Modal Dialog -->
+<div class="fixed inset-0 z-50 hidden bg-on-surface/60 flex items-center justify-center p-4" id="deactivate-modal">
+<div class="bg-surface-container-lowest max-w-md w-full rounded-xl p-space-xl shadow-2xl flex flex-col gap-space-lg">
+<div class="flex items-start gap-space-md">
+<div class="w-10 h-10 rounded-full bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">warning</span>
+</div>
+<div class="flex flex-col">
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Confirm Staff Deactivation?</h3>
+<p class="font-body-sm text-body-sm text-secondary mt-1">
+            You are initiating deactivation for <span class="font-semibold text-on-surface">Dr. Shashikant S. Patil (EMP-SIT-2016-042)</span>. All teaching authorizations and ERP administrative tokens will be immediately suspended.
+          </p>
+</div>
+</div>
+<div class="p-space-md rounded bg-surface-container-low flex flex-col gap-1.5 font-body-sm text-body-sm">
+<div class="flex items-center justify-between text-secondary">
+<span>Target Department:</span>
+<span class="font-medium text-on-surface">CSE (Autonomous)</span>
+</div>
+<div class="flex items-center justify-between text-secondary">
+<span>Active Marks Registrations:</span>
+<span class="font-medium text-error">2 Pending Endorsement</span>
+</div>
+<div class="flex items-center justify-between text-secondary">
+<span>Authority Required:</span>
+<span class="font-medium text-on-surface">Principal Signature ID</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-secondary uppercase">Type "CONFIRM-SIT" to proceed</label>
+<input class="bg-surface-container-low text-on-surface px-space-md py-2 rounded font-body-md text-body-md focus:outline-none" id="deact-confirm-input" placeholder="CONFIRM-SIT" type="text"/>
+</div>
+<div class="flex items-center justify-end gap-space-sm pt-space-sm">
+<button class="px-space-lg py-2 rounded bg-surface-container-high text-secondary hover:bg-surface-container-highest font-headline-sm text-headline-sm transition-colors" onclick="closeDeactivateModal()" type="button">
+          Cancel
+        </button>
+<button class="px-space-lg py-2 rounded bg-error text-on-error font-headline-sm text-headline-sm hover:opacity-90 shadow-sm transition-opacity" onclick="executeDeactivation()" type="button">
+          Confirm Deactivation
+        </button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  function switchTab(tabIndex) {
+    for (let i = 1; i <= 4; i++) {
+      const pane = document.getElementById(`tab-pane-${i}`);
+      const btn = document.getElementById(`tab-btn-${i}`);
+      if (pane && btn) {
+        if (i === tabIndex) {
+          pane.classList.remove('hidden');
+          btn.classList.add('bg-primary-container', 'text-on-primary', 'shadow-sm');
+          btn.classList.remove('text-secondary', 'hover:bg-surface-container');
+        } else {
+          pane.classList.add('hidden');
+          btn.classList.remove('bg-primary-container', 'text-on-primary', 'shadow-sm');
+          btn.classList.add('text-secondary', 'hover:bg-surface-container');
+        }
+      }
+    }
+  }
+
+  let isEditing = false;
+  function toggleEditProfile() {
+    isEditing = !isEditing;
+    const inputs = document.querySelectorAll('.profile-input');
+    const select = document.querySelector('.profile-select');
+    const saveBar = document.getElementById('save-bar');
+    const toggleText = document.getElementById('toggle-edit-text');
+    const editPill = document.getElementById('edit-state-pill');
+
+    inputs.forEach(input => {
+      input.readOnly = !isEditing;
+      if (isEditing) {
+        input.classList.add('bg-surface-container-highest');
+      } else {
+        input.classList.remove('bg-surface-container-highest');
+      }
+    });
+
+    if (select) {
+      select.disabled = !isEditing;
+      if (isEditing) select.classList.add('bg-surface-container-highest');
+      else select.classList.remove('bg-surface-container-highest');
+    }
+
+    if (isEditing) {
+      saveBar.classList.remove('hidden');
+      saveBar.classList.add('flex');
+      toggleText.textContent = 'Lock Editing';
+      editPill.textContent = 'Mode: Active Editing';
+      editPill.classList.remove('bg-surface-container-highest', 'text-secondary');
+      editPill.classList.add('bg-tertiary-fixed', 'text-on-tertiary-fixed');
+    } else {
+      saveBar.classList.add('hidden');
+      saveBar.classList.remove('flex');
+      toggleText.textContent = 'Edit Profile';
+      editPill.textContent = 'Mode: Read Only';
+      editPill.classList.add('bg-surface-container-highest', 'text-secondary');
+      editPill.classList.remove('bg-tertiary-fixed', 'text-on-tertiary-fixed');
+    }
+  }
+
+  function cancelProfileEdit() {
+    if (isEditing) {
+      toggleEditProfile();
+    }
+  }
+
+  function saveProfileMock() {
+    toggleEditProfile();
+    alert('Institutional Staff Dossier updated successfully in Campus Connect database.');
+  }
+
+  function togglePassVisibility(inputId) {
+    const input = document.getElementById(inputId);
+    if (input) {
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+  }
+
+  function evaluatePasswordStrength(val) {
+    const s1 = document.getElementById('str-1');
+    const s2 = document.getElementById('str-2');
+    const s3 = document.getElementById('str-3');
+    const s4 = document.getElementById('str-4');
+    const label = document.getElementById('strength-label');
+
+    let score = 0;
+    if (val.length >= 8) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+
+    [s1, s2, s3, s4].forEach(bar => {
+      bar.className = 'h-full bg-surface-container-high transition-colors';
+    });
+
+    if (score === 1) {
+      s1.classList.remove('bg-surface-container-high');
+      s1.classList.add('bg-error');
+      label.textContent = 'Password Strength: Weak';
+      label.className = 'font-label-sm text-label-sm text-error';
+    } else if (score === 2) {
+      s1.classList.add('bg-secondary');
+      s2.classList.add('bg-secondary');
+      label.textContent = 'Password Strength: Fair';
+      label.className = 'font-label-sm text-label-sm text-secondary';
+    } else if (score === 3) {
+      s1.classList.add('bg-primary');
+      s2.classList.add('bg-primary');
+      s3.classList.add('bg-primary');
+      label.textContent = 'Password Strength: Good';
+      label.className = 'font-label-sm text-label-sm text-primary';
+    } else if (score >= 4) {
+      s1.classList.add('bg-tertiary');
+      s2.classList.add('bg-tertiary');
+      s3.classList.add('bg-tertiary');
+      s4.classList.add('bg-tertiary');
+      label.textContent = 'Password Strength: High Security';
+      label.className = 'font-label-sm text-label-sm text-tertiary';
+    } else {
+      label.textContent = 'Password Strength: Minimum 8 characters';
+      label.className = 'font-label-sm text-label-sm text-secondary';
+    }
+  }
+
+  function handlePasswordChange() {
+    const newP = document.getElementById('new-pass').value;
+    const confP = document.getElementById('conf-pass').value;
+    const alertMsg = document.getElementById('password-alert-msg');
+
+    if (newP !== confP) {
+      alert('Error: New password and confirmation password do not match.');
+      return;
+    }
+    alertMsg.classList.remove('hidden');
+    setTimeout(() => {
+      alertMsg.classList.add('hidden');
+      document.getElementById('password-change-form').reset();
+      evaluatePasswordStrength('');
+    }, 3000);
+  }
+
+  function terminateSession(btn) {
+    const row = btn.closest('.flex.items-center.justify-between');
+    if (row) {
+      row.style.opacity = '0.4';
+      btn.textContent = 'Revoked';
+      btn.disabled = true;
+    }
+  }
+
+  function terminateAllOtherSessions() {
+    const btns = document.querySelectorAll('#session-items-list button');
+    btns.forEach(b => {
+      terminateSession(b);
+    });
+  }
+
+  function filterNotifs(category, btn) {
+    const filterBtns = document.querySelectorAll('.notif-filter-btn');
+    filterBtns.forEach(b => {
+      b.classList.remove('bg-primary-container', 'text-on-primary');
+      b.classList.add('bg-surface-container-highest', 'text-secondary');
+    });
+    btn.classList.add('bg-primary-container', 'text-on-primary');
+    btn.classList.remove('bg-surface-container-highest', 'text-secondary');
+
+    const items = document.querySelectorAll('.notif-item');
+    items.forEach(item => {
+      if (category === 'all') {
+        item.style.display = 'flex';
+      } else if (category === 'unread') {
+        item.style.display = item.dataset.unread === 'true' ? 'flex' : 'none';
+      } else {
+        item.style.display = item.dataset.category === category ? 'flex' : 'none';
+      }
+    });
+  }
+
+  function toggleRead(btn) {
+    const item = btn.closest('.notif-item');
+    if (item) {
+      const isUnread = item.dataset.unread === 'true';
+      item.dataset.unread = isUnread ? 'false' : 'true';
+      const dot = item.querySelector('.status-dot');
+      if (isUnread) {
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-transparent mt-1.5 shrink-0 status-dot';
+      } else {
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-primary mt-1.5 shrink-0 status-dot';
+      }
+    }
+  }
+
+  function markAllAsRead() {
+    const items = document.querySelectorAll('.notif-item');
+    items.forEach(item => {
+      item.dataset.unread = 'false';
+      const dot = item.querySelector('.status-dot');
+      if (dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-transparent mt-1.5 shrink-0 status-dot';
+    });
+  }
+
+  function clearAllNotifications() {
+    const container = document.getElementById('notif-container');
+    if (container) {
+      container.innerHTML = '<div class="p-8 text-center text-secondary font-body-md">All notifications and institutional alerts cleared for this session.</div>';
+    }
+  }
+
+  function openDeactivateModal() {
+    document.getElementById('deactivate-modal').classList.remove('hidden');
+  }
+
+  function closeDeactivateModal() {
+    document.getElementById('deactivate-modal').classList.add('hidden');
+  }
+
+  function executeDeactivation() {
+    const input = document.getElementById('deact-confirm-input');
+    if (input && input.value.trim() === 'CONFIRM-SIT') {
+      alert('Formal request routed to Sharad Institute Registrar for processing.');
+      closeDeactivateModal();
+    } else {
+      alert('Please type CONFIRM-SIT to confirm account deactivation request.');
+    }
+  }
+</script></main></div></body></html>
