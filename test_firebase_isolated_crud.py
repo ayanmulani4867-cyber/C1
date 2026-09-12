@@ -25,11 +25,17 @@ def run_isolated_firebase_test():
     db_url = os.environ.get('FIREBASE_DATABASE_URL', 'https://campus-connect-4e66c-default-rtdb.firebaseio.com/')
     service_key = os.environ.get('FIREBASE_SERVICE_ACCOUNT_KEY')
     db_secret = os.environ.get('FIREBASE_DATABASE_SECRET')
+    access_token = os.environ.get('FIREBASE_ACCESS_TOKEN')
+    client_email = os.environ.get('FIREBASE_CLIENT_EMAIL')
+    private_key = os.environ.get('FIREBASE_PRIVATE_KEY')
     
     print("\n[Step 1] Environment Variables Inspection:")
     print(f"  - FIREBASE_DATABASE_URL: {db_url}")
-    print(f"  - FIREBASE_SERVICE_ACCOUNT_KEY: {'[CONFIGURED]' if service_key else '[MISSING/NOT SET]'}")
     print(f"  - FIREBASE_DATABASE_SECRET: {'[CONFIGURED]' if db_secret else '[MISSING/NOT SET]'}")
+    print(f"  - FIREBASE_SERVICE_ACCOUNT_KEY: {'[CONFIGURED]' if service_key else '[MISSING/NOT SET]'}")
+    print(f"  - FIREBASE_CLIENT_EMAIL: {'[CONFIGURED]' if client_email else '[MISSING/NOT SET]'}")
+    print(f"  - FIREBASE_PRIVATE_KEY: {'[CONFIGURED]' if private_key else '[MISSING/NOT SET]'}")
+    print(f"  - FIREBASE_ACCESS_TOKEN: {'[CONFIGURED]' if access_token else '[MISSING/NOT SET]'}")
     
     # 2. Attempt Connection
     print("\n[Step 2] Initializing Firebase Connection (No fallback allowed)...")
@@ -53,16 +59,15 @@ def run_isolated_firebase_test():
         # Direct probe via requests to get exact server response
         import requests
         url = f"{db_url.rstrip('/')}/{test_path}.json"
-        params = {}
-        if db_secret:
-            params['auth'] = db_secret
+        params, headers = firebase_service._build_rtdb_auth()
         try:
-            resp = requests.put(url, params=params, json=test_data, timeout=5)
+            resp = requests.put(url, params=params, headers=headers, json=test_data, timeout=5)
             print(f"  Firebase HTTP Status Code: {resp.status_code}")
             print(f"  Firebase HTTP Response: {resp.text.strip()}")
             if resp.status_code == 401:
                 print("\n  [DIAGNOSIS] Firebase returned HTTP 401 Unauthorized / Permission Denied.")
                 print("  Reason: Authentication credential is required to access secured database rules.")
+                print("  Fix: Configure FIREBASE_DATABASE_SECRET or FIREBASE_SERVICE_ACCOUNT_KEY in Vercel.")
         except Exception as ex:
             print(f"  Connection probe error: {ex}")
         return False

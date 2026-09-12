@@ -606,26 +606,61 @@ def handle_firebase_connection_error(e):
             'success': False,
             'error': 'Firebase Realtime Database Connection Error',
             'message': str(e),
-            'database_url': firebase_service._database_url
+            'database_url': firebase_service._database_url,
+            'resolution': {
+                'option_c_recommended': 'Copy Database Secret from Firebase Console > Project Settings > Service Accounts > Database Secrets and set as FIREBASE_DATABASE_SECRET in Vercel.',
+                'option_a_service_account': 'In Google Cloud Console, override Organization Policy "Disable Service Account Key Creation" to Off for campus-connect-4e66c, generate key, and set as FIREBASE_SERVICE_ACCOUNT_KEY in Vercel.'
+            }
         }), 503
     return f"""<!DOCTYPE html>
 <html>
-<head><title>Database Error - Campus Connect</title>
+<head><title>Firebase Database Setup - Campus Connect</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<style>body{{font-family:'Inter',sans-serif;background:#0b1c30;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;padding:20px;box-sizing:border-box;}}
-.card{{max-width:560px;background:#132840;padding:36px;border-radius:12px;border:1px solid #ef4444;box-shadow:0 10px 25px rgba(0,0,0,0.5);text-align:center;}}
-h2{{color:#ef4444;margin-top:0;font-size:22px;}}
-p{{color:#cbd5e1;font-size:14px;line-height:1.6;}}
-.code{{background:#0b1c30;padding:12px;border-radius:8px;font-family:monospace;font-size:12px;color:#fca5a5;word-break:break-all;margin:16px 0;text-align:left;}}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{{font-family:'Inter',sans-serif;background:#0b1329;color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:24px;box-sizing:border-box;}}
+.card{{max-width:640px;width:100%;background:#131d36;padding:36px;border-radius:16px;border:1px solid #334155;box-shadow:0 20px 40px rgba(0,0,0,0.6);}}
+h2{{color:#38bdf8;margin-top:0;font-size:22px;display:flex;align-items:center;gap:10px;}}
+p{{color:#94a3b8;font-size:14px;line-height:1.6;margin:12px 0;}}
+.alert{{background:#1e1b4b;border-left:4px solid #6366f1;padding:14px 16px;border-radius:6px;font-size:13px;color:#c7d2fe;margin:16px 0;}}
+.options{{display:flex;flex-direction:column;gap:14px;margin:20px 0;}}
+.opt-box{{background:#0f172a;border:1px solid #1e293b;border-radius:10px;padding:16px;}}
+.opt-title{{font-weight:600;color:#f8fafc;font-size:14px;margin-bottom:6px;display:flex;justify-content:space-between;}}
+.badge{{background:#10b981;color:#022c22;font-size:11px;font-weight:700;padding:2px 8px;border-radius:12px;text-transform:uppercase;}}
+.opt-desc{{color:#94a3b8;font-size:13px;line-height:1.5;margin:0;}}
+code{{background:#1e293b;color:#38bdf8;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px;}}
 </style>
 </head>
 <body>
 <div class="card">
-    <h2>Firebase Database Connection Error</h2>
-    <p>In production mode, the application requires an active, verified connection to Firebase Realtime Database. Local SQLite fallback is disabled to prevent data loss.</p>
-    <div class="code">{e}</div>
-    <p style="color:#94a3b8;font-size:12px;">Ensure <code>FIREBASE_SERVICE_ACCOUNT_KEY</code> or <code>FIREBASE_DATABASE_SECRET</code> is configured in your Vercel Environment Variables.</p>
+    <h2>Firebase Database Configuration Required</h2>
+    <p>The application is live on Vercel, but production database operations strictly require authenticated access to Firebase Realtime Database: <code>{firebase_service._database_url}</code>.</p>
+    
+    <div class="alert">
+        <strong>Why did this appear?</strong> Local SQLite fallback is disabled in production to protect your institutional data from being lost on ephemeral serverless containers.
+    </div>
+
+    <div class="options">
+        <div class="opt-box">
+            <div class="opt-title">Option C: Firebase Database Secret <span class="badge">Recommended</span></div>
+            <p class="opt-desc">
+                If Google Cloud blocks service account key creation (<em>"Key creation is not allowed on this service account"</em>), use the <strong>Database Secret</strong> instead:<br>
+                1. Open <a href="https://console.firebase.google.com/project/campus-connect-4e66c/settings/serviceaccounts/databasesecrets" target="_blank" style="color:#38bdf8;">Firebase Console &gt; Project Settings &gt; Service Accounts &gt; Database Secrets</a>.<br>
+                2. Click <strong>Show</strong> next to your secret and copy it.<br>
+                3. In Vercel Project Settings &gt; Environment Variables, add <code>FIREBASE_DATABASE_SECRET</code> with the secret value.
+            </p>
+        </div>
+
+        <div class="opt-box">
+            <div class="opt-title">Option A: Firebase Admin Service Account Key</div>
+            <p class="opt-desc">
+                To enable private key generation in Google Cloud:<br>
+                1. Open <a href="https://console.cloud.google.com/iam-admin/orgpolicies/iam-disableServiceAccountKeyCreation?project=campus-connect-4e66c" target="_blank" style="color:#38bdf8;">GCP Org Policies: Disable Service Account Key Creation</a>.<br>
+                2. Edit policy &gt; Override parent's policy &gt; Set enforcement to <strong>Off</strong> &gt; Save.<br>
+                3. Generate private key in Firebase Console and set as <code>FIREBASE_SERVICE_ACCOUNT_KEY</code> in Vercel.
+            </p>
+        </div>
+    </div>
 </div>
 </body>
 </html>""", 503

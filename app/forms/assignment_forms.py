@@ -1,11 +1,14 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, TextAreaField, Field, FloatField, SelectField, SubmitField
+from wtforms.widgets import TextInput
 from wtforms.validators import DataRequired, Optional, NumberRange
 from datetime import datetime
 
 
 class FlexibleDateTimeField(Field):
+    widget = TextInput()
+
     def _value(self):
         if self.data:
             return self.data.strftime('%Y-%m-%dT%H:%M')

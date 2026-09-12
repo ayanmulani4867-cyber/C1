@@ -33,41 +33,46 @@ _database_url = "https://campus-connect-4e66c-default-rtdb.firebaseio.com/"
 def init_firebase(app=None) -> bool:
     """
     Initializes the Firebase Realtime Database connection.
-    Attempts:
+    Supports:
     1. Firebase Admin SDK via FIREBASE_SERVICE_ACCOUNT_KEY (raw JSON or base64)
-    2. Firebase Admin SDK via GOOGLE_APPLICATION_CREDENTIALS / FIREBASE_CREDENTIALS_PATH file
-    3. Firebase Admin SDK via client email + private key
-    4. REST API with FIREBASE_DATABASE_SECRET (if service account key creation is restricted)
-    5. Local institutional database fallback if credentials are not yet supplied
+    2. Firebase Admin SDK via client email + private key (FIREBASE_CLIENT_EMAIL / FIREBASE_PRIVATE_KEY)
+    3. Firebase Admin SDK via credentials file (FIREBASE_CREDENTIALS_PATH / GOOGLE_APPLICATION_CREDENTIALS)
+    4. REST API with FIREBASE_DATABASE_SECRET (Database Secret token, bypasses key creation policy)
+    5. REST API with Google OAuth2 / STS / Workload Identity Federation Access Token
     """
     global _firebase_app, _rtdb_ref, _firebase_initialized, _using_rest_fallback, _db_secret, _database_url
 
-    if _firebase_initialized and (_rtdb_ref is not None or _using_rest_fallback):
-        return True
-
     # Resolve database URL
+    db_url_candidate = None
     if app and app.config.get('FIREBASE_DATABASE_URL'):
-        _database_url = app.config['FIREBASE_DATABASE_URL']
+        db_url_candidate = app.config['FIREBASE_DATABASE_URL']
     else:
-        _database_url = os.environ.get(
-            'FIREBASE_DATABASE_URL',
-            'https://campus-connect-4e66c-default-rtdb.firebaseio.com/'
-        )
+        db_url_candidate = os.environ.get('FIREBASE_DATABASE_URL')
+    
+    if db_url_candidate:
+        _database_url = str(db_url_candidate).strip(' "\'\r\n\t')
     if not _database_url.endswith('/'):
         _database_url += '/'
 
-    # Resolve database secret (REST fallback token)
-    _db_secret = os.environ.get('FIREBASE_DATABASE_SECRET')
+    # Resolve database secret / token (Option C - Database Secret or Option B - OAuth2/STS token)
+    raw_secret = os.environ.get('FIREBASE_DATABASE_SECRET') or os.environ.get('FIREBASE_SECRET') or os.environ.get('FIREBASE_RTDB_SECRET')
     if app and app.config.get('FIREBASE_DATABASE_SECRET'):
-        _db_secret = app.config['FIREBASE_DATABASE_SECRET']
+        raw_secret = app.config['FIREBASE_DATABASE_SECRET']
+    
+    # Check for direct OAuth2 / Workload Identity access token
+    if not raw_secret:
+        raw_secret = os.environ.get('FIREBASE_ACCESS_TOKEN') or os.environ.get('GOOGLE_OAUTH_ACCESS_TOKEN')
+    
+    if raw_secret:
+        _db_secret = str(raw_secret).strip(' "\'\r\n\t')
 
-    # 1. Try Firebase Admin SDK
+    # 1. Try Firebase Admin SDK (Option A)
     try:
         import firebase_admin
         from firebase_admin import credentials, db as firebase_rtdb
 
         cred = None
-        service_key_env = os.environ.get('FIREBASE_SERVICE_ACCOUNT_KEY')
+        service_key_env = os.environ.get('FIREBASE_SERVICE_ACCOUNT_KEY') or os.environ.get('FIREBASE_SERVICE_ACCOUNT')
         if app and app.config.get('FIREBASE_SERVICE_ACCOUNT_KEY'):
             service_key_env = app.config['FIREBASE_SERVICE_ACCOUNT_KEY']
 
@@ -78,14 +83,12 @@ def init_firebase(app=None) -> bool:
         client_email = os.environ.get('FIREBASE_CLIENT_EMAIL')
         private_key = os.environ.get('FIREBASE_PRIVATE_KEY')
 
-        if service_key_env and service_key_env.strip():
-            # Check if base64 encoded
-            raw = service_key_env.strip()
+        if service_key_env and str(service_key_env).strip():
+            raw = str(service_key_env).strip(' "\'\r\n\t')
             try:
                 if not raw.startswith('{'):
                     raw = base64.b64decode(raw).decode('utf-8')
                 cert_dict = json.loads(raw)
-                # Fix escaped newlines in private key if stringified
                 if 'private_key' in cert_dict and '\\n' in cert_dict['private_key']:
                     cert_dict['private_key'] = cert_dict['private_key'].replace('\\n', '\n')
                 cred = credentials.Certificate(cert_dict)
@@ -102,11 +105,11 @@ def init_firebase(app=None) -> bool:
 
         elif client_email and private_key:
             try:
-                pk = private_key.replace('\\n', '\n')
+                pk = str(private_key).strip(' "\'\r\n\t').replace('\\n', '\n')
                 cert_dict = {
                     "type": "service_account",
                     "project_id": os.environ.get('FIREBASE_PROJECT_ID', 'campus-connect-4e66c'),
-                    "client_email": client_email,
+                    "client_email": str(client_email).strip(' "\'\r\n\t'),
                     "private_key": pk
                 }
                 cred = credentials.Certificate(cert_dict)
@@ -115,7 +118,6 @@ def init_firebase(app=None) -> bool:
                 logger.warning(f"Failed to load credentials from email/key: {e}")
 
         if cred is not None:
-            # Check if default app already exists
             if not firebase_admin._apps:
                 _firebase_app = firebase_admin.initialize_app(cred, {
                     'databaseURL': _database_url
@@ -132,14 +134,13 @@ def init_firebase(app=None) -> bool:
     except Exception as e:
         logger.warning(f"Firebase Admin SDK initialization notice: {e}")
 
-    # 2. Check if REST secret is provided
+    # 2. Check if REST secret or Access Token is provided (Option C / Option B)
     if _db_secret:
         _firebase_initialized = True
         _using_rest_fallback = True
-        logger.info("Firebase REST API with RTDB Secret initialized successfully.")
+        logger.info("Firebase REST API with RTDB Secret / Token initialized successfully.")
         return True
 
-    logger.info("Firebase credentials not supplied in environment; using resilient dual-store mode.")
     _firebase_initialized = True
     return False
 
@@ -160,24 +161,39 @@ def is_production_mode() -> bool:
     )
 
 
+def is_firebase_connected() -> bool:
+    """Returns True if live Firebase Realtime Database is actively connected."""
+    global _rtdb_ref, _using_rest_fallback, _db_secret
+    if _rtdb_ref is None and not (_using_rest_fallback and bool(_db_secret)):
+        init_firebase()
+    return _rtdb_ref is not None or (_using_rest_fallback and bool(_db_secret))
+
+
 def _ensure_firebase_connected():
     """In production, enforces that Firebase must be connected. Raises FirebaseConnectionError if not."""
     if is_production_mode() and not is_firebase_connected():
         raise FirebaseConnectionError(
-            "Firebase Realtime Database connection error: Valid database credentials "
-            "(FIREBASE_SERVICE_ACCOUNT_KEY or FIREBASE_DATABASE_SECRET) are required in production. "
-            "Local database fallback is strictly disabled in production mode."
+            "Firebase Realtime Database connection error: Valid production database credentials "
+            "are required. Please configure either FIREBASE_DATABASE_SECRET or FIREBASE_SERVICE_ACCOUNT_KEY "
+            "in your Vercel Environment Variables. Local database fallback is strictly disabled in production mode."
         )
-
-
-def is_firebase_connected() -> bool:
-    """Returns True if live Firebase Realtime Database is actively connected."""
-    return _rtdb_ref is not None or (_using_rest_fallback and bool(_db_secret))
 
 
 # =========================================================================
 # LOW-LEVEL RTDB OPERATIONS
 # =========================================================================
+
+def _build_rtdb_auth():
+    """Builds query parameters and headers for Firebase Realtime Database REST API."""
+    params = {}
+    headers = {'Content-Type': 'application/json'}
+    if _db_secret:
+        if _db_secret.startswith('ya29.'):
+            headers['Authorization'] = f"Bearer {_db_secret}"
+        else:
+            params['auth'] = _db_secret
+    return params, headers
+
 
 def _rtdb_get(path: str) -> Optional[Any]:
     """Reads data from Firebase Realtime Database path."""
@@ -193,8 +209,8 @@ def _rtdb_get(path: str) -> Optional[Any]:
     if _using_rest_fallback and _db_secret:
         try:
             url = f"{_database_url}{path}.json"
-            params = {'auth': _db_secret}
-            resp = requests.get(url, params=params, timeout=5)
+            params, headers = _build_rtdb_auth()
+            resp = requests.get(url, params=params, headers=headers, timeout=5)
             if resp.status_code == 200:
                 return resp.json()
             else:
@@ -225,8 +241,8 @@ def _rtdb_set(path: str, data: Any) -> bool:
     if _using_rest_fallback and _db_secret:
         try:
             url = f"{_database_url}{path}.json"
-            params = {'auth': _db_secret}
-            resp = requests.put(url, params=params, json=data, timeout=5)
+            params, headers = _build_rtdb_auth()
+            resp = requests.put(url, params=params, headers=headers, json=data, timeout=5)
             if resp.status_code == 200:
                 return True
             else:
@@ -257,8 +273,8 @@ def _rtdb_update(path: str, data: Dict[str, Any]) -> bool:
     if _using_rest_fallback and _db_secret:
         try:
             url = f"{_database_url}{path}.json"
-            params = {'auth': _db_secret}
-            resp = requests.patch(url, params=params, json=data, timeout=5)
+            params, headers = _build_rtdb_auth()
+            resp = requests.patch(url, params=params, headers=headers, json=data, timeout=5)
             if resp.status_code == 200:
                 return True
             else:
@@ -289,8 +305,8 @@ def _rtdb_delete(path: str) -> bool:
     if _using_rest_fallback and _db_secret:
         try:
             url = f"{_database_url}{path}.json"
-            params = {'auth': _db_secret}
-            resp = requests.delete(url, params=params, timeout=5)
+            params, headers = _build_rtdb_auth()
+            resp = requests.delete(url, params=params, headers=headers, timeout=5)
             if resp.status_code == 200:
                 return True
             else:
